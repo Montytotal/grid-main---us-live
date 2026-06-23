@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>US Grid: Live</title>
+    <meta
+      name="description"
+      content="Live electricity generation snapshot for the United States using EIA fuel-mix data"
+    >
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Proza+Libre:wght@300;400&display=swap"
+    >
+    <link
+      rel="stylesheet"
+      href="../grid.css?1782228287"
+      type="text/css"
+    >
+    <link rel="icon" href="../favicon.png" type="image/png">
+    <link rel="icon" href="../favicon.svg?5940775" type="image/svg+xml">
+    <script
+      src="../grid.js?1782214019"
+      defer
+    ></script>
+  </head>
+  <body class="us-grid">
+    <header aria-label="Site">
+      <nav>
+        <a href="/us/">
+          <svg viewBox="0 0 160 160" role="img" aria-labelledby="us-grid-logo-title">
+            <title id="us-grid-logo-title">US Grid</title>
+            <path d="M80 8 22 42v76l58 34 58-34V42zM40 52l40-24 40 24v56l-40 24-40-24z"/>
+            <path d="M54 86h52v16H54zm0-28h52v16H54z"/>
+          </svg>
+        </a>
+        <div>
+          <a href="/us/" class="section">US</a>
+        </div>
+        <div>
+          <a href="#latest">Live</a>
+          <a href="#transition">Data</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <h1>US Grid: Live</h1>
+      <p>
+        The US grid is the electric power system for the United States
+      </p>
+
+      <div id="status" class="columns">
+        <section>
+          <dl>
+            <dt>Time</dt>
+            <dd><time datetime="2026-06-23T03:00:00Z">23 Jun 2026, 3:00<abbr>am UTC</abbr></time></dd>
+            <dt>Price</dt>
+            <dd>&mdash;<abbr>/MWh</abbr></dd>
+            <dt>Emissions</dt>
+            <dd>&mdash;<abbr>g/kWh</abbr></dd>
+          </dl>
+        </section>
+        <section>
+          <dl class="us-equation" data-operator="+">
+            <dt>Demand</dt>
+            <dd>574.9<abbr>GW</abbr></dd>
+            <dt>Generation</dt>
+            <dd>565.9<abbr>GW</abbr></dd>
+            <dt>Transfers</dt>
+            <dd>9.0<abbr>GW</abbr></dd>
+          </dl>
+        </section>
+      </div>
+
+      <div id="latest">
+        <section id="generation">
+          <h2>Generation</h2>
+          <div class="pie-chart-container">
+            <div class="pie-chart"><div><div>Generation</div><div class="generation"></div><div><span>565.9</span>GW</div><div><span>100.0</span>%</div></div><svg viewBox="-1 -1 2 2" data-power="565.9" data-percentage="100.0"><path class="coal" d="M0.0000,-1.0000A1,1 0 0 1 0.8773,-0.4799L0.6580,-0.3599A0.75,0.75 0 0 0 0.0000,-0.7500z" data-power="96.38" data-percentage="17.0"/><path class="gas" d="M0.8773,-0.4799A1,1 0 0 1 -0.6298,0.7767L-0.4724,0.5826A0.75,0.75 0 0 0 0.6580,-0.3599z" data-power="247.90" data-percentage="43.8"/><path class="oil" d="M-0.6298,0.7767A1,1 0 0 1 -0.6329,0.7742L-0.4747,0.5807A0.75,0.75 0 0 0 -0.4724,0.5826z" data-power="0.36" data-percentage="0.1"/><path class="solar" d="M-0.6329,0.7742A1,1 0 0 1 -0.6712,0.7413L-0.5034,0.5559A0.75,0.75 0 0 0 -0.4747,0.5807z" data-power="4.55" data-percentage="0.8"/><path class="wind" d="M-0.6712,0.7413A1,1 0 0 1 -0.9598,0.2808L-0.7198,0.2106A0.75,0.75 0 0 0 -0.5034,0.5559z" data-power="49.56" data-percentage="8.8"/><path class="hydro" d="M-0.9598,0.2808A1,1 0 0 1 -0.9898,-0.1425L-0.7423,-0.1069A0.75,0.75 0 0 0 -0.7198,0.2106z" data-power="38.51" data-percentage="6.8"/><path class="nuclear" d="M-0.9898,-0.1425A1,1 0 0 1 -0.3510,-0.9364L-0.2632,-0.7023A0.75,0.75 0 0 0 -0.7423,-0.1069z" data-power="96.29" data-percentage="17.0"/><path class="others" d="M-0.3510,-0.9364A1,1 0 0 1 -0.0000,-1.0000L-0.0000,-0.7500A0.75,0.75 0 0 0 -0.2632,-0.7023z" data-power="32.30" data-percentage="5.7"/><path class="fossils" d="M0.0000,-0.7500A0.75,0.75 0 1 1 -0.4747,0.5807L-0.3165,0.3871A0.5,0.5 0 1 0 0.0000,-0.5000z" data-power="344.6" data-percentage="60.9"/><path class="renewables" d="M-0.4747,0.5807A0.75,0.75 0 0 1 -0.7423,-0.1069L-0.4949,-0.0713A0.5,0.5 0 0 0 -0.3165,0.3871z" data-power="92.6" data-percentage="16.4"/><path class="others" d="M-0.7423,-0.1069A0.75,0.75 0 0 1 -0.0000,-0.7500L-0.0000,-0.5000A0.5,0.5 0 0 0 -0.4949,-0.0713z" data-power="128.6" data-percentage="22.7"/></svg></div>
+          </div>
+          <div>
+            Percentages are shares of displayed generation.
+          </div>
+        </section>
+
+        <section id="fossils">
+          <h2>60.9% fossil fuels</h2>
+          <table class="sources">
+            <tr><td class="coal"></td><td>Coal</td><td>96.38</td><td>17.0</td></tr>
+            <tr><td class="gas"></td><td>Gas</td><td>247.90</td><td>43.8</td></tr>
+            <tr><td class="oil"></td><td>Oil</td><td>0.36</td><td>0.1</td></tr>
+          </table>
+        </section>
+
+        <section id="renewables">
+          <h2>16.4% renewables</h2>
+          <table class="sources">
+            <tr><td class="solar"></td><td>Solar</td><td>4.55</td><td>0.8</td></tr>
+            <tr><td class="wind"></td><td>Wind</td><td>49.56</td><td>8.8</td></tr>
+            <tr><td class="hydro"></td><td>Hydroelectric</td><td>38.51</td><td>6.8</td></tr>
+          </table>
+        </section>
+
+        <section id="others">
+          <h2>22.7% other sources</h2>
+          <table class="sources">
+            <tr><td class="nuclear"></td><td>Nuclear</td><td>96.29</td><td>17.0</td></tr>
+            <tr><td class="others"></td><td>Other</td><td>32.30</td><td>5.7</td></tr>
+          </table>
+        </section>
+
+        <section id="transfers">
+          <h2>Transfers</h2>
+          <table class="sources transfer-table">
+            <tr><td class="canada"></td><td>Canada</td><td>2.05</td><td>import</td></tr>
+            <tr><td class="mexico"></td><td>Mexico</td><td>0.00</td><td>import</td></tr>
+            <tr><td class="transfers"></td><td>Total</td><td>2.05</td><td>import</td></tr>
+          </table>
+        </section>
+
+        <section id="storage">
+          <h2>Storage</h2>
+          <table class="sources">
+            <tr><td class="battery"></td><td>Battery storage</td><td>&mdash;</td><td>&mdash;</td></tr>
+          </table>
+        </section>
+      </div>
+      <section>
+        <div role="tablist">
+          <h2 id="tab-day" role="tab" aria-controls="tab-panel-day" aria-selected="true"><span>Past </span>day</h2>
+          <h2 id="tab-week" role="tab" aria-controls="tab-panel-week" aria-selected="false"><span>Past </span>week</h2>
+          <h2 id="tab-year" role="tab" aria-controls="tab-panel-year" aria-selected="false"><span>Past </span>year</h2>
+          <h2 id="tab-all" role="tab" aria-controls="tab-panel-all" aria-selected="false">All<span> time</span></h2>
+        </div>
+        <div id="tab-panel-day" role="tabpanel" aria-labelledby="tab-day" tabindex="0">
+          <div>
+          <dl>
+            <dt>Time</dt>
+            <dd>Past day</dd>
+            <dt>Price</dt>
+            <dd>&mdash;<abbr>/MWh</abbr></dd>
+            <dt>Emissions</dt>
+            <dd>&mdash;<abbr>g/kWh</abbr></dd>
+          </dl>
+          </div>
+          <div>
+          <dl class="us-equation" data-operator="+">
+            <dt>Demand</dt>
+            <dd>524.7<abbr>GW</abbr></dd>
+            <dt>Generation</dt>
+            <dd>524.7<abbr>GW</abbr></dd>
+            <dt>Transfers</dt>
+            <dd>&mdash;</dd>
+          </dl>
+          </div>
+          <div>
+<div class="pie-chart"><div><div>Generation</div><div class="generation"></div><div><span>524.7</span>GW</div><div><span>100.0</span>%</div></div><svg viewBox="-1 -1 2 2" data-power="524.7" data-percentage="100.0"><path class="coal" d="M0.0000,-1.0000A1,1 0 0 1 0.8248,-0.5655L0.6186,-0.4241A0.75,0.75 0 0 0 0.0000,-0.7500z" data-power="80.99" data-percentage="15.4"/><path class="gas" d="M0.8248,-0.5655A1,1 0 0 1 -0.2739,0.9618L-0.2054,0.7213A0.75,0.75 0 0 0 0.6186,-0.4241z" data-power="204.54" data-percentage="39.0"/><path class="oil" d="M-0.2739,0.9618A1,1 0 0 1 -0.2828,0.9592L-0.2121,0.7194A0.75,0.75 0 0 0 -0.2054,0.7213z" data-power="0.78" data-percentage="0.1"/><path class="solar" d="M-0.2828,0.9592A1,1 0 0 1 -0.7357,0.6773L-0.5518,0.5080A0.75,0.75 0 0 0 -0.2121,0.7194z" data-power="45.10" data-percentage="8.6"/><path class="wind" d="M-0.7357,0.6773A1,1 0 0 1 -0.9952,0.0980L-0.7464,0.0735A0.75,0.75 0 0 0 -0.5518,0.5080z" data-power="53.94" data-percentage="10.3"/><path class="hydro" d="M-0.9952,0.0980A1,1 0 0 1 -0.9683,-0.2498L-0.7262,-0.1874A0.75,0.75 0 0 0 -0.7464,0.0735z" data-power="29.28" data-percentage="5.6"/><path class="nuclear" d="M-0.9683,-0.2498A1,1 0 0 1 -0.1697,-0.9855L-0.1272,-0.7391A0.75,0.75 0 0 0 -0.7262,-0.1874z" data-power="95.86" data-percentage="18.3"/><path class="others" d="M-0.1697,-0.9855A1,1 0 0 1 -0.0000,-1.0000L-0.0000,-0.7500A0.75,0.75 0 0 0 -0.1272,-0.7391z" data-power="14.24" data-percentage="2.7"/><path class="fossils" d="M0.0000,-0.7500A0.75,0.75 0 1 1 -0.2121,0.7194L-0.1414,0.4796A0.5,0.5 0 1 0 0.0000,-0.5000z" data-power="286.3" data-percentage="54.6"/><path class="renewables" d="M-0.2121,0.7194A0.75,0.75 0 0 1 -0.7262,-0.1874L-0.4841,-0.1249A0.5,0.5 0 0 0 -0.1414,0.4796z" data-power="128.3" data-percentage="24.5"/><path class="others" d="M-0.7262,-0.1874A0.75,0.75 0 0 1 -0.0000,-0.7500L-0.0000,-0.5000A0.5,0.5 0 0 0 -0.4841,-0.1249z" data-power="110.1" data-percentage="21.0"/></svg></div>
+          </div>
+          <div>
+            <h3>Generation by type</h3>
+            <table class="sources">
+              <tr><td class="fossils"></td><td>Fossil fuels</td><td>286.31</td><td>54.6</td></tr>
+              <tr><td class="renewables"></td><td>Renewables</td><td>128.32</td><td>24.5</td></tr>
+              <tr><td class="others"></td><td>Other sources</td><td>110.09</td><td>21.0</td></tr>
+            </table>
+            <h3>Generation by source</h3>
+            <table class="sources">
+              <tr><td class="coal"></td><td>Coal</td><td>80.99</td><td>15.4</td></tr>
+              <tr><td class="gas"></td><td>Gas</td><td>204.54</td><td>39.0</td></tr>
+              <tr><td class="oil"></td><td>Oil</td><td>0.78</td><td>0.1</td></tr>
+              <tr><td class="solar"></td><td>Solar</td><td>45.10</td><td>8.6</td></tr>
+              <tr><td class="wind"></td><td>Wind</td><td>53.94</td><td>10.3</td></tr>
+              <tr><td class="hydro"></td><td>Hydroelectric</td><td>29.28</td><td>5.6</td></tr>
+              <tr><td class="nuclear"></td><td>Nuclear</td><td>95.86</td><td>18.3</td></tr>
+              <tr><td class="others"></td><td>Other</td><td>14.24</td><td>2.7</td></tr>
+            </table>
+          </div>
+          <div>
+            <h3>Price per MWh</h3>
+<div class="us-unavailable-graph"><div>No US price feed in the current EIA data</div></div>
+          </div>
+          <div>
+            <h3>Emissions per kWh</h3>
+<div class="us-unavailable-graph"><div>No US carbon-intensity feed in the current EIA data</div></div>
+          </div>
+          <div>
+            <h3>Demand</h3>
+<div class="graph" data-prefix="" data-suffix="GW"><div><div>700GW</div><div></div><div>600GW</div><div></div><div>500GW</div><div></div><div>400GW</div><div></div><div>300GW</div><div></div><div>200GW</div><div></div><div>100GW</div><div></div><div>0GW</div><div></div></div><div><div>6:00pm</div><div>12:00am</div><div>6:00am</div><div>12:00pm</div></div><svg viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="none"><polyline class="demand" points="10 119 30 101 50 87 70 74 90 65 130 53 150 50 170 52 190 56 210 62 230 72 250 89 290 131 310 149 330 165 350 175 370 180 390 178 410 172 430 162 450 151 470 138 490 126"/><rect x="0" y="0" width="20" height="500" data-time="3:00pm" data-values="534.0"/><rect x="20" y="0" width="20" height="500" data-time="4:00pm" data-values="558.4"/><rect x="40" y="0" width="20" height="500" data-time="5:00pm" data-values="578.8"/><rect x="60" y="0" width="20" height="500" data-time="6:00pm" data-values="596.1"/><rect x="80" y="0" width="20" height="500" data-time="7:00pm" data-values="608.8"/><rect x="100" y="0" width="20" height="500" data-time="8:00pm" data-values="617.3"/><rect x="120" y="0" width="20" height="500" data-time="9:00pm" data-values="625.2"/><rect x="140" y="0" width="20" height="500" data-time="10:00pm" data-values="629.6"/><rect x="160" y="0" width="20" height="500" data-time="11:00pm" data-values="627.8"/><rect x="180" y="0" width="20" height="500" data-time="12:00am" data-values="621.5"/><rect x="200" y="0" width="20" height="500" data-time="1:00am" data-values="612.6"/><rect x="220" y="0" width="20" height="500" data-time="2:00am" data-values="599.2"/><rect x="240" y="0" width="20" height="500" data-time="3:00am" data-values="574.9"/><rect x="260" y="0" width="20" height="500" data-time="4:00am" data-values="545.6"/><rect x="280" y="0" width="20" height="500" data-time="5:00am" data-values="516.4"/><rect x="300" y="0" width="20" height="500" data-time="6:00am" data-values="491.4"/><rect x="320" y="0" width="20" height="500" data-time="7:00am" data-values="469.2"/><rect x="340" y="0" width="20" height="500" data-time="8:00am" data-values="455.5"/><rect x="360" y="0" width="20" height="500" data-time="9:00am" data-values="448.6"/><rect x="380" y="0" width="20" height="500" data-time="10:00am" data-values="451.0"/><rect x="400" y="0" width="20" height="500" data-time="11:00am" data-values="459.7"/><rect x="420" y="0" width="20" height="500" data-time="12:00pm" data-values="473.1"/><rect x="440" y="0" width="20" height="500" data-time="1:00pm" data-values="488.0"/><rect x="460" y="0" width="20" height="500" data-time="2:00pm" data-values="506.2"/><rect x="480" y="0" width="20" height="500" data-time="3:00pm" data-values="523.3"/></svg></div>
+          </div>
+          <div>
+            <h3>Generation</h3>
+<div class="graph" data-prefix="" data-suffix="GW"><div><div>300GW</div><div></div><div>250GW</div><div></div><div>200GW</div><div></div><div>150GW</div><div></div><div>100GW</div><div></div><div>50GW</div><div></div><div>0GW</div><div></div></div><div><div>6:00am</div><div>12:00pm</div><div>6:00pm</div><div>12:00am</div></div><svg viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="none"><polyline class="coal" points="10 344 30 348 50 362 70 370 90 388 110 396 130 399 150 399 170 396 210 384 230 382 250 378 270 371 310 355 330 350 370 344 410 346 430 346 470 340 490 339"/><polyline class="gas" points="10 127 30 154 50 182 70 192 90 217 110 224 130 225 190 207 210 208 230 214 250 206 270 191 290 169 310 153 330 140 350 125 370 109 390 97 410 90 430 82 450 75 470 73 490 87"/><polyline class="oil" points="10 500 250 500 270 499 290 499 330 497 350 498 370 497 450 497 490 499"/><polyline class="solar" points="10 491 30 499 70 499 90 500 150 500 170 499 190 487 210 456 230 403 250 353 270 331 290 323 310 321 330 322 370 338 390 345 410 361 430 386 450 424 470 464 490 492"/><polyline class="wind" points="10 404 30 399 50 398 70 396 90 381 110 379 130 379 150 385 170 385 190 395 210 409 230 415 250 418 270 422 290 427 310 429 330 430 350 432 370 432 390 430 430 424 450 419 470 420 490 417"/><polyline class="hydro" points="10 442 30 447 70 451 110 457 150 461 170 461 210 459 230 462 270 462 290 461 310 459 370 447 390 445 410 440 450 434 470 432 490 436"/><polyline class="nuclear" points="10 340 210 340 230 341 250 340 270 340 290 341 350 341 370 340 490 340"/><polyline class="others" points="10 445 30 453 50 464 70 473 90 479 110 483 130 486 150 487 170 487 190 484 210 482 230 485 250 490 270 491 290 490 330 486 370 480 390 476 410 476 430 474 450 468 470 452 490 446"/><rect x="0" y="0" width="20" height="500" data-time="3:00am" data-values="93.84 223.51 0.27 5.21 57.40 35.01 96.05 32.95"/><rect x="20" y="0" width="20" height="500" data-time="4:00am" data-values="91.07 207.85 0.26 0.80 60.53 31.91 96.13 27.98"/><rect x="40" y="0" width="20" height="500" data-time="5:00am" data-values="82.61 191.09 0.26 0.50 61.09 30.65 96.25 21.86"/><rect x="60" y="0" width="20" height="500" data-time="6:00am" data-values="78.00 185.00 0.26 0.44 62.22 29.50 96.23 16.46"/><rect x="80" y="0" width="20" height="500" data-time="7:00am" data-values="66.96 169.86 0.27 0.21 71.67 27.42 95.76 12.31"/><rect x="100" y="0" width="20" height="500" data-time="8:00am" data-values="62.53 165.76 0.27 0.20 72.46 25.92 95.72 10.26"/><rect x="120" y="0" width="20" height="500" data-time="9:00am" data-values="60.68 164.91 0.27 0.12 72.31 24.53 95.73 8.19"/><rect x="140" y="0" width="20" height="500" data-time="10:00am" data-values="60.74 168.33 0.27 0.13 69.27 23.60 95.77 8.04"/><rect x="160" y="0" width="20" height="500" data-time="11:00am" data-values="62.27 172.47 0.27 0.78 69.26 23.59 95.80 7.88"/><rect x="180" y="0" width="20" height="500" data-time="12:00pm" data-values="66.08 175.73 0.27 8.09 63.24 23.97 95.80 9.68"/><rect x="200" y="0" width="20" height="500" data-time="1:00pm" data-values="69.81 175.42 0.27 26.68 54.75 24.73 95.77 10.85"/><rect x="220" y="0" width="20" height="500" data-time="2:00pm" data-values="71.07 171.45 0.26 58.35 50.91 22.86 95.69 9.27"/><rect x="240" y="0" width="20" height="500" data-time="3:00pm" data-values="73.13 176.24 0.26 88.11 49.29 22.91 95.73 6.25"/><rect x="260" y="0" width="20" height="500" data-time="4:00pm" data-values="77.11 185.46 0.37 101.44 46.76 22.95 95.72 5.48"/><rect x="280" y="0" width="20" height="500" data-time="5:00pm" data-values="82.33 198.67 0.80 105.93 43.60 23.23 95.69 5.90"/><rect x="300" y="0" width="20" height="500" data-time="6:00pm" data-values="86.91 208.03 1.32 107.61 42.81 24.85 95.59 7.28"/><rect x="320" y="0" width="20" height="500" data-time="7:00pm" data-values="89.79 215.92 1.53 106.51 42.04 27.17 95.55 8.26"/><rect x="340" y="0" width="20" height="500" data-time="8:00pm" data-values="91.76 224.98 1.50 102.26 41.04 29.52 95.66 10.16"/><rect x="360" y="0" width="20" height="500" data-time="9:00pm" data-values="93.39 234.71 1.70 97.35 40.89 32.05 95.75 12.30"/><rect x="380" y="0" width="20" height="500" data-time="10:00pm" data-values="93.10 242.01 1.98 93.17 42.07 33.26 95.81 14.12"/><rect x="400" y="0" width="20" height="500" data-time="11:00pm" data-values="92.38 246.14 1.82 83.61 43.55 35.81 95.85 14.45"/><rect x="420" y="0" width="20" height="500" data-time="12:00am" data-values="92.67 250.53 1.71 68.47 45.34 37.61 95.94 15.64"/><rect x="440" y="0" width="20" height="500" data-time="1:00am" data-values="94.04 255.23 1.56 45.58 48.34 39.56 96.02 19.39"/><rect x="460" y="0" width="20" height="500" data-time="2:00am" data-values="96.15 256.27 1.31 21.47 48.10 41.00 96.15 28.69"/><rect x="480" y="0" width="20" height="500" data-time="3:00am" data-values="96.38 247.90 0.36 4.55 49.56 38.51 96.29 32.30"/></svg></div>
+          </div>
+          <div>
+            <h3>Transfers</h3>
+<div class="graph" data-prefix="" data-suffix="GW" data-transfers="true"><div><div>30GW</div><div></div><div>25GW</div><div></div><div>20GW</div><div></div><div>15GW</div><div></div><div>10GW</div><div></div><div>5GW</div><div></div><div>0GW</div><div></div></div><div><div>4:00pm</div><div>7:00pm</div><div>10:00pm</div><div>1:00am</div></div><svg viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="none"><polyline class="transfers" points="19 22 58 5 96 23 135 60 173 89 212 148 250 188 288 239 327 254 365 271 404 289 442 327 481 336"/><rect x="0" y="0" width="38" height="500" data-time="3:00pm" data-values="28.7"/><rect x="38" y="0" width="38" height="500" data-time="4:00pm" data-values="29.7"/><rect x="77" y="0" width="38" height="500" data-time="5:00pm" data-values="28.6"/><rect x="115" y="0" width="38" height="500" data-time="6:00pm" data-values="26.4"/><rect x="154" y="0" width="38" height="500" data-time="7:00pm" data-values="24.6"/><rect x="192" y="0" width="38" height="500" data-time="8:00pm" data-values="21.1"/><rect x="231" y="0" width="38" height="500" data-time="9:00pm" data-values="18.7"/><rect x="269" y="0" width="38" height="500" data-time="10:00pm" data-values="15.7"/><rect x="308" y="0" width="38" height="500" data-time="11:00pm" data-values="14.7"/><rect x="346" y="0" width="38" height="500" data-time="12:00am" data-values="13.8"/><rect x="385" y="0" width="38" height="500" data-time="1:00am" data-values="12.7"/><rect x="423" y="0" width="38" height="500" data-time="2:00am" data-values="10.4"/><rect x="462" y="0" width="38" height="500" data-time="3:00am" data-values="9.9"/></svg></div>
+          </div>
+        </div>
+        <div id="tab-panel-week" role="tabpanel" aria-labelledby="tab-week" tabindex="0">
+          <div>
+          <dl>
+            <dt>Time</dt>
+            <dd>Past week</dd>
+            <dt>Price</dt>
+            <dd>&mdash;<abbr>/MWh</abbr></dd>
+            <dt>Emissions</dt>
+            <dd>&mdash;<abbr>g/kWh</abbr></dd>
+          </dl>
+          </div>
+          <div>
+          <dl class="us-equation" data-operator="+">
+            <dt>Demand</dt>
+            <dd>535.0<abbr>GW</abbr></dd>
+            <dt>Generation</dt>
+            <dd>535.0<abbr>GW</abbr></dd>
+            <dt>Transfers</dt>
+            <dd>&mdash;</dd>
+          </dl>
+          </div>
+          <div>
+<div class="pie-chart"><div><div>Generation</div><div class="generation"></div><div><span>535.0</span>GW</div><div><span>100.0</span>%</div></div><svg viewBox="-1 -1 2 2" data-power="535.0" data-percentage="100.0"><path class="coal" d="M0.0000,-1.0000A1,1 0 0 1 0.8225,-0.5688L0.6168,-0.4266A0.75,0.75 0 0 0 0.0000,-0.7500z" data-power="82.23" data-percentage="15.4"/><path class="gas" d="M0.8225,-0.5688A1,1 0 0 1 -0.2621,0.9650L-0.1966,0.7238A0.75,0.75 0 0 0 0.6168,-0.4266z" data-power="207.85" data-percentage="38.9"/><path class="oil" d="M-0.2621,0.9650A1,1 0 0 1 -0.2712,0.9625L-0.2034,0.7219A0.75,0.75 0 0 0 -0.1966,0.7238z" data-power="0.80" data-percentage="0.2"/><path class="solar" d="M-0.2712,0.9625A1,1 0 0 1 -0.7662,0.6427L-0.5746,0.4820A0.75,0.75 0 0 0 -0.2034,0.7219z" data-power="50.93" data-percentage="9.5"/><path class="wind" d="M-0.7662,0.6427A1,1 0 0 1 -0.9976,0.0692L-0.7482,0.0519A0.75,0.75 0 0 0 -0.5746,0.4820z" data-power="53.53" data-percentage="10.0"/><path class="hydro" d="M-0.9976,0.0692A1,1 0 0 1 -0.9618,-0.2738L-0.7213,-0.2054A0.75,0.75 0 0 0 -0.7482,0.0519z" data-power="29.52" data-percentage="5.5"/><path class="nuclear" d="M-0.9618,-0.2738A1,1 0 0 1 -0.1672,-0.9859L-0.1254,-0.7394A0.75,0.75 0 0 0 -0.7213,-0.2054z" data-power="95.83" data-percentage="17.9"/><path class="others" d="M-0.1672,-0.9859A1,1 0 0 1 -0.0000,-1.0000L-0.0000,-0.7500A0.75,0.75 0 0 0 -0.1254,-0.7394z" data-power="14.30" data-percentage="2.7"/><path class="fossils" d="M0.0000,-0.7500A0.75,0.75 0 1 1 -0.2034,0.7219L-0.1356,0.4813A0.5,0.5 0 1 0 0.0000,-0.5000z" data-power="290.9" data-percentage="54.4"/><path class="renewables" d="M-0.2034,0.7219A0.75,0.75 0 0 1 -0.7213,-0.2054L-0.4809,-0.1369A0.5,0.5 0 0 0 -0.1356,0.4813z" data-power="134.0" data-percentage="25.0"/><path class="others" d="M-0.7213,-0.2054A0.75,0.75 0 0 1 -0.0000,-0.7500L-0.0000,-0.5000A0.5,0.5 0 0 0 -0.4809,-0.1369z" data-power="110.1" data-percentage="20.6"/></svg></div>
+          </div>
+          <div>
+            <h3>Generation by type</h3>
+            <table class="sources">
+              <tr><td class="fossils"></td><td>Fossil fuels</td><td>290.88</td><td>54.4</td></tr>
+              <tr><td class="renewables"></td><td>Renewables</td><td>133.98</td><td>25.0</td></tr>
+              <tr><td class="others"></td><td>Other sources</td><td>110.13</td><td>20.6</td></tr>
+            </table>
+            <h3>Generation by source</h3>
+            <table class="sources">
+              <tr><td class="coal"></td><td>Coal</td><td>82.23</td><td>15.4</td></tr>
+              <tr><td class="gas"></td><td>Gas</td><td>207.85</td><td>38.9</td></tr>
+              <tr><td class="oil"></td><td>Oil</td><td>0.80</td><td>0.2</td></tr>
+              <tr><td class="solar"></td><td>Solar</td><td>50.93</td><td>9.5</td></tr>
+              <tr><td class="wind"></td><td>Wind</td><td>53.53</td><td>10.0</td></tr>
+              <tr><td class="hydro"></td><td>Hydroelectric</td><td>29.52</td><td>5.5</td></tr>
+              <tr><td class="nuclear"></td><td>Nuclear</td><td>95.83</td><td>17.9</td></tr>
+              <tr><td class="others"></td><td>Other</td><td>14.30</td><td>2.7</td></tr>
+            </table>
+          </div>
+          <div>
+            <h3>Price per MWh</h3>
+<div class="us-unavailable-graph"><div>No US price feed in the current EIA data</div></div>
+          </div>
+          <div>
+            <h3>Emissions per kWh</h3>
+<div class="us-unavailable-graph"><div>No US carbon-intensity feed in the current EIA data</div></div>
+          </div>
+          <div>
+            <h3>Demand</h3>
+<div class="graph" data-prefix="" data-suffix="GW"><div><div>700GW</div><div></div><div>600GW</div><div></div><div>500GW</div><div></div><div>400GW</div><div></div><div>300GW</div><div></div><div>200GW</div><div></div><div>100GW</div><div></div><div>0GW</div><div></div></div><div><div>Wed</div><div>Fri</div><div>Sat</div><div>Mon</div></div><svg viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="none"><polyline class="demand" points="9 132 26 86 43 102 60 182 78 136 95 55 112 80 129 164 147 117 164 57 181 88 198 172 216 140 233 77 250 110 267 195 284 173 302 102 319 120 336 201 353 177 371 95 388 106 405 181 422 128 440 59 457 87 474 170 491 145"/><rect x="0" y="0" width="17" height="500" data-time="Tue" data-values="515.6"/><rect x="17" y="0" width="17" height="500" data-time="Tue" data-values="579.5"/><rect x="34" y="0" width="17" height="500" data-time="Wed" data-values="557.3"/><rect x="52" y="0" width="17" height="500" data-time="Wed" data-values="444.7"/><rect x="69" y="0" width="17" height="500" data-time="Wed" data-values="509.5"/><rect x="86" y="0" width="17" height="500" data-time="Wed" data-values="622.5"/><rect x="103" y="0" width="17" height="500" data-time="Thu" data-values="587.7"/><rect x="121" y="0" width="17" height="500" data-time="Thu" data-values="470.2"/><rect x="138" y="0" width="17" height="500" data-time="Thu" data-values="535.8"/><rect x="155" y="0" width="17" height="500" data-time="Thu" data-values="620.4"/><rect x="172" y="0" width="17" height="500" data-time="Fri" data-values="576.7"/><rect x="190" y="0" width="17" height="500" data-time="Fri" data-values="458.9"/><rect x="207" y="0" width="17" height="500" data-time="Fri" data-values="504.2"/><rect x="224" y="0" width="17" height="500" data-time="Fri" data-values="591.5"/><rect x="241" y="0" width="17" height="500" data-time="Sat" data-values="545.4"/><rect x="259" y="0" width="17" height="500" data-time="Sat" data-values="427.0"/><rect x="276" y="0" width="17" height="500" data-time="Sat" data-values="458.1"/><rect x="293" y="0" width="17" height="500" data-time="Sat" data-values="557.3"/><rect x="310" y="0" width="17" height="500" data-time="Sun" data-values="531.8"/><rect x="328" y="0" width="17" height="500" data-time="Sun" data-values="418.4"/><rect x="345" y="0" width="17" height="500" data-time="Sun" data-values="452.4"/><rect x="362" y="0" width="17" height="500" data-time="Sun" data-values="567.0"/><rect x="379" y="0" width="17" height="500" data-time="Mon" data-values="552.2"/><rect x="397" y="0" width="17" height="500" data-time="Mon" data-values="446.6"/><rect x="414" y="0" width="17" height="500" data-time="Mon" data-values="520.2"/><rect x="431" y="0" width="17" height="500" data-time="Mon" data-values="617.5"/><rect x="448" y="0" width="17" height="500" data-time="Tue" data-values="578.4"/><rect x="466" y="0" width="17" height="500" data-time="Tue" data-values="462.6"/><rect x="483" y="0" width="17" height="500" data-time="Tue" data-values="497.6"/></svg></div>
+          </div>
+          <div>
+            <h3>Generation</h3>
+<div class="graph" data-prefix="" data-suffix="GW"><div><div>300GW</div><div></div><div>250GW</div><div></div><div>200GW</div><div></div><div>150GW</div><div></div><div>100GW</div><div></div><div>50GW</div><div></div><div>0GW</div><div></div></div><div><div>Sun</div><div>Mon</div><div>Mon</div><div>Mon</div><div>Mon</div><div>Tue</div></div><svg viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="none"><polyline class="coal" points="42 360 125 350 208 391 292 378 375 348 458 342"/><polyline class="gas" points="42 149 125 134 208 215 292 199 375 119 458 79"/><polyline class="oil" points="42 499 125 499 208 500 292 499 375 497 458 498"/><polyline class="solar" points="42 347 125 461 208 499 292 392 375 336 458 442"/><polyline class="wind" points="42 418 125 403 208 384 292 414 375 430 458 420"/><polyline class="hydro" points="42 454 125 444 208 457 292 461 375 449 458 435"/><polyline class="nuclear" points="42 340 458 340"/><polyline class="others" points="42 483 125 460 208 482 292 487 375 482 458 460"/><rect x="0" y="0" width="83" height="500" data-time="Sun" data-values="83.87 210.86 0.86 92.06 48.93 27.37 95.71 9.92"/><rect x="83" y="0" width="83" height="500" data-time="Mon" data-values="89.75 219.47 0.61 23.43 57.95 33.42 95.96 24.13"/><rect x="167" y="0" width="83" height="500" data-time="Mon" data-values="65.20 171.06 0.27 0.31 69.53 25.76 95.84 10.52"/><rect x="250" y="0" width="83" height="500" data-time="Mon" data-values="73.25 180.49 0.37 64.76 51.43 23.44 95.73 7.91"/><rect x="333" y="0" width="83" height="500" data-time="Mon" data-values="91.22 228.63 1.64 98.42 42.07 30.44 95.70 11.09"/><rect x="417" y="0" width="83" height="500" data-time="Tue" data-values="94.81 252.48 1.24 35.02 47.84 39.17 96.10 24.00"/></svg></div>
+          </div>
+          <div>
+            <h3>Transfers</h3>
+<div class="graph" data-prefix="" data-suffix="GW" data-transfers="true"><div><div>30GW</div><div></div><div>25GW</div><div></div><div>20GW</div><div></div><div>15GW</div><div></div><div>10GW</div><div></div><div>5GW</div><div></div><div>0GW</div><div></div><div>&minus;5GW</div><div></div></div><div><div>Wed</div><div>Thu</div><div>Sat</div><div>Sun</div></div><svg viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="none"><polyline class="canada" points="9 382 28 375 46 365 65 362 83 393 102 388 120 378 139 356 157 375 176 362 194 354 213 348 231 387 250 378 269 365 287 349 306 386 324 378 343 358 361 399 380 415 398 410 417 402 435 399 454 429 491 429"/><polyline class="mexico" points="9 429 28 433 46 437 65 432 83 431 102 433 120 434 139 431 157 430 176 434 194 434 213 430 231 430 250 433 269 435 287 429 306 429 324 431 343 431 361 429 380 429 398 431 417 430 435 428 454 429 491 429"/><polyline class="transfers" points="9 382 28 380 46 373 65 365 83 395 102 393 120 384 139 359 157 376 176 367 194 359 213 350 231 388 250 382 269 371 287 349 306 386 324 380 343 361 361 399 380 415 398 413 417 404 435 290 454 45 472 140 491 262"/><rect x="0" y="0" width="19" height="500" data-time="Tue" data-values="3.3 0.0 3.3"/><rect x="19" y="0" width="19" height="500" data-time="Tue" data-values="3.8 -0.3 3.4"/><rect x="37" y="0" width="19" height="500" data-time="Wed" data-values="4.5 -0.6 3.9"/><rect x="56" y="0" width="19" height="500" data-time="Wed" data-values="4.6 -0.2 4.4"/><rect x="74" y="0" width="19" height="500" data-time="Wed" data-values="2.5 -0.2 2.3"/><rect x="93" y="0" width="19" height="500" data-time="Wed" data-values="2.8 -0.3 2.5"/><rect x="111" y="0" width="19" height="500" data-time="Thu" data-values="3.5 -0.4 3.1"/><rect x="130" y="0" width="19" height="500" data-time="Thu" data-values="5.1 -0.2 4.9"/><rect x="148" y="0" width="19" height="500" data-time="Thu" data-values="3.8 -0.1 3.7"/><rect x="167" y="0" width="19" height="500" data-time="Thu" data-values="4.7 -0.4 4.3"/><rect x="185" y="0" width="19" height="500" data-time="Fri" data-values="5.2 -0.4 4.8"/><rect x="204" y="0" width="19" height="500" data-time="Fri" data-values="5.6 -0.1 5.5"/><rect x="222" y="0" width="19" height="500" data-time="Fri" data-values="2.9 -0.1 2.8"/><rect x="241" y="0" width="19" height="500" data-time="Fri" data-values="3.5 -0.3 3.2"/><rect x="259" y="0" width="19" height="500" data-time="Sat" data-values="4.5 -0.4 4.0"/><rect x="278" y="0" width="19" height="500" data-time="Sat" data-values="5.6 0.0 5.6"/><rect x="296" y="0" width="19" height="500" data-time="Sat" data-values="3.0 0.0 3.0"/><rect x="315" y="0" width="19" height="500" data-time="Sat" data-values="3.6 -0.2 3.4"/><rect x="333" y="0" width="19" height="500" data-time="Sun" data-values="4.9 -0.2 4.7"/><rect x="352" y="0" width="19" height="500" data-time="Sun" data-values="2.1 0.0 2.1"/><rect x="370" y="0" width="19" height="500" data-time="Sun" data-values="1.0 0.0 0.9"/><rect x="389" y="0" width="19" height="500" data-time="Sun" data-values="1.3 -0.2 1.1"/><rect x="407" y="0" width="19" height="500" data-time="Mon" data-values="1.8 -0.1 1.8"/><rect x="426" y="0" width="19" height="500" data-time="Mon" data-values="2.0 0.0 9.7"/><rect x="444" y="0" width="19" height="500" data-time="Mon" data-values="0.0 0.0 26.9"/><rect x="463" y="0" width="19" height="500" data-time="Mon" data-values="0.0 0.0 20.2"/><rect x="481" y="0" width="19" height="500" data-time="Tue" data-values="0.0 0.0 11.7"/></svg></div>
+          </div>
+        </div>
+        <div id="tab-panel-year" role="tabpanel" aria-labelledby="tab-year" tabindex="0">
+          <div>
+          <dl>
+            <dt>Time</dt>
+            <dd>Past year</dd>
+            <dt>Price</dt>
+            <dd>&mdash;<abbr>/MWh</abbr></dd>
+            <dt>Emissions</dt>
+            <dd>&mdash;<abbr>g/kWh</abbr></dd>
+          </dl>
+          </div>
+          <div>
+          <dl class="us-equation" data-operator="+">
+            <dt>Demand</dt>
+            <dd>535.0<abbr>GW</abbr></dd>
+            <dt>Generation</dt>
+            <dd>535.0<abbr>GW</abbr></dd>
+            <dt>Transfers</dt>
+            <dd>&mdash;</dd>
+          </dl>
+          </div>
+          <div>
+<div class="pie-chart"><div><div>Generation</div><div class="generation"></div><div><span>535.0</span>GW</div><div><span>100.0</span>%</div></div><svg viewBox="-1 -1 2 2" data-power="535.0" data-percentage="100.0"><path class="coal" d="M0.0000,-1.0000A1,1 0 0 1 0.8225,-0.5688L0.6168,-0.4266A0.75,0.75 0 0 0 0.0000,-0.7500z" data-power="82.23" data-percentage="15.4"/><path class="gas" d="M0.8225,-0.5688A1,1 0 0 1 -0.2621,0.9650L-0.1966,0.7238A0.75,0.75 0 0 0 0.6168,-0.4266z" data-power="207.85" data-percentage="38.9"/><path class="oil" d="M-0.2621,0.9650A1,1 0 0 1 -0.2712,0.9625L-0.2034,0.7219A0.75,0.75 0 0 0 -0.1966,0.7238z" data-power="0.80" data-percentage="0.2"/><path class="solar" d="M-0.2712,0.9625A1,1 0 0 1 -0.7662,0.6427L-0.5746,0.4820A0.75,0.75 0 0 0 -0.2034,0.7219z" data-power="50.93" data-percentage="9.5"/><path class="wind" d="M-0.7662,0.6427A1,1 0 0 1 -0.9976,0.0692L-0.7482,0.0519A0.75,0.75 0 0 0 -0.5746,0.4820z" data-power="53.53" data-percentage="10.0"/><path class="hydro" d="M-0.9976,0.0692A1,1 0 0 1 -0.9618,-0.2738L-0.7213,-0.2054A0.75,0.75 0 0 0 -0.7482,0.0519z" data-power="29.52" data-percentage="5.5"/><path class="nuclear" d="M-0.9618,-0.2738A1,1 0 0 1 -0.1672,-0.9859L-0.1254,-0.7394A0.75,0.75 0 0 0 -0.7213,-0.2054z" data-power="95.83" data-percentage="17.9"/><path class="others" d="M-0.1672,-0.9859A1,1 0 0 1 -0.0000,-1.0000L-0.0000,-0.7500A0.75,0.75 0 0 0 -0.1254,-0.7394z" data-power="14.30" data-percentage="2.7"/><path class="fossils" d="M0.0000,-0.7500A0.75,0.75 0 1 1 -0.2034,0.7219L-0.1356,0.4813A0.5,0.5 0 1 0 0.0000,-0.5000z" data-power="290.9" data-percentage="54.4"/><path class="renewables" d="M-0.2034,0.7219A0.75,0.75 0 0 1 -0.7213,-0.2054L-0.4809,-0.1369A0.5,0.5 0 0 0 -0.1356,0.4813z" data-power="134.0" data-percentage="25.0"/><path class="others" d="M-0.7213,-0.2054A0.75,0.75 0 0 1 -0.0000,-0.7500L-0.0000,-0.5000A0.5,0.5 0 0 0 -0.4809,-0.1369z" data-power="110.1" data-percentage="20.6"/></svg></div>
+          </div>
+          <div>
+            <h3>Generation by type</h3>
+            <table class="sources">
+              <tr><td class="fossils"></td><td>Fossil fuels</td><td>290.88</td><td>54.4</td></tr>
+              <tr><td class="renewables"></td><td>Renewables</td><td>133.98</td><td>25.0</td></tr>
+              <tr><td class="others"></td><td>Other sources</td><td>110.13</td><td>20.6</td></tr>
+            </table>
+            <h3>Generation by source</h3>
+            <table class="sources">
+              <tr><td class="coal"></td><td>Coal</td><td>82.23</td><td>15.4</td></tr>
+              <tr><td class="gas"></td><td>Gas</td><td>207.85</td><td>38.9</td></tr>
+              <tr><td class="oil"></td><td>Oil</td><td>0.80</td><td>0.2</td></tr>
+              <tr><td class="solar"></td><td>Solar</td><td>50.93</td><td>9.5</td></tr>
+              <tr><td class="wind"></td><td>Wind</td><td>53.53</td><td>10.0</td></tr>
+              <tr><td class="hydro"></td><td>Hydroelectric</td><td>29.52</td><td>5.5</td></tr>
+              <tr><td class="nuclear"></td><td>Nuclear</td><td>95.83</td><td>17.9</td></tr>
+              <tr><td class="others"></td><td>Other</td><td>14.30</td><td>2.7</td></tr>
+            </table>
+          </div>
+          <div>
+            <h3>Price per MWh</h3>
+<div class="us-unavailable-graph"><div>No US price feed in the current EIA data</div></div>
+          </div>
+          <div>
+            <h3>Emissions per kWh</h3>
+<div class="us-unavailable-graph"><div>No US carbon-intensity feed in the current EIA data</div></div>
+          </div>
+          <div>
+            <h3>Demand</h3>
+<div class="graph" data-prefix="" data-suffix="GW"><div><div>600GW</div><div></div><div>500GW</div><div></div><div>400GW</div><div></div><div>300GW</div><div></div><div>200GW</div><div></div><div>100GW</div><div></div><div>0GW</div><div></div></div><div><div>22 Apr</div><div>9 May</div><div>26 May</div><div>12 Jun</div></div><svg viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="none"><polyline class="demand" points="4 62 11 113 18 109 25 110 32 141 39 164 46 148 53 141 60 137 67 131 74 128 81 142 88 150 95 129 102 126 109 129 116 133 123 143 130 159 137 165 144 143 151 132 158 127 165 133 173 134 180 141 187 144 194 125 201 119 208 115 215 114 222 115 229 123 236 112 243 75 250 62 257 79 264 101 271 111 278 127 285 133 292 122 299 94 306 82 313 81 320 88 327 105 335 117 342 87 349 83 356 95 363 84 370 70 377 74 384 79 391 56 398 46 405 23 412 8 419 10 426 35 433 54 440 63 447 71 461 39 468 56 475 86 482 90 489 55 496 71"/><rect x="0" y="0" width="7" height="500" data-time="14 Apr" data-values="525.2"/><rect x="7" y="0" width="7" height="500" data-time="15 Apr" data-values="464.7"/><rect x="14" y="0" width="7" height="500" data-time="16 Apr" data-values="469.1"/><rect x="21" y="0" width="7" height="500" data-time="17 Apr" data-values="467.9"/><rect x="28" y="0" width="7" height="500" data-time="18 Apr" data-values="430.8"/><rect x="35" y="0" width="7" height="500" data-time="19 Apr" data-values="403.2"/><rect x="42" y="0" width="7" height="500" data-time="20 Apr" data-values="421.8"/><rect x="49" y="0" width="7" height="500" data-time="21 Apr" data-values="431.0"/><rect x="56" y="0" width="7" height="500" data-time="22 Apr" data-values="435.3"/><rect x="63" y="0" width="7" height="500" data-time="23 Apr" data-values="442.6"/><rect x="70" y="0" width="7" height="500" data-time="24 Apr" data-values="446.7"/><rect x="77" y="0" width="7" height="500" data-time="25 Apr" data-values="429.7"/><rect x="85" y="0" width="7" height="500" data-time="26 Apr" data-values="419.8"/><rect x="92" y="0" width="7" height="500" data-time="27 Apr" data-values="445.5"/><rect x="99" y="0" width="7" height="500" data-time="28 Apr" data-values="449.2"/><rect x="106" y="0" width="7" height="500" data-time="29 Apr" data-values="445.7"/><rect x="113" y="0" width="7" height="500" data-time="30 Apr" data-values="440.7"/><rect x="120" y="0" width="7" height="500" data-time="1 May" data-values="428.8"/><rect x="127" y="0" width="7" height="500" data-time="2 May" data-values="409.4"/><rect x="134" y="0" width="7" height="500" data-time="3 May" data-values="401.7"/><rect x="141" y="0" width="7" height="500" data-time="4 May" data-values="428.3"/><rect x="148" y="0" width="7" height="500" data-time="5 May" data-values="442.1"/><rect x="155" y="0" width="7" height="500" data-time="6 May" data-values="447.8"/><rect x="162" y="0" width="7" height="500" data-time="7 May" data-values="440.8"/><rect x="169" y="0" width="7" height="500" data-time="8 May" data-values="438.8"/><rect x="176" y="0" width="7" height="500" data-time="9 May" data-values="430.2"/><rect x="183" y="0" width="7" height="500" data-time="10 May" data-values="427.6"/><rect x="190" y="0" width="7" height="500" data-time="11 May" data-values="449.5"/><rect x="197" y="0" width="7" height="500" data-time="12 May" data-values="457.5"/><rect x="204" y="0" width="7" height="500" data-time="13 May" data-values="461.5"/><rect x="211" y="0" width="7" height="500" data-time="14 May" data-values="463.1"/><rect x="218" y="0" width="7" height="500" data-time="15 May" data-values="462.2"/><rect x="225" y="0" width="7" height="500" data-time="16 May" data-values="452.8"/><rect x="232" y="0" width="7" height="500" data-time="17 May" data-values="465.5"/><rect x="239" y="0" width="7" height="500" data-time="18 May" data-values="510.1"/><rect x="246" y="0" width="7" height="500" data-time="19 May" data-values="525.7"/><rect x="254" y="0" width="7" height="500" data-time="20 May" data-values="504.8"/><rect x="261" y="0" width="7" height="500" data-time="21 May" data-values="479.3"/><rect x="268" y="0" width="7" height="500" data-time="22 May" data-values="466.8"/><rect x="275" y="0" width="7" height="500" data-time="23 May" data-values="447.2"/><rect x="282" y="0" width="7" height="500" data-time="24 May" data-values="440.0"/><rect x="289" y="0" width="7" height="500" data-time="25 May" data-values="453.7"/><rect x="296" y="0" width="7" height="500" data-time="26 May" data-values="487.6"/><rect x="303" y="0" width="7" height="500" data-time="27 May" data-values="502.0"/><rect x="310" y="0" width="7" height="500" data-time="28 May" data-values="503.1"/><rect x="317" y="0" width="7" height="500" data-time="29 May" data-values="493.8"/><rect x="324" y="0" width="7" height="500" data-time="30 May" data-values="474.3"/><rect x="331" y="0" width="7" height="500" data-time="31 May" data-values="459.6"/><rect x="338" y="0" width="7" height="500" data-time="1 Jun" data-values="495.9"/><rect x="345" y="0" width="7" height="500" data-time="2 Jun" data-values="500.3"/><rect x="352" y="0" width="7" height="500" data-time="3 Jun" data-values="485.7"/><rect x="359" y="0" width="7" height="500" data-time="4 Jun" data-values="499.5"/><rect x="366" y="0" width="7" height="500" data-time="5 Jun" data-values="515.8"/><rect x="373" y="0" width="7" height="500" data-time="6 Jun" data-values="511.6"/><rect x="380" y="0" width="7" height="500" data-time="7 Jun" data-values="505.2"/><rect x="387" y="0" width="7" height="500" data-time="8 Jun" data-values="532.6"/><rect x="394" y="0" width="7" height="500" data-time="9 Jun" data-values="544.3"/><rect x="401" y="0" width="7" height="500" data-time="10 Jun" data-values="572.1"/><rect x="408" y="0" width="7" height="500" data-time="11 Jun" data-values="590.3"/><rect x="415" y="0" width="7" height="500" data-time="12 Jun" data-values="587.9"/><rect x="423" y="0" width="7" height="500" data-time="13 Jun" data-values="557.5"/><rect x="430" y="0" width="7" height="500" data-time="14 Jun" data-values="535.5"/><rect x="437" y="0" width="7" height="500" data-time="15 Jun" data-values="525.0"/><rect x="444" y="0" width="7" height="500" data-time="16 Jun" data-values="515.2"/><rect x="451" y="0" width="7" height="500" data-time="17 Jun" data-values="533.5"/><rect x="458" y="0" width="7" height="500" data-time="18 Jun" data-values="553.5"/><rect x="465" y="0" width="7" height="500" data-time="19 Jun" data-values="532.8"/><rect x="472" y="0" width="7" height="500" data-time="20 Jun" data-values="496.9"/><rect x="479" y="0" width="7" height="500" data-time="21 Jun" data-values="492.4"/><rect x="486" y="0" width="7" height="500" data-time="22 Jun" data-values="534.1"/><rect x="493" y="0" width="7" height="500" data-time="23 Jun" data-values="514.8"/></svg></div>
+          </div>
+          <div>
+            <h3>Generation</h3>
+<div class="graph" data-prefix="" data-suffix="GW"><div><div>300GW</div><div></div><div>250GW</div><div></div><div>200GW</div><div></div><div>150GW</div><div></div><div>100GW</div><div></div><div>50GW</div><div></div><div>0GW</div><div></div></div><div><div>21 Jun</div><div>22 Jun</div><div>23 Jun</div></div><svg viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="none"><polyline class="coal" points="83 360 250 367 417 342"/><polyline class="gas" points="83 149 250 167 417 79"/><polyline class="oil" points="83 499 250 499 417 498"/><polyline class="solar" points="83 347 250 422 417 442"/><polyline class="wind" points="83 418 250 408 417 420"/><polyline class="hydro" points="83 454 250 453 417 435"/><polyline class="nuclear" points="83 340 417 340"/><polyline class="others" points="83 483 250 478 417 460"/><rect x="0" y="0" width="167" height="500" data-time="21 Jun" data-values="83.87 210.86 0.86 92.06 48.93 27.37 95.71 9.92"/><rect x="167" y="0" width="167" height="500" data-time="22 Jun" data-values="79.86 199.91 0.72 46.73 55.24 28.27 95.81 13.41"/><rect x="333" y="0" width="167" height="500" data-time="23 Jun" data-values="94.81 252.48 1.24 35.02 47.84 39.17 96.10 24.00"/></svg></div>
+          </div>
+          <div>
+            <h3>Transfers</h3>
+<div class="graph" data-prefix="" data-suffix="GW" data-transfers="true"><div><div>16GW</div><div></div><div>14GW</div><div></div><div>12GW</div><div></div><div>10GW</div><div></div><div>8GW</div><div></div><div>6GW</div><div></div><div>4GW</div><div></div><div>2GW</div><div></div><div>0GW</div><div></div><div>&minus;2GW</div><div></div></div><div><div>22 Apr</div><div>9 May</div><div>26 May</div><div>12 Jun</div></div><svg viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="none"><polyline class="canada" points="4 444 292 444 299 386 306 305 313 319 320 362 327 362 335 366 342 341 349 360 356 368 363 349 370 353 377 339 384 335 391 317 398 343 405 348 412 292 419 271 426 280 433 309 440 309 447 330 454 344 461 326 468 324 475 329 482 380 489 392 496 444"/><polyline class="mexico" points="4 444 320 444 327 445 349 445 363 447 370 447 384 445 391 446 405 446 412 447 419 447 426 448 440 448 454 454 468 450 475 449 482 447 489 446 496 444"/><polyline class="transfers" points="4 154 11 246 18 308 25 325 32 351 39 319 46 319 53 326 60 358 67 372 74 320 81 327 88 305 95 367 102 364 109 312 116 340 123 332 130 287 137 309 144 277 151 322 158 269 165 205 173 250 180 239 187 257 194 308 201 356 208 271 215 315 222 332 229 292 236 311 243 173 250 227 257 221 264 223 271 246 278 241 285 250 292 307 299 278 306 305 313 319 320 362 327 363 335 366 342 342 349 361 356 369 363 351 370 355 377 341 384 335 391 318 398 344 405 349 412 294 419 273 426 283 433 312 440 313 447 336 454 353 461 333 468 330 475 334 482 383 489 38 496 121"/><rect x="0" y="0" width="7" height="500" data-time="14 Apr" data-values="0.0 0.0 10.5"/><rect x="7" y="0" width="7" height="500" data-time="15 Apr" data-values="0.0 0.0 7.1"/><rect x="14" y="0" width="7" height="500" data-time="16 Apr" data-values="0.0 0.0 4.9"/><rect x="21" y="0" width="7" height="500" data-time="17 Apr" data-values="0.0 0.0 4.3"/><rect x="28" y="0" width="7" height="500" data-time="18 Apr" data-values="0.0 0.0 3.4"/><rect x="35" y="0" width="7" height="500" data-time="19 Apr" data-values="0.0 0.0 4.5"/><rect x="42" y="0" width="7" height="500" data-time="20 Apr" data-values="0.0 0.0 4.5"/><rect x="49" y="0" width="7" height="500" data-time="21 Apr" data-values="0.0 0.0 4.3"/><rect x="56" y="0" width="7" height="500" data-time="22 Apr" data-values="0.0 0.0 3.1"/><rect x="63" y="0" width="7" height="500" data-time="23 Apr" data-values="0.0 0.0 2.6"/><rect x="70" y="0" width="7" height="500" data-time="24 Apr" data-values="0.0 0.0 4.5"/><rect x="77" y="0" width="7" height="500" data-time="25 Apr" data-values="0.0 0.0 4.2"/><rect x="85" y="0" width="7" height="500" data-time="26 Apr" data-values="0.0 0.0 5.0"/><rect x="92" y="0" width="7" height="500" data-time="27 Apr" data-values="0.0 0.0 2.8"/><rect x="99" y="0" width="7" height="500" data-time="28 Apr" data-values="0.0 0.0 2.9"/><rect x="106" y="0" width="7" height="500" data-time="29 Apr" data-values="0.0 0.0 4.8"/><rect x="113" y="0" width="7" height="500" data-time="30 Apr" data-values="0.0 0.0 3.8"/><rect x="120" y="0" width="7" height="500" data-time="1 May" data-values="0.0 0.0 4.0"/><rect x="127" y="0" width="7" height="500" data-time="2 May" data-values="0.0 0.0 5.7"/><rect x="134" y="0" width="7" height="500" data-time="3 May" data-values="0.0 0.0 4.9"/><rect x="141" y="0" width="7" height="500" data-time="4 May" data-values="0.0 0.0 6.0"/><rect x="148" y="0" width="7" height="500" data-time="5 May" data-values="0.0 0.0 4.4"/><rect x="155" y="0" width="7" height="500" data-time="6 May" data-values="0.0 0.0 6.3"/><rect x="162" y="0" width="7" height="500" data-time="7 May" data-values="0.0 0.0 8.6"/><rect x="169" y="0" width="7" height="500" data-time="8 May" data-values="0.0 0.0 7.0"/><rect x="176" y="0" width="7" height="500" data-time="9 May" data-values="0.0 0.0 7.4"/><rect x="183" y="0" width="7" height="500" data-time="10 May" data-values="0.0 0.0 6.7"/><rect x="190" y="0" width="7" height="500" data-time="11 May" data-values="0.0 0.0 4.9"/><rect x="197" y="0" width="7" height="500" data-time="12 May" data-values="0.0 0.0 3.2"/><rect x="204" y="0" width="7" height="500" data-time="13 May" data-values="0.0 0.0 6.2"/><rect x="211" y="0" width="7" height="500" data-time="14 May" data-values="0.0 0.0 4.7"/><rect x="218" y="0" width="7" height="500" data-time="15 May" data-values="0.0 0.0 4.1"/><rect x="225" y="0" width="7" height="500" data-time="16 May" data-values="0.0 0.0 5.5"/><rect x="232" y="0" width="7" height="500" data-time="17 May" data-values="0.0 0.0 4.8"/><rect x="239" y="0" width="7" height="500" data-time="18 May" data-values="0.0 0.0 9.8"/><rect x="246" y="0" width="7" height="500" data-time="19 May" data-values="0.0 0.0 7.8"/><rect x="254" y="0" width="7" height="500" data-time="20 May" data-values="0.0 0.0 8.1"/><rect x="261" y="0" width="7" height="500" data-time="21 May" data-values="0.0 0.0 8.0"/><rect x="268" y="0" width="7" height="500" data-time="22 May" data-values="0.0 0.0 7.1"/><rect x="275" y="0" width="7" height="500" data-time="23 May" data-values="0.0 0.0 7.3"/><rect x="282" y="0" width="7" height="500" data-time="24 May" data-values="0.0 0.0 7.0"/><rect x="289" y="0" width="7" height="500" data-time="25 May" data-values="0.0 0.0 5.0"/><rect x="296" y="0" width="7" height="500" data-time="26 May" data-values="2.1 0.0 6.0"/><rect x="303" y="0" width="7" height="500" data-time="27 May" data-values="5.0 0.0 5.0"/><rect x="310" y="0" width="7" height="500" data-time="28 May" data-values="4.5 0.0 4.5"/><rect x="317" y="0" width="7" height="500" data-time="29 May" data-values="3.0 0.0 3.0"/><rect x="324" y="0" width="7" height="500" data-time="30 May" data-values="3.0 0.0 2.9"/><rect x="331" y="0" width="7" height="500" data-time="31 May" data-values="2.8 0.0 2.8"/><rect x="338" y="0" width="7" height="500" data-time="1 Jun" data-values="3.7 0.0 3.7"/><rect x="345" y="0" width="7" height="500" data-time="2 Jun" data-values="3.0 0.0 3.0"/><rect x="352" y="0" width="7" height="500" data-time="3 Jun" data-values="2.8 0.0 2.7"/><rect x="359" y="0" width="7" height="500" data-time="4 Jun" data-values="3.4 -0.1 3.4"/><rect x="366" y="0" width="7" height="500" data-time="5 Jun" data-values="3.3 -0.1 3.2"/><rect x="373" y="0" width="7" height="500" data-time="6 Jun" data-values="3.8 -0.1 3.7"/><rect x="380" y="0" width="7" height="500" data-time="7 Jun" data-values="3.9 0.0 3.9"/><rect x="387" y="0" width="7" height="500" data-time="8 Jun" data-values="4.6 0.0 4.5"/><rect x="394" y="0" width="7" height="500" data-time="9 Jun" data-values="3.7 -0.1 3.6"/><rect x="401" y="0" width="7" height="500" data-time="10 Jun" data-values="3.5 -0.1 3.4"/><rect x="408" y="0" width="7" height="500" data-time="11 Jun" data-values="5.5 -0.1 5.4"/><rect x="415" y="0" width="7" height="500" data-time="12 Jun" data-values="6.2 -0.1 6.2"/><rect x="423" y="0" width="7" height="500" data-time="13 Jun" data-values="5.9 -0.1 5.8"/><rect x="430" y="0" width="7" height="500" data-time="14 Jun" data-values="4.9 -0.1 4.8"/><rect x="437" y="0" width="7" height="500" data-time="15 Jun" data-values="4.9 -0.1 4.7"/><rect x="444" y="0" width="7" height="500" data-time="16 Jun" data-values="4.1 -0.2 3.9"/><rect x="451" y="0" width="7" height="500" data-time="17 Jun" data-values="3.6 -0.3 3.3"/><rect x="458" y="0" width="7" height="500" data-time="18 Jun" data-values="4.3 -0.3 4.0"/><rect x="465" y="0" width="7" height="500" data-time="19 Jun" data-values="4.3 -0.2 4.1"/><rect x="472" y="0" width="7" height="500" data-time="20 Jun" data-values="4.2 -0.2 4.0"/><rect x="479" y="0" width="7" height="500" data-time="21 Jun" data-values="2.3 -0.1 2.2"/><rect x="486" y="0" width="7" height="500" data-time="22 Jun" data-values="1.9 -0.1 14.6"/><rect x="493" y="0" width="7" height="500" data-time="23 Jun" data-values="0.0 0.0 11.7"/></svg></div>
+          </div>
+        </div>
+        <div id="tab-panel-all" role="tabpanel" aria-labelledby="tab-all" tabindex="0">
+          <div>
+          <dl>
+            <dt>Time</dt>
+            <dd>All time</dd>
+            <dt>Price</dt>
+            <dd>&mdash;<abbr>/MWh</abbr></dd>
+            <dt>Emissions</dt>
+            <dd>&mdash;<abbr>g/kWh</abbr></dd>
+          </dl>
+          </div>
+          <div>
+          <dl class="us-equation" data-operator="+">
+            <dt>Demand</dt>
+            <dd>535.0<abbr>GW</abbr></dd>
+            <dt>Generation</dt>
+            <dd>535.0<abbr>GW</abbr></dd>
+            <dt>Transfers</dt>
+            <dd>&mdash;</dd>
+          </dl>
+          </div>
+          <div>
+<div class="pie-chart"><div><div>Generation</div><div class="generation"></div><div><span>535.0</span>GW</div><div><span>100.0</span>%</div></div><svg viewBox="-1 -1 2 2" data-power="535.0" data-percentage="100.0"><path class="coal" d="M0.0000,-1.0000A1,1 0 0 1 0.8225,-0.5688L0.6168,-0.4266A0.75,0.75 0 0 0 0.0000,-0.7500z" data-power="82.23" data-percentage="15.4"/><path class="gas" d="M0.8225,-0.5688A1,1 0 0 1 -0.2621,0.9650L-0.1966,0.7238A0.75,0.75 0 0 0 0.6168,-0.4266z" data-power="207.85" data-percentage="38.9"/><path class="oil" d="M-0.2621,0.9650A1,1 0 0 1 -0.2712,0.9625L-0.2034,0.7219A0.75,0.75 0 0 0 -0.1966,0.7238z" data-power="0.80" data-percentage="0.2"/><path class="solar" d="M-0.2712,0.9625A1,1 0 0 1 -0.7662,0.6427L-0.5746,0.4820A0.75,0.75 0 0 0 -0.2034,0.7219z" data-power="50.93" data-percentage="9.5"/><path class="wind" d="M-0.7662,0.6427A1,1 0 0 1 -0.9976,0.0692L-0.7482,0.0519A0.75,0.75 0 0 0 -0.5746,0.4820z" data-power="53.53" data-percentage="10.0"/><path class="hydro" d="M-0.9976,0.0692A1,1 0 0 1 -0.9618,-0.2738L-0.7213,-0.2054A0.75,0.75 0 0 0 -0.7482,0.0519z" data-power="29.52" data-percentage="5.5"/><path class="nuclear" d="M-0.9618,-0.2738A1,1 0 0 1 -0.1672,-0.9859L-0.1254,-0.7394A0.75,0.75 0 0 0 -0.7213,-0.2054z" data-power="95.83" data-percentage="17.9"/><path class="others" d="M-0.1672,-0.9859A1,1 0 0 1 -0.0000,-1.0000L-0.0000,-0.7500A0.75,0.75 0 0 0 -0.1254,-0.7394z" data-power="14.30" data-percentage="2.7"/><path class="fossils" d="M0.0000,-0.7500A0.75,0.75 0 1 1 -0.2034,0.7219L-0.1356,0.4813A0.5,0.5 0 1 0 0.0000,-0.5000z" data-power="290.9" data-percentage="54.4"/><path class="renewables" d="M-0.2034,0.7219A0.75,0.75 0 0 1 -0.7213,-0.2054L-0.4809,-0.1369A0.5,0.5 0 0 0 -0.1356,0.4813z" data-power="134.0" data-percentage="25.0"/><path class="others" d="M-0.7213,-0.2054A0.75,0.75 0 0 1 -0.0000,-0.7500L-0.0000,-0.5000A0.5,0.5 0 0 0 -0.4809,-0.1369z" data-power="110.1" data-percentage="20.6"/></svg></div>
+          </div>
+          <div>
+            <h3>Generation by type</h3>
+            <table class="sources">
+              <tr><td class="fossils"></td><td>Fossil fuels</td><td>290.88</td><td>54.4</td></tr>
+              <tr><td class="renewables"></td><td>Renewables</td><td>133.98</td><td>25.0</td></tr>
+              <tr><td class="others"></td><td>Other sources</td><td>110.13</td><td>20.6</td></tr>
+            </table>
+            <h3>Generation by source</h3>
+            <table class="sources">
+              <tr><td class="coal"></td><td>Coal</td><td>82.23</td><td>15.4</td></tr>
+              <tr><td class="gas"></td><td>Gas</td><td>207.85</td><td>38.9</td></tr>
+              <tr><td class="oil"></td><td>Oil</td><td>0.80</td><td>0.2</td></tr>
+              <tr><td class="solar"></td><td>Solar</td><td>50.93</td><td>9.5</td></tr>
+              <tr><td class="wind"></td><td>Wind</td><td>53.53</td><td>10.0</td></tr>
+              <tr><td class="hydro"></td><td>Hydroelectric</td><td>29.52</td><td>5.5</td></tr>
+              <tr><td class="nuclear"></td><td>Nuclear</td><td>95.83</td><td>17.9</td></tr>
+              <tr><td class="others"></td><td>Other</td><td>14.30</td><td>2.7</td></tr>
+            </table>
+          </div>
+          <div>
+            <h3>Price per MWh</h3>
+<div class="us-unavailable-graph"><div>No US price feed in the current EIA data</div></div>
+          </div>
+          <div>
+            <h3>Emissions per kWh</h3>
+<div class="us-unavailable-graph"><div>No US carbon-intensity feed in the current EIA data</div></div>
+          </div>
+          <div>
+            <h3>Demand</h3>
+<div class="graph" data-prefix="" data-suffix="GW"><div><div>600GW</div><div></div><div>500GW</div><div></div><div>400GW</div><div></div><div>300GW</div><div></div><div>200GW</div><div></div><div>100GW</div><div></div><div>0GW</div><div></div></div><div><div>2026</div><div>2026</div><div>2026</div><div>2026</div></div><svg viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="none"><polyline class="demand" points="4 62 11 113 18 109 25 110 32 141 39 164 46 148 53 141 60 137 67 131 74 128 81 142 88 150 95 129 102 126 109 129 116 133 123 143 130 159 137 165 144 143 151 132 158 127 165 133 173 134 180 141 187 144 194 125 201 119 208 115 215 114 222 115 229 123 236 112 243 75 250 62 257 79 264 101 271 111 278 127 285 133 292 122 299 94 306 82 313 81 320 88 327 105 335 117 342 87 349 83 356 95 363 84 370 70 377 74 384 79 391 56 398 46 405 23 412 8 419 10 426 35 433 54 440 63 447 71 461 39 468 56 475 86 482 90 489 55 496 71"/><rect x="0" y="0" width="7" height="500" data-time="2026" data-values="525.2"/><rect x="7" y="0" width="7" height="500" data-time="2026" data-values="464.7"/><rect x="14" y="0" width="7" height="500" data-time="2026" data-values="469.1"/><rect x="21" y="0" width="7" height="500" data-time="2026" data-values="467.9"/><rect x="28" y="0" width="7" height="500" data-time="2026" data-values="430.8"/><rect x="35" y="0" width="7" height="500" data-time="2026" data-values="403.2"/><rect x="42" y="0" width="7" height="500" data-time="2026" data-values="421.8"/><rect x="49" y="0" width="7" height="500" data-time="2026" data-values="431.0"/><rect x="56" y="0" width="7" height="500" data-time="2026" data-values="435.3"/><rect x="63" y="0" width="7" height="500" data-time="2026" data-values="442.6"/><rect x="70" y="0" width="7" height="500" data-time="2026" data-values="446.7"/><rect x="77" y="0" width="7" height="500" data-time="2026" data-values="429.7"/><rect x="85" y="0" width="7" height="500" data-time="2026" data-values="419.8"/><rect x="92" y="0" width="7" height="500" data-time="2026" data-values="445.5"/><rect x="99" y="0" width="7" height="500" data-time="2026" data-values="449.2"/><rect x="106" y="0" width="7" height="500" data-time="2026" data-values="445.7"/><rect x="113" y="0" width="7" height="500" data-time="2026" data-values="440.7"/><rect x="120" y="0" width="7" height="500" data-time="2026" data-values="428.8"/><rect x="127" y="0" width="7" height="500" data-time="2026" data-values="409.4"/><rect x="134" y="0" width="7" height="500" data-time="2026" data-values="401.7"/><rect x="141" y="0" width="7" height="500" data-time="2026" data-values="428.3"/><rect x="148" y="0" width="7" height="500" data-time="2026" data-values="442.1"/><rect x="155" y="0" width="7" height="500" data-time="2026" data-values="447.8"/><rect x="162" y="0" width="7" height="500" data-time="2026" data-values="440.8"/><rect x="169" y="0" width="7" height="500" data-time="2026" data-values="438.8"/><rect x="176" y="0" width="7" height="500" data-time="2026" data-values="430.2"/><rect x="183" y="0" width="7" height="500" data-time="2026" data-values="427.6"/><rect x="190" y="0" width="7" height="500" data-time="2026" data-values="449.5"/><rect x="197" y="0" width="7" height="500" data-time="2026" data-values="457.5"/><rect x="204" y="0" width="7" height="500" data-time="2026" data-values="461.5"/><rect x="211" y="0" width="7" height="500" data-time="2026" data-values="463.1"/><rect x="218" y="0" width="7" height="500" data-time="2026" data-values="462.2"/><rect x="225" y="0" width="7" height="500" data-time="2026" data-values="452.8"/><rect x="232" y="0" width="7" height="500" data-time="2026" data-values="465.5"/><rect x="239" y="0" width="7" height="500" data-time="2026" data-values="510.1"/><rect x="246" y="0" width="7" height="500" data-time="2026" data-values="525.7"/><rect x="254" y="0" width="7" height="500" data-time="2026" data-values="504.8"/><rect x="261" y="0" width="7" height="500" data-time="2026" data-values="479.3"/><rect x="268" y="0" width="7" height="500" data-time="2026" data-values="466.8"/><rect x="275" y="0" width="7" height="500" data-time="2026" data-values="447.2"/><rect x="282" y="0" width="7" height="500" data-time="2026" data-values="440.0"/><rect x="289" y="0" width="7" height="500" data-time="2026" data-values="453.7"/><rect x="296" y="0" width="7" height="500" data-time="2026" data-values="487.6"/><rect x="303" y="0" width="7" height="500" data-time="2026" data-values="502.0"/><rect x="310" y="0" width="7" height="500" data-time="2026" data-values="503.1"/><rect x="317" y="0" width="7" height="500" data-time="2026" data-values="493.8"/><rect x="324" y="0" width="7" height="500" data-time="2026" data-values="474.3"/><rect x="331" y="0" width="7" height="500" data-time="2026" data-values="459.6"/><rect x="338" y="0" width="7" height="500" data-time="2026" data-values="495.9"/><rect x="345" y="0" width="7" height="500" data-time="2026" data-values="500.3"/><rect x="352" y="0" width="7" height="500" data-time="2026" data-values="485.7"/><rect x="359" y="0" width="7" height="500" data-time="2026" data-values="499.5"/><rect x="366" y="0" width="7" height="500" data-time="2026" data-values="515.8"/><rect x="373" y="0" width="7" height="500" data-time="2026" data-values="511.6"/><rect x="380" y="0" width="7" height="500" data-time="2026" data-values="505.2"/><rect x="387" y="0" width="7" height="500" data-time="2026" data-values="532.6"/><rect x="394" y="0" width="7" height="500" data-time="2026" data-values="544.3"/><rect x="401" y="0" width="7" height="500" data-time="2026" data-values="572.1"/><rect x="408" y="0" width="7" height="500" data-time="2026" data-values="590.3"/><rect x="415" y="0" width="7" height="500" data-time="2026" data-values="587.9"/><rect x="423" y="0" width="7" height="500" data-time="2026" data-values="557.5"/><rect x="430" y="0" width="7" height="500" data-time="2026" data-values="535.5"/><rect x="437" y="0" width="7" height="500" data-time="2026" data-values="525.0"/><rect x="444" y="0" width="7" height="500" data-time="2026" data-values="515.2"/><rect x="451" y="0" width="7" height="500" data-time="2026" data-values="533.5"/><rect x="458" y="0" width="7" height="500" data-time="2026" data-values="553.5"/><rect x="465" y="0" width="7" height="500" data-time="2026" data-values="532.8"/><rect x="472" y="0" width="7" height="500" data-time="2026" data-values="496.9"/><rect x="479" y="0" width="7" height="500" data-time="2026" data-values="492.4"/><rect x="486" y="0" width="7" height="500" data-time="2026" data-values="534.1"/><rect x="493" y="0" width="7" height="500" data-time="2026" data-values="514.8"/></svg></div>
+          </div>
+          <div>
+            <h3>Generation</h3>
+<div class="graph" data-prefix="" data-suffix="GW"><div><div>300GW</div><div></div><div>250GW</div><div></div><div>200GW</div><div></div><div>150GW</div><div></div><div>100GW</div><div></div><div>50GW</div><div></div><div>0GW</div><div></div></div><div><div>2026</div><div>2026</div><div>2026</div></div><svg viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="none"><polyline class="coal" points="83 360 250 367 417 342"/><polyline class="gas" points="83 149 250 167 417 79"/><polyline class="oil" points="83 499 250 499 417 498"/><polyline class="solar" points="83 347 250 422 417 442"/><polyline class="wind" points="83 418 250 408 417 420"/><polyline class="hydro" points="83 454 250 453 417 435"/><polyline class="nuclear" points="83 340 417 340"/><polyline class="others" points="83 483 250 478 417 460"/><rect x="0" y="0" width="167" height="500" data-time="2026" data-values="83.87 210.86 0.86 92.06 48.93 27.37 95.71 9.92"/><rect x="167" y="0" width="167" height="500" data-time="2026" data-values="79.86 199.91 0.72 46.73 55.24 28.27 95.81 13.41"/><rect x="333" y="0" width="167" height="500" data-time="2026" data-values="94.81 252.48 1.24 35.02 47.84 39.17 96.10 24.00"/></svg></div>
+          </div>
+          <div>
+            <h3>Transfers</h3>
+<div class="graph" data-prefix="" data-suffix="GW" data-transfers="true"><div><div>16GW</div><div></div><div>14GW</div><div></div><div>12GW</div><div></div><div>10GW</div><div></div><div>8GW</div><div></div><div>6GW</div><div></div><div>4GW</div><div></div><div>2GW</div><div></div><div>0GW</div><div></div><div>&minus;2GW</div><div></div></div><div><div>2026</div><div>2026</div><div>2026</div><div>2026</div></div><svg viewBox="0 0 500 500" width="500" height="500" preserveAspectRatio="none"><polyline class="canada" points="4 444 292 444 299 386 306 305 313 319 320 362 327 362 335 366 342 341 349 360 356 368 363 349 370 353 377 339 384 335 391 317 398 343 405 348 412 292 419 271 426 280 433 309 440 309 447 330 454 344 461 326 468 324 475 329 482 380 489 392 496 444"/><polyline class="mexico" points="4 444 320 444 327 445 349 445 363 447 370 447 384 445 391 446 405 446 412 447 419 447 426 448 440 448 454 454 468 450 475 449 482 447 489 446 496 444"/><polyline class="transfers" points="4 154 11 246 18 308 25 325 32 351 39 319 46 319 53 326 60 358 67 372 74 320 81 327 88 305 95 367 102 364 109 312 116 340 123 332 130 287 137 309 144 277 151 322 158 269 165 205 173 250 180 239 187 257 194 308 201 356 208 271 215 315 222 332 229 292 236 311 243 173 250 227 257 221 264 223 271 246 278 241 285 250 292 307 299 278 306 305 313 319 320 362 327 363 335 366 342 342 349 361 356 369 363 351 370 355 377 341 384 335 391 318 398 344 405 349 412 294 419 273 426 283 433 312 440 313 447 336 454 353 461 333 468 330 475 334 482 383 489 38 496 121"/><rect x="0" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 10.5"/><rect x="7" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 7.1"/><rect x="14" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.9"/><rect x="21" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.3"/><rect x="28" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 3.4"/><rect x="35" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.5"/><rect x="42" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.5"/><rect x="49" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.3"/><rect x="56" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 3.1"/><rect x="63" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 2.6"/><rect x="70" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.5"/><rect x="77" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.2"/><rect x="85" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 5.0"/><rect x="92" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 2.8"/><rect x="99" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 2.9"/><rect x="106" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.8"/><rect x="113" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 3.8"/><rect x="120" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.0"/><rect x="127" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 5.7"/><rect x="134" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.9"/><rect x="141" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 6.0"/><rect x="148" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.4"/><rect x="155" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 6.3"/><rect x="162" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 8.6"/><rect x="169" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 7.0"/><rect x="176" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 7.4"/><rect x="183" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 6.7"/><rect x="190" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.9"/><rect x="197" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 3.2"/><rect x="204" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 6.2"/><rect x="211" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.7"/><rect x="218" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.1"/><rect x="225" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 5.5"/><rect x="232" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 4.8"/><rect x="239" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 9.8"/><rect x="246" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 7.8"/><rect x="254" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 8.1"/><rect x="261" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 8.0"/><rect x="268" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 7.1"/><rect x="275" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 7.3"/><rect x="282" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 7.0"/><rect x="289" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 5.0"/><rect x="296" y="0" width="7" height="500" data-time="2026" data-values="2.1 0.0 6.0"/><rect x="303" y="0" width="7" height="500" data-time="2026" data-values="5.0 0.0 5.0"/><rect x="310" y="0" width="7" height="500" data-time="2026" data-values="4.5 0.0 4.5"/><rect x="317" y="0" width="7" height="500" data-time="2026" data-values="3.0 0.0 3.0"/><rect x="324" y="0" width="7" height="500" data-time="2026" data-values="3.0 0.0 2.9"/><rect x="331" y="0" width="7" height="500" data-time="2026" data-values="2.8 0.0 2.8"/><rect x="338" y="0" width="7" height="500" data-time="2026" data-values="3.7 0.0 3.7"/><rect x="345" y="0" width="7" height="500" data-time="2026" data-values="3.0 0.0 3.0"/><rect x="352" y="0" width="7" height="500" data-time="2026" data-values="2.8 0.0 2.7"/><rect x="359" y="0" width="7" height="500" data-time="2026" data-values="3.4 -0.1 3.4"/><rect x="366" y="0" width="7" height="500" data-time="2026" data-values="3.3 -0.1 3.2"/><rect x="373" y="0" width="7" height="500" data-time="2026" data-values="3.8 -0.1 3.7"/><rect x="380" y="0" width="7" height="500" data-time="2026" data-values="3.9 0.0 3.9"/><rect x="387" y="0" width="7" height="500" data-time="2026" data-values="4.6 0.0 4.5"/><rect x="394" y="0" width="7" height="500" data-time="2026" data-values="3.7 -0.1 3.6"/><rect x="401" y="0" width="7" height="500" data-time="2026" data-values="3.5 -0.1 3.4"/><rect x="408" y="0" width="7" height="500" data-time="2026" data-values="5.5 -0.1 5.4"/><rect x="415" y="0" width="7" height="500" data-time="2026" data-values="6.2 -0.1 6.2"/><rect x="423" y="0" width="7" height="500" data-time="2026" data-values="5.9 -0.1 5.8"/><rect x="430" y="0" width="7" height="500" data-time="2026" data-values="4.9 -0.1 4.8"/><rect x="437" y="0" width="7" height="500" data-time="2026" data-values="4.9 -0.1 4.7"/><rect x="444" y="0" width="7" height="500" data-time="2026" data-values="4.1 -0.2 3.9"/><rect x="451" y="0" width="7" height="500" data-time="2026" data-values="3.6 -0.3 3.3"/><rect x="458" y="0" width="7" height="500" data-time="2026" data-values="4.3 -0.3 4.0"/><rect x="465" y="0" width="7" height="500" data-time="2026" data-values="4.3 -0.2 4.1"/><rect x="472" y="0" width="7" height="500" data-time="2026" data-values="4.2 -0.2 4.0"/><rect x="479" y="0" width="7" height="500" data-time="2026" data-values="2.3 -0.1 2.2"/><rect x="486" y="0" width="7" height="500" data-time="2026" data-values="1.9 -0.1 14.6"/><rect x="493" y="0" width="7" height="500" data-time="2026" data-values="0.0 0.0 11.7"/></svg></div>
+          </div>
+        </div>
+      </section>
+      <div class="columns">
+        <section id="transition">
+          <h2>
+            The energy transition
+          </h2>
+          <p>
+            The United States grid is changing from a system dominated by fossil fuels toward one with more wind, solar, storage, and other low-carbon generation.
+          </p>
+          <p>
+            This prototype currently shows the latest EIA national fuel-mix snapshot, recent fuel-mix trends, and US-wide demand and transfer trends where those feeds publish them. It does not yet include storage charging and discharge, prices, or emissions.
+          </p>
+          <p>
+            As more US data paths are added, this section can track the same long-term changes shown by the live mix above, using US-wide data rather than Great Britain data.
+          </p>
+        </section>
+        <section>
+          <h2>About this site</h2>
+          <p>
+            This page currently uses EIA fuel-mix data for the US generation snapshot.
+          </p>
+          <p>
+            Regional pages should use direct ISO, RTO, or BPA data where an official source exists, with EIA-930 balancing-authority data as the fallback where there is no direct source.
+          </p>
+          <p>
+            The current US view is built from source-level fuel data and a project-specific aggregation layer.
+          </p>
+          <p>
+            Negative generation values are clamped to zero before display and aggregation because they can appear as accounting artefacts in source feeds.
+          </p>
+          <p>
+            It should be treated as a live prototype snapshot rather than a final authoritative national accounting model.
+          </p>
+          <p>
+            Demand and transfers use the EIA regional operating feed when that feed is available for the same hour. Storage, prices, and emissions are not modelled yet.
+          </p>
+          <p>
+            Values may change as the EIA revises data, updates respondent coverage, or categorises fuel types differently over time.
+          </p>
+          <p>
+            This is an independent project and is not affiliated with, endorsed by, or officially connected with the EIA or any grid operator.
+          </p>
+        </section>
+      </div>
+
+    </main>
+
+    <footer id="us-footer">
+      <div>
+        Independent website using third-party energy data.
+      </div>
+    </footer>
+
+    <dialog>
+      <h2></h2>
+      <form method="dialog"><button><svg viewBox="0 0 30 30"><path d="M6,6 24,24"/><path d="M6,24 24,6"/></svg></button></form>
+      <div></div>
+    </dialog>
+  </body>
+</html>

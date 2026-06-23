@@ -1,0 +1,1450 @@
+:root {
+  --width: 36;
+  --rounding: 8px;
+  --table-width: 316px;
+  --accent: #2563eb;
+  --background: #f6f8fc;
+  --content-background: #ffffff;
+  --content-text: #0f172a;
+  --heading-background: #dbeafe;
+  --heading-text: #1e3a8a;
+  --selected-background: #dbeafe;
+  --help-background: #93c5fd;
+  --help-text: #0f172a;
+  --graph-line: #d6dee8;
+  --graph-highlight: rgba(37, 99, 235, 0.08);
+  --key-line: #cbd5e1;
+  --unit-opacity: 0.45;
+  --table-stripe: #f8fbff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0b1220;
+    --content-background: #111827;
+    --content-text: #e5eefc;
+    --heading-background: #1e293b;
+    --heading-text: #dbeafe;
+    --selected-background: rgba(30, 41, 59, 0.8);
+    --help-background: #60a5fa;
+    --help-text: #08111f;
+    --graph-line: #334155;
+    --graph-highlight: rgba(255, 255, 255, 0.06);
+    --key-line: #475569;
+    --unit-opacity: 0.65;
+    --table-stripe: #0f172a;
+  }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 300;
+  font-size: clamp(18px, calc(100vw / var(--width)), 20px);
+  font-feature-settings: 'tnum';
+  line-height: 1.5;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+body {
+  display: grid;
+  grid-template-rows: max-content 1fr max-content;
+  height: 100%;
+  margin: 0;
+  background: var(--background);
+  color: var(--content-text);
+}
+
+header {
+  padding: 1.25rem 0 0;
+}
+
+header nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-auto-flow: dense;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+header nav > a {
+  grid-column: 2;
+  display: grid;
+  place-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.22);
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+header nav > a:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+header nav svg {
+  height: 1.6rem;
+  fill: var(--content-background);
+}
+
+header nav div,
+footer nav {
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: center;
+}
+
+header nav div {
+  justify-content: right;
+}
+
+header nav div + div {
+  justify-content: left;
+}
+
+nav a {
+  display: block;
+  position: relative;
+  padding: 0.2rem 0.75rem 0.3rem;
+  border-radius: 1rem;
+  color: inherit;
+  font-weight: 400;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+nav a.section,
+nav a:hover {
+  color: var(--accent);
+}
+
+nav a + a::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0.85rem;
+  left: -0.175rem;
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+footer {
+  padding: 1rem 0 1.5rem;
+  text-align: center;
+}
+
+footer div {
+  padding: 1rem 1.25rem 0.25rem;
+}
+
+footer span {
+  white-space: nowrap;
+}
+
+main {
+  display: grid;
+  gap: 1rem;
+  justify-content: center;
+  padding: 1rem;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+main > * {
+  max-width: 1280px;
+}
+
+section {
+  box-sizing: border-box;
+  padding: 1rem;
+  border-radius: var(--rounding);
+  background: var(--content-background);
+  color: var(--content-text);
+  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  section {
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+  }
+}
+
+h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+main h2 {
+  margin: -1rem -1rem 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--rounding) var(--rounding) 0 0;
+  background: var(--heading-background);
+  color: var(--heading-text);
+}
+
+h3 {
+  margin: 2rem 0 1rem;
+  padding: 0;
+  font-size: 1rem;
+  font-weight: 300;
+  text-align: center;
+}
+
+h3:first-of-type {
+  margin-top: 0;
+}
+
+p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+p + p {
+  margin-top: 1rem;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-color: transparent;
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.15em;
+  transition: text-decoration-color 0.2s;
+}
+
+a:hover {
+  text-decoration-color: var(--accent);
+}
+
+img {
+  vertical-align: bottom;
+}
+
+/* colours */
+
+.generation  { color: #aaa; }
+.price       { color: #000; }
+.emissions   { color: #000; }
+.demand      { color: #000; }
+.fossils     { color: #c45; }
+.renewables  { color: #5b5; }
+.others      { color: #27c; }
+.transfers   { color: #aaa; }
+.canada      { color: #6cf; }
+.mexico      { color: #fc6; }
+.coal        { color: #a35; }
+.gas         { color: #e94; }
+.solar       { color: #ed0; }
+.wind        { color: #9d5; }
+.hydro       { color: #2cb; }
+.nuclear     { color: #09c; }
+.biomass     { color: #36b; }
+.oil         { color: #c45; }
+.belgium     { color: #817; }
+.denmark     { color: #c66; }
+.france      { color: #e94; }
+.ireland     { color: #ed0; }
+.netherlands { color: #9d5; }
+.norway      { color: #2cb; }
+.pumped      { color: #09c; }
+.battery     { color: #639; }
+
+@media (prefers-color-scheme:dark) {
+  .generation  { color: #888; }
+  .price       { color: #eee; }
+  .emissions   { color: #eee; }
+  .demand      { color: #eee; }
+  .transfers   { color: #888; }
+}
+
+/* columns */
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media screen and (max-width:959px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* introduction */
+
+#introduction {
+  text-align: center;
+}
+
+/* status */
+
+#status {
+  font-size: 1rem;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5em;
+  align-items: center;
+  justify-items: center;
+  margin: 0 -1em;
+}
+
+dt,
+dd {
+  margin: 0;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+dt {
+  grid-row: 1;
+}
+
+dd {
+  grid-row: 2;
+  font-size: 1.2em;
+}
+
+dd abbr {
+  opacity: var(--unit-opacity);
+}
+
+dt:nth-child(1),
+dd:nth-child(2) {
+  grid-column: 1;
+}
+
+dt:nth-child(3),
+dd:nth-child(4) {
+  grid-column: 2;
+}
+
+dt:nth-child(5),
+dd:nth-child(6) {
+  grid-column: 3;
+}
+
+[data-operator]::before {
+  content: '=';
+  grid-area: 1 / 1 / 3 / 3;
+  font-size: 1.25rem;
+}
+
+[data-operator]::after {
+  content: attr(data-operator);
+  grid-area: 1 / 2 / 3 / 4;
+  font-size: 1.25rem;
+}
+
+/* latest */
+
+#latest {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: "generation fossils transfers" "generation renewables transfers" "generation others storage";
+  gap: 1rem;
+}
+
+@media screen and (max-width:1199px) {
+  #latest {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "generation fossils" "generation renewables" "generation others" "transfers storage";
+  }
+}
+
+@media screen and (max-width:779px) {
+  #latest {
+    grid-template-columns: 1fr;
+    grid-template-areas: "generation" "fossils" "renewables" "others" "transfers" "storage";
+  }
+}
+
+#latest section {
+  margin: 0;
+}
+
+#generation {
+  grid-area: generation;
+}
+
+#fossils {
+  grid-area: fossils;
+}
+
+#renewables {
+  grid-area: renewables;
+}
+
+#others {
+  grid-area: others;
+}
+
+#transfers {
+  grid-area: transfers;
+}
+
+#storage {
+  grid-area: storage;
+}
+
+.sources {
+  width: 100%;
+  margin: 0;
+}
+
+.sources.transfers {
+  color: inherit;
+}
+
+.sources td {
+  vertical-align: top;
+}
+
+.sources td:nth-child(1) {
+  padding: 0 0 1em;
+  background: transparent;
+}
+
+.sources td:nth-child(1)::after {
+  content: '';
+  display: block;
+  box-sizing: border-box;
+  width: 1em;
+  height: 1em;
+  margin-top: 2px;
+  background: currentcolor;
+}
+
+.sources.transfers td:nth-child(1)::after {
+  border: 2px solid;
+  background: transparent;
+}
+
+.sources td:nth-child(2) {
+  width: 100%;
+  padding: 0 0 1em 0.5em;
+}
+
+.sources td:nth-child(3),
+.sources td:nth-child(4) {
+  padding: 0 0 1em 0.75em;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.sources td:nth-child(1),
+.sources td:nth-child(3),
+.sources td:nth-child(4) {
+  width: 0;
+}
+
+.sources td:nth-child(3)::after {
+  content: 'GW';
+  opacity: var(--unit-opacity);
+}
+
+.sources td:nth-child(4)::after {
+  content: '%';
+  opacity: var(--unit-opacity);
+}
+
+.sources.transfer-table td:nth-child(4)::after {
+  content: '';
+}
+
+.sources tr:last-child td {
+  padding-bottom: 0;
+}
+
+[data-help] {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  background: var(--help-background);
+  color: var(--help-text);
+  font-weight: 400;
+  font-variant: small-caps;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+}
+
+[data-help]:after {
+  content: '?';
+  position: relative;
+  top: -1px;
+}
+
+#fossils h2 {
+  background: #c45;
+}
+
+#renewables h2 {
+  background: #5b5;
+}
+
+#others h2 {
+  background: #27c;
+}
+
+/* tabs */
+
+[role="tablist"] {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: -1rem -1rem 1rem;
+}
+
+[role="tablist"] h2 {
+  margin: 0;
+  border-radius: 0;
+  text-align: center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+[role="tablist"] h2:first-child {
+  border-top-left-radius: var(--rounding);
+}
+
+[role="tablist"] h2:last-child {
+  border-top-right-radius: var(--rounding);
+}
+
+h2[aria-selected="true"] {
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  background: var(--selected-background);
+  color: var(--content-text);
+}
+
+h2[aria-selected="false"] {
+  cursor: pointer;
+}
+
+@media screen and (max-width:34rem) {
+  [role="tablist"] h2 {
+    text-transform: capitalize;
+  }
+
+  [role="tablist"] span {
+    display: none;
+  }
+}
+
+[role="tabpanel"] {
+  display: grid;
+  grid-template-columns: 1fr var(--table-width) 1fr;
+  grid-template-areas: "pie status demand" "pie equation demand" "pie table demand" "price table generation" "emissions table transfers";
+  gap: 1rem 3rem;
+}
+
+[role="tabpanel"]:nth-child(n + 3) {
+  display: none;
+}
+
+[role="tabpanel"] > div {
+  min-width: 0;
+}
+
+[role="tabpanel"] > :nth-child(1) { grid-area: status; }
+[role="tabpanel"] > :nth-child(2) { grid-area: equation; }
+[role="tabpanel"] > :nth-child(3) { grid-area: pie; }
+[role="tabpanel"] > :nth-child(4) { grid-area: table; }
+[role="tabpanel"] > :nth-child(5) { grid-area: price; }
+[role="tabpanel"] > :nth-child(6) { grid-area: emissions; }
+[role="tabpanel"] > :nth-child(7) { grid-area: demand; }
+[role="tabpanel"] > :nth-child(8) { grid-area: generation; }
+[role="tabpanel"] > :nth-child(9) { grid-area: transfers; }
+
+[role="tabpanel"] > :is(:nth-child(1),:nth-child(2)) {
+  padding-bottom: 1rem;
+}
+
+[role="tabpanel"] > :is(:nth-child(1),:nth-child(2),:nth-child(4)) {
+  width: 100%;
+  max-width: var(--table-width);
+  justify-self: center;
+}
+
+[role="tabpanel"] > :nth-child(3) {
+  align-self: center;
+  justify-self: center;
+}
+
+@media screen and (max-width:1023px) {
+  [role="tabpanel"] {
+    grid-template-columns: var(--table-width) 1fr;
+    grid-template-areas: "pie price" "status emissions" "equation emissions" "table emissions" "table demand" "table generation" "table transfers";
+  }
+}
+
+@media screen and (max-width:767px) {
+  [role="tabpanel"] {
+    grid-template-columns: 1fr;
+    grid-template-areas: none;
+  }
+
+  [role="tabpanel"] > :nth-child(n) {
+    grid-area: auto;
+  }
+
+  [role="tabpanel"] > :is(:nth-child(3),:nth-child(4)) {
+    padding-bottom: 1rem;
+  }
+}
+
+/* dialogs */
+
+dialog::backdrop {
+  background: rgba(0,0,0,0.5);
+}
+
+dialog[open] {
+  display: grid;
+  grid-template-columns: 1fr 1.5rem;
+  grid-template-rows: 1.5rem min-content; /* required to stop Safari stretching the dialog to the viewport height */
+  gap: 1rem;
+  width: 24rem;
+  max-width: calc(100vw - 6rem);
+  padding: 1rem;
+  border: 0;
+  border-radius: var(--rounding);
+  background: var(--content-background);
+  color: var(--content-text)
+}
+
+dialog h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+dialog div {
+  grid-area: 2 / 1 / 3 / 3;
+  max-height: calc(100vh - 8.5rem);
+  max-height: calc(100dvh - 8.5rem);
+  overflow: auto;
+}
+
+dialog p + p {
+  margin-top: 1rem;
+}
+
+dialog button {
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+dialog button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+dialog svg {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+dialog path {
+  stroke: var(--content-text);
+  stroke-width: 4;
+}
+
+/* pie charts */
+
+.pie-chart-container {
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  max-width: 330px;
+  aspect-ratio: 1;
+  margin: 0 auto 1rem;
+}
+
+.pie-chart {
+  display: grid;
+  max-width: 300px;
+  font-size: 16px;
+}
+
+.pie-chart > div,
+.pie-chart > svg {
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+}
+
+.pie-chart > div {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  text-align: center;
+}
+
+.pie-chart > div > div:nth-child(1) {
+  padding-top: 1.25em;
+}
+
+.pie-chart > div > div:nth-child(2) {
+  display: block;
+  width: 33%;
+  height: 2px;
+  margin: 0.25em 0;
+  background: currentcolor;
+}
+
+.pie-chart > svg {
+  width: 100%; /* required to stop Safari shrinking the pie chart to the width of the text */
+}
+
+.pie-chart > svg > path {
+  fill: currentcolor;
+  stroke: var(--content-background);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+/* graphs */
+
+.graph {
+  --graph-height: 250px;
+  --axis-width: 40px;
+  --axis-height: 64px;
+  --axis-gap: 10px;
+  --key-padding: 8px;
+  display: grid;
+  grid-template: auto var(--axis-height) /  var(--axis-width) 1fr;
+  gap: calc(var(--axis-gap) - 0.5em) var(--axis-gap);
+  position: relative;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.graph > div {
+  display: grid;
+  text-align: right;
+}
+
+.graph > :nth-child(1) {
+  grid-area: 1 / 1 / 2 / 3;
+  grid-template-columns: var(--axis-width) 1fr;
+  column-gap: var(--axis-gap);
+  align-content: space-between;
+}
+
+.graph > :nth-child(1) > :nth-child(even) {
+  margin-top: calc(0.5em - 1px);
+  border-top: 1px solid var(--graph-line);
+}
+
+.graph > :nth-child(2) {
+  grid-area: 2 / 2 / 3 / 3;
+  grid-auto-flow: column;
+  justify-content: space-around;
+}
+
+.graph > :nth-child(2) > div {
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+}
+
+.graph svg {
+  grid-area: 1 / 2 / 2 / 3;
+  width: 100%;
+  height: var(--graph-height);
+  margin: 0.5em 0;
+}
+
+polyline {
+  fill: transparent;
+  stroke: currentcolor;
+  stroke-width: 2.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.graph rect {
+  fill: transparent;
+}
+
+/* US page: match the original Grid: Live visual grammar */
+
+body.us-grid {
+  --table-width: 380px;
+  --background: #000;
+  --content-background: #222;
+  --content-text: #eee;
+  --heading-background: #444;
+  --heading-text: #fff;
+  --selected-background: rgba(34,34,34,0.85);
+  --help-background: #777;
+  --help-text: #fff;
+  --graph-line: #444;
+  --graph-highlight: rgba(255,255,255,0.06);
+  --key-line: #444;
+  --unit-opacity: 0.55;
+  --rounding: 4px;
+  min-height: 100%;
+  background: #000;
+  color: #eee;
+  font-family: "Proza Libre", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body.us-grid main {
+  gap: 20px;
+  width: 100%;
+  margin: 0;
+  padding: 20px;
+  font-family: "Proza Libre", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+body.us-grid header {
+  padding: 25px 0 10px;
+  background: #000;
+  color: #eee;
+}
+
+body.us-grid header nav > a {
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+body.us-grid header nav > a:hover {
+  background: transparent;
+  transform: none;
+}
+
+body.us-grid header nav svg {
+  fill: #eee;
+}
+
+body.us-grid nav a {
+  border-radius: 0;
+  color: #eee;
+  font-weight: 300;
+}
+
+body.us-grid nav a.section,
+body.us-grid nav a:hover {
+  color: #fff;
+}
+
+body.us-grid nav a + a::after {
+  background: #eee;
+}
+
+body.us-grid main > * {
+  width: 100%;
+  max-width: 1280px;
+}
+
+body.us-grid section {
+  padding: 20px;
+  border: 0;
+  border-radius: 4px;
+  background: #222;
+  color: #eee;
+  box-shadow: none;
+}
+
+body.us-grid h1 {
+  margin: 0;
+  color: #eee;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 44px;
+  letter-spacing: 0;
+}
+
+body.us-grid main > p {
+  margin: 0 0 10px;
+  color: #eee;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: left;
+}
+
+body.us-grid #status {
+  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  font-size: 20px;
+  line-height: 25px;
+}
+
+body.us-grid #status section {
+  padding: 20px;
+}
+
+body.us-grid #generation > div:last-child,
+body.us-grid #transfers p,
+body.us-grid #storage p {
+  color: #eee;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+}
+
+body.us-grid dl {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35em 0.75em;
+  margin: 0;
+  text-align: center;
+}
+
+body.us-grid dt {
+  min-width: 0;
+  color: #eee;
+  font-size: 20px;
+  font-weight: 300;
+}
+
+body.us-grid dd {
+  min-width: 0;
+  color: #eee;
+  font-size: 24px;
+  font-weight: 300;
+}
+
+body.us-grid .us-equation dd {
+  font-size: clamp(32px, 3vw, 52px);
+}
+
+body.us-grid #status section:first-child dd {
+  font-size: clamp(18px, 1.6vw, 26px);
+}
+
+body.us-grid [role="tabpanel"] dl {
+  gap: 0.35em 0.85em;
+}
+
+body.us-grid [role="tabpanel"] dt {
+  font-size: 17px;
+}
+
+body.us-grid [role="tabpanel"] dd,
+body.us-grid [role="tabpanel"] .us-equation dd {
+  font-size: clamp(18px, 1.45vw, 24px);
+}
+
+body.us-grid [data-operator]::before,
+body.us-grid [data-operator]::after {
+  font-size: 18px;
+}
+
+body.us-grid main h2 {
+  margin: -20px -20px 20px;
+  padding: 15px 20px;
+  border-radius: 4px 4px 0 0;
+  background: #444;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0;
+}
+
+body.us-grid #generation h2 {
+  background: #444;
+}
+
+body.us-grid #fossils h2 {
+  background: #c45;
+}
+
+body.us-grid #renewables h2 {
+  background: #5b5;
+}
+
+body.us-grid #others h2 {
+  background: #27c;
+}
+
+body.us-grid #transfers h2,
+body.us-grid #storage h2 {
+  background: #444;
+}
+
+body.us-grid .columns {
+  grid-template-columns: 1fr 1fr;
+}
+
+body.us-grid #latest {
+  gap: 20px;
+}
+
+body.us-grid #latest section {
+  min-width: 0;
+}
+
+body.us-grid .pie-chart-container {
+  max-width: 330px;
+  margin: 0 auto 1rem;
+}
+
+body.us-grid .pie-chart {
+  max-width: 300px;
+}
+
+body.us-grid .sources {
+  font-size: 1rem;
+}
+
+body.us-grid .sources td:nth-child(1)::after {
+  width: 0.9em;
+  height: 0.9em;
+}
+
+body.us-grid .sources td:nth-child(2) {
+  padding-left: 0.5rem;
+}
+
+body.us-grid [role="tabpanel"] h3 + h3 {
+  margin-top: 1rem;
+}
+
+body.us-grid .graph {
+  --graph-height: 220px;
+}
+
+body.us-grid .us-unavailable-graph {
+  display: grid;
+  align-items: center;
+  min-height: 220px;
+  border-top: 1px solid #444;
+  border-bottom: 1px solid #444;
+  color: #aaa;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+}
+
+body.us-grid .us-unavailable-graph > div {
+  max-width: 16rem;
+  margin: 0 auto;
+}
+
+body.us-grid .us-ad {
+  display: block;
+  min-height: 90px;
+  margin: 20px 0;
+  overflow: hidden;
+  text-align: center;
+}
+
+body.us-grid .us-ad .adsbygoogle {
+  min-height: 90px;
+}
+
+body.us-grid footer {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+@media screen and (max-width:959px) {
+  body.us-grid .columns {
+    grid-template-columns: 1fr;
+  }
+
+  body.us-grid #status {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+.graph rect:hover {
+  fill: var(--graph-highlight);
+}
+
+.graph svg + div {
+  position: absolute;
+  top: calc(var(--graph-height) / 2 + 0.5em);
+  width: max-content;
+  max-width: calc(100vw / 2 - 4 * var(--key-padding));
+  padding: var(--key-padding);
+  background: var(--content-background);
+  color: var(--content-text);
+  border: 1px solid var(--key-line);
+  border-radius: var(--rounding);
+  text-align: left;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.graph svg + div > div {
+  margin-bottom: var(--key-padding);
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+}
+
+/* interconnector map */
+
+.interconnector-map {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--key-line);
+  border-radius: calc(var(--rounding) * 2);
+  background:
+    radial-gradient(circle at top right, rgba(37, 99, 235, 0.06), transparent 35%),
+    linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95));
+}
+
+@media (prefers-color-scheme: dark) {
+  .interconnector-map {
+    background:
+      radial-gradient(circle at top right, rgba(96, 165, 250, 0.10), transparent 35%),
+      linear-gradient(180deg, rgba(17,24,39,0.82), rgba(17,24,39,0.95));
+  }
+}
+
+.interconnector-map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.uk-shape,
+.ireland-shape {
+  fill: rgba(37, 99, 235, 0.10);
+  stroke: var(--content-text);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+@media (prefers-color-scheme: dark) {
+  .uk-shape,
+  .ireland-shape {
+    fill: rgba(96, 165, 250, 0.14);
+  }
+}
+
+.map-gb-label,
+.map-ie-label {
+  fill: var(--content-text);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.connector-base {
+  fill: none;
+  stroke: var(--graph-line);
+  stroke-width: 4;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.connector-flow {
+  fill: none;
+  stroke: var(--connector-color);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 7 10;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 4px var(--connector-color));
+}
+
+.interconnector-line.is-export .connector-flow {
+  animation: connector-flow-forward 1.3s linear infinite;
+}
+
+.interconnector-line.is-import .connector-flow {
+  animation: connector-flow-reverse 1.3s linear infinite;
+}
+
+.interconnector-line.is-neutral .connector-flow {
+  animation: none;
+  stroke-dasharray: 0;
+  stroke-width: 5;
+  opacity: 0.6;
+}
+
+@keyframes connector-flow-forward {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -34; }
+}
+
+@keyframes connector-flow-reverse {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: 34; }
+}
+
+.connector-node {
+  fill: var(--connector-color);
+  stroke: var(--content-background);
+  stroke-width: 2;
+}
+
+.connector-label rect {
+  fill: rgba(255, 255, 255, 0.92);
+  stroke: var(--key-line);
+  stroke-width: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .connector-label rect {
+    fill: rgba(17, 24, 39, 0.92);
+  }
+}
+
+.connector-country,
+.connector-value {
+  fill: var(--content-text);
+}
+
+.connector-country {
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.connector-value {
+  font-size: 10px;
+}
+
+.interconnector-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  margin-top: 0.5rem;
+  color: var(--content-text);
+  font-size: 0.875rem;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.4rem;
+  border-radius: 999px;
+  vertical-align: -0.08rem;
+}
+
+.legend-import-dot {
+  background: #dc2626;
+}
+
+.legend-export-dot {
+  background: #2563eb;
+}
+
+@media screen and (max-width: 520px) {
+  .connector-country {
+    font-size: 10px;
+  }
+
+  .connector-value {
+    font-size: 9px;
+  }
+
+  .connector-label rect {
+    rx: 10px;
+  }
+}
+/* interconnector map */
+
+.interconnector-map {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--key-line);
+  border-radius: calc(var(--rounding) * 2);
+  background:
+    radial-gradient(circle at top right, rgba(37, 99, 235, 0.06), transparent 35%),
+    linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95));
+}
+
+@media (prefers-color-scheme: dark) {
+  .interconnector-map {
+    background:
+      radial-gradient(circle at top right, rgba(96, 165, 250, 0.10), transparent 35%),
+      linear-gradient(180deg, rgba(17,24,39,0.82), rgba(17,24,39,0.95));
+  }
+}
+
+.interconnector-map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.uk-shape,
+.ireland-shape {
+  fill: rgba(37, 99, 235, 0.10);
+  stroke: var(--content-text);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+@media (prefers-color-scheme: dark) {
+  .uk-shape,
+  .ireland-shape {
+    fill: rgba(96, 165, 250, 0.14);
+  }
+}
+
+.map-gb-label,
+.map-ie-label {
+  fill: var(--content-text);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.connector-base {
+  fill: none;
+  stroke: var(--graph-line);
+  stroke-width: 4;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.connector-flow {
+  fill: none;
+  stroke: var(--connector-color);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: 7 10;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 4px var(--connector-color));
+}
+
+.interconnector-line.is-export .connector-flow {
+  animation: connector-flow-forward 1.3s linear infinite;
+}
+
+.interconnector-line.is-import .connector-flow {
+  animation: connector-flow-reverse 1.3s linear infinite;
+}
+
+.interconnector-line.is-neutral .connector-flow {
+  animation: none;
+  stroke-dasharray: 0;
+  stroke-width: 5;
+  opacity: 0.6;
+}
+
+@keyframes connector-flow-forward {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -34; }
+}
+
+@keyframes connector-flow-reverse {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: 34; }
+}
+
+.connector-node {
+  fill: var(--connector-color);
+  stroke: var(--content-background);
+  stroke-width: 2;
+}
+
+.connector-label rect {
+  fill: rgba(255, 255, 255, 0.92);
+  stroke: var(--key-line);
+  stroke-width: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .connector-label rect {
+    fill: rgba(17, 24, 39, 0.92);
+  }
+}
+
+.connector-country,
+.connector-value {
+  fill: var(--content-text);
+}
+
+.connector-country {
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.connector-value {
+  font-size: 10px;
+}
+
+.interconnector-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  margin-top: 0.5rem;
+  color: var(--content-text);
+  font-size: 0.875rem;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.4rem;
+  border-radius: 999px;
+  vertical-align: -0.08rem;
+}
+
+.legend-import-dot {
+  background: #dc2626;
+}
+
+.legend-export-dot {
+  background: #2563eb;
+}
+
+@media screen and (max-width: 520px) {
+  .connector-country {
+    font-size: 10px;
+  }
+
+  .connector-value {
+    font-size: 9px;
+  }
+}
+
+#fossils,
+#renewables,
+#others {
+  align-self: start;
+}

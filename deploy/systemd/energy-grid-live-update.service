@@ -1,0 +1,9 @@
+[Unit]
+Description=Update Energy Grid Live static site
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/energy-grid-live
+ExecStart=/usr/bin/php /opt/energy-grid-live/update.php
+User=www-data
+Group=www-data

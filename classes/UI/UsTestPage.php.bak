@@ -1,0 +1,324 @@
+<?php
+
+namespace KateMorley\Grid\UI;
+
+class UsTestPage
+{
+    public static function render(array $view): string
+    {
+        $sources = self::withColors($view['sources'] ?? []);
+        $types = $view['types'] ?? [];
+        $summary = $view['summary'] ?? [];
+
+        $title = self::e($view['title'] ?? 'US energy mix');
+        $subtitle = self::e($view['subtitle'] ?? '');
+        $respondent = self::e($view['respondent'] ?? 'Unknown');
+        $timeLabel = self::e($view['time_label'] ?? 'Unknown time');
+
+        $totalGeneration = (float)($summary['generation'] ?? 0);
+        $demand = (float)($summary['demand'] ?? 0);
+        $sourceCount = (int)($summary['source_count'] ?? 0);
+
+        $pie = self::pieSvg($sources, $totalGeneration);
+
+        ob_start();
+?>
+
+<style>
+.us-wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.us-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.us-card {
+    background: #ffffff;
+    border: 1px solid #d9e0ea;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.us-card h2 {
+    margin: 0 0 16px;
+}
+
+.us-chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.us-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.us-table th,
+.us-table td {
+    padding: 10px 0;
+    border-bottom: 1px solid #d9e0ea;
+}
+
+.us-table th {
+    text-align: left;
+}
+
+.us-table td.num {
+    text-align: right;
+}
+
+.us-swatch {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    border-radius: 3px;
+    margin-right: 8px;
+}
+</style>
+
+<div class="us-wrap">
+
+<div class="us-grid">
+
+<div class="us-card">
+<h2>Generation by source</h2>
+
+<div class="us-chart">
+<?= $pie ?>
+</div>
+
+</div>
+
+<div class="us-card">
+<h2>Latest source mix</h2>
+
+<table class="us-table">
+<thead>
+<tr>
+<th>Source</th>
+<th class="num">Power</th>
+<th class="num">Share</th>
+</tr>
+</thead>
+<tbody>
+
+<?php foreach ($sources as $row): ?>
+
+<tr>
+<td>
+<span class="us-swatch" style="background: <?= self::e($row['color']) ?>"></span>
+<?= self::e($row['label']) ?>
+</td>
+
+<td class="num"><?= self::formatPower((float)$row['value']) ?></td>
+
+<td class="num">
+<?= number_format(((float)$row['share']) * 100, 1) ?>%
+</td>
+
+</tr>
+
+<?php endforeach; ?>
+
+</tbody>
+</table>
+
+</div>
+
+</div>
+
+<div class="us-grid">
+
+<div class="us-card">
+
+<h2>Generation by type</h2>
+
+<table class="us-table">
+
+<thead>
+<tr>
+<th>Type</th>
+<th class="num">Power</th>
+<th class="num">Share</th>
+</tr>
+</thead>
+
+<tbody>
+
+<?php foreach ($types as $row): ?>
+
+<tr>
+<td><?= self::e($row['label']) ?></td>
+
+<td class="num">
+<?= self::formatPower((float)$row['value']) ?>
+</td>
+
+<td class="num">
+<?= number_format(((float)$row['share']) * 100, 1) ?>%
+</td>
+
+</tr>
+
+<?php endforeach; ?>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="us-card">
+
+<h2>Demand summary</h2>
+
+<p>
+<strong>Generation:</strong>
+<?= self::formatPower($totalGeneration) ?>
+</p>
+
+<p>
+<strong>Demand:</strong>
+<?= self::formatPower($demand) ?>
+</p>
+
+<p>
+<strong>Source categories:</strong>
+<?= number_format($sourceCount) ?>
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<?php
+
+        return ob_get_clean();
+    }
+
+    private static function withColors(array $rows): array
+    {
+        $out = [];
+
+        foreach ($rows as $i => $row) {
+            $row['color'] = self::colorForIndex($i);
+            $out[] = $row;
+        }
+
+        return $out;
+    }
+
+    private static function pieSvg(array $rows, float $total): string
+    {
+        if ($total <= 0 || empty($rows)) {
+            return '<div>No data available.</div>';
+        }
+
+        $cx = 180;
+        $cy = 180;
+        $r = 140;
+        $inner = 82;
+
+        $svg = '<svg viewBox="0 0 360 360" width="360" height="360">';
+
+        if (count($rows) === 1) {
+            $svg .= '<circle cx="'.$cx.'" cy="'.$cy.'" r="'.$r.'" fill="'.self::e($rows[0]['color']).'"></circle>';
+        } else {
+
+            $startAngle = -90;
+
+            foreach ($rows as $row) {
+
+                $share = (float)$row['share'];
+
+                $slice = $share * 360;
+                $endAngle = $startAngle + $slice;
+
+                $svg .= '<path d="'.self::sectorPath($cx,$cy,$r,$startAngle,$endAngle).'" fill="'.self::e($row['color']).'"></path>';
+
+                $startAngle = $endAngle;
+            }
+        }
+
+        $svg .= '<circle cx="'.$cx.'" cy="'.$cy.'" r="'.$inner.'" fill="#ffffff"></circle>';
+
+        $svg .= '<text x="'.$cx.'" y="'.($cy-6).'" text-anchor="middle" font-size="22">'.self::shortPower($total).'</text>';
+
+        $svg .= '</svg>';
+
+        return $svg;
+    }
+
+    private static function sectorPath($cx,$cy,$r,$start,$end): string
+    {
+        $startPos = self::polar($cx,$cy,$r,$end);
+        $endPos   = self::polar($cx,$cy,$r,$start);
+
+        $largeArc = (($end-$start) > 180) ? 1 : 0;
+
+        return sprintf(
+            'M %F %F L %F %F A %F %F 0 %d 0 %F %F Z',
+            $cx,$cy,$startPos['x'],$startPos['y'],$r,$r,$largeArc,$endPos['x'],$endPos['y']
+        );
+    }
+
+    private static function polar($cx,$cy,$r,$angle): array
+    {
+        $rad = deg2rad($angle);
+
+        return [
+            'x' => $cx + ($r * cos($rad)),
+            'y' => $cy + ($r * sin($rad))
+        ];
+    }
+
+    private static function colorForIndex(int $i): string
+    {
+        $colors = [
+            '#2563eb',
+            '#16a34a',
+            '#f59e0b',
+            '#ef4444',
+            '#8b5cf6',
+            '#06b6d4',
+            '#84cc16',
+            '#f97316',
+            '#6b7280'
+        ];
+
+        return $colors[$i % count($colors)];
+    }
+
+    private static function formatPower(float $value): string
+    {
+        if ($value >= 1000) {
+            $gw = $value / 1000;
+            return rtrim(rtrim(number_format($gw,1),'0'),'.').' GW';
+        }
+
+        return number_format($value,0).' MW';
+    }
+
+    private static function shortPower(float $value): string
+    {
+        if ($value >= 1000) {
+            return rtrim(rtrim(number_format($value/1000,1),'0'),'.').' GW';
+        }
+
+        return number_format($value,0).' MW';
+    }
+
+    private static function e(string $v): string
+    {
+        return htmlspecialchars($v,ENT_QUOTES,'UTF-8');
+    }
+}

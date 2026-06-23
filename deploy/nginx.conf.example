@@ -1,0 +1,21 @@
+server {
+  listen 80;
+  listen [::]:80;
+
+  server_name example.com www.example.com;
+
+  root /opt/energy-grid-live/public;
+  index index.html;
+
+  location / {
+    try_files $uri $uri/ =404;
+  }
+
+  location ~ /\.(env|git) {
+    deny all;
+  }
+
+  location ~ \.php$ {
+    return 404;
+  }
+}

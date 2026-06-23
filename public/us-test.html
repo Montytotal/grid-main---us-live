@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>US Energy Mix Live</title>
+    <meta
+      name="description"
+      content="Prototype live electricity generation view using EIA fuel mix data"
+    >
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link
+      rel="stylesheet"
+      href="grid.css?1774024321"
+      type="text/css"
+    >
+    <link rel="icon" href="favicon.png" type="image/png">
+    <script
+      src="grid.js?1774016153"
+      defer
+    ></script>
+  </head>
+  <body>
+    <main>
+      <section id="introduction">
+        <h1>US Energy Mix Live</h1>
+        <p>
+          Prototype live electricity generation view using EIA respondent fuel mix data
+        </p>
+      </section>
+
+
+<style>
+.us-wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.us-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.us-card {
+    background: #ffffff;
+    border: 1px solid #d9e0ea;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.us-card h2 {
+    margin: 0 0 16px;
+}
+
+.us-chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.us-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.us-table th,
+.us-table td {
+    padding: 10px 0;
+    border-bottom: 1px solid #d9e0ea;
+}
+
+.us-table th {
+    text-align: left;
+}
+
+.us-table td.num {
+    text-align: right;
+}
+
+.us-swatch {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    border-radius: 3px;
+    margin-right: 8px;
+}
+</style>
+
+<div class="us-wrap">
+
+<div class="us-grid">
+
+<div class="us-card">
+<h2>Generation by source</h2>
+
+<div class="us-chart">
+<svg viewBox="0 0 360 360" width="360" height="360"><path d="M 180.000000 180.000000 L 239.877090 306.549335 A 140.000000 140.000000 0 0 0 180.000000 40.000000 Z" fill="#2563eb"></path><path d="M 180.000000 180.000000 L 97.621300 293.197835 A 140.000000 140.000000 0 0 0 239.877090 306.549335 Z" fill="#16a34a"></path><path d="M 180.000000 180.000000 L 41.048933 162.894417 A 140.000000 140.000000 0 0 0 97.621300 293.197835 Z" fill="#f59e0b"></path><path d="M 180.000000 180.000000 L 113.875942 56.599801 A 140.000000 140.000000 0 0 0 41.048933 162.894417 Z" fill="#ef4444"></path><path d="M 180.000000 180.000000 L 180.000000 40.000000 A 140.000000 140.000000 0 0 0 113.875942 56.599801 Z" fill="#8b5cf6"></path><circle cx="180" cy="180" r="82" fill="#ffffff"></circle><text x="180" y="174" text-anchor="middle" font-size="22">6.4 GW</text></svg></div>
+
+</div>
+
+<div class="us-card">
+<h2>Latest source mix</h2>
+
+<table class="us-table">
+<thead>
+<tr>
+<th>Source</th>
+<th class="num">Power</th>
+<th class="num">Share</th>
+</tr>
+</thead>
+<tbody>
+
+
+<tr>
+<td>
+<span class="us-swatch" style="background: #2563eb"></span>
+Gas</td>
+
+<td class="num">2.8 GW</td>
+
+<td class="num">
+43.0%
+</td>
+
+</tr>
+
+
+<tr>
+<td>
+<span class="us-swatch" style="background: #16a34a"></span>
+Other</td>
+
+<td class="num">1.1 GW</td>
+
+<td class="num">
+17.0%
+</td>
+
+</tr>
+
+
+<tr>
+<td>
+<span class="us-swatch" style="background: #f59e0b"></span>
+Hydro</td>
+
+<td class="num">1.1 GW</td>
+
+<td class="num">
+16.9%
+</td>
+
+</tr>
+
+
+<tr>
+<td>
+<span class="us-swatch" style="background: #ef4444"></span>
+Wind</td>
+
+<td class="num">976 MW</td>
+
+<td class="num">
+15.2%
+</td>
+
+</tr>
+
+
+<tr>
+<td>
+<span class="us-swatch" style="background: #8b5cf6"></span>
+Coal</td>
+
+<td class="num">502 MW</td>
+
+<td class="num">
+7.8%
+</td>
+
+</tr>
+
+
+</tbody>
+</table>
+
+</div>
+
+</div>
+
+<div class="us-grid">
+
+<div class="us-card">
+
+<h2>Generation by type</h2>
+
+<table class="us-table">
+
+<thead>
+<tr>
+<th>Type</th>
+<th class="num">Power</th>
+<th class="num">Share</th>
+</tr>
+</thead>
+
+<tbody>
+
+
+<tr>
+<td>Fossils</td>
+
+<td class="num">
+3.3 GW</td>
+
+<td class="num">
+50.8%
+</td>
+
+</tr>
+
+
+<tr>
+<td>Renewables</td>
+
+<td class="num">
+2.1 GW</td>
+
+<td class="num">
+32.2%
+</td>
+
+</tr>
+
+
+<tr>
+<td>Others</td>
+
+<td class="num">
+1.1 GW</td>
+
+<td class="num">
+17.0%
+</td>
+
+</tr>
+
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="us-card">
+
+<h2>Demand summary</h2>
+
+<p>
+<strong>Generation:</strong>
+6.4 GW</p>
+
+<p>
+<strong>Demand:</strong>
+6.4 GW</p>
+
+<p>
+<strong>Source categories:</strong>
+5</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+    </main>
+
+    <footer>
+      <div>
+        Independent website using third-party energy data.
+      </div>
+    </footer>
+  </body>
+</html>

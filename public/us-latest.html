@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>US Energy Mix Live</title>
+    <meta name="description" content="Shows a live snapshot of US electric power generation from EIA data">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="grid.css?1774024321" type="text/css">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <script src="grid.js?1774016153" defer></script>
+  </head>
+  <body>
+    <main>
+      <section id="introduction">
+        <h1>US Energy Mix Live</h1>
+        <p>
+          Live electricity generation snapshot from EIA hourly fuel mix data
+        </p>
+        <p>
+          Time: 2026-03-22 06:00 UTC        </p>
+        <p>
+          UTC: 2026-03-22 06:00<br>
+          Eastern: 2026-03-22 02:00<br>
+          Central: 2026-03-22 01:00<br>
+          Mountain: 2026-03-22 00:00<br>
+          Pacific: 2026-03-21 23:00<br>
+        </p>
+      </section>
+
+<div class="pie-chart"><div><div>Generation</div><div class="generation"></div><div><span>5628.0</span>GW</div><div><span>100.0</span>%</div></div><svg viewBox="-1 -1 2 2" data-power="5628.0" data-percentage="100.0"><path class="coal" d="M0.0000,-1.0000A1,1 0 0 1 0.5334,-0.8458L0.4001,-0.6344A0.75,0.75 0 0 0 0.0000,-0.7500z" data-power="504.00" data-percentage="9.0"/><path class="gas" d="M0.5334,-0.8458A1,1 0 0 1 0.1996,0.9799L0.1497,0.7349A0.75,0.75 0 0 0 0.4001,-0.6344z" data-power="2130.00" data-percentage="37.8"/><path class="solar" d="M0.1996,0.9799A1,1 0 0 1 0.0881,0.9961L0.0661,0.7471A0.75,0.75 0 0 0 0.1497,0.7349z" data-power="101.00" data-percentage="1.8"/><path class="wind" d="M0.0881,0.9961A1,1 0 0 1 -0.7083,-0.7059L-0.5312,-0.5294A0.75,0.75 0 0 0 0.0661,0.7471z" data-power="2188.00" data-percentage="38.9"/><path class="hydro" d="M-0.7083,-0.7059A1,1 0 0 1 -0.0000,-1.0000L-0.0000,-0.7500A0.75,0.75 0 0 0 -0.5312,-0.5294z" data-power="705.00" data-percentage="12.5"/><path class="fossils" d="M0.0000,-0.7500A0.75,0.75 0 0 1 0.1497,0.7349L0.0998,0.4899A0.5,0.5 0 0 0 0.0000,-0.5000z" data-power="2634.0" data-percentage="46.8"/><path class="renewables" d="M0.1497,0.7349A0.75,0.75 0 1 1 -0.0000,-0.7500L-0.0000,-0.5000A0.5,0.5 0 1 0 0.0998,0.4899z" data-power="2994.0" data-percentage="53.2"/></svg></div>
+      <section>
+        <h2>US Generation Summary</h2>
+
+        <div class="columns">
+          <section>
+            <h3>Total generation</h3>
+            <p><strong>6166.00</strong></p>
+          </section>
+
+          <section>
+            <h3>Generation by type</h3>
+            <table>
+              <tbody>
+                <tr>
+                  <th>Fossil fuels</th>
+                  <td>2634.00</td>
+                  <td>4271.8</td>
+                </tr>
+                <tr>
+                  <th>Renewables</th>
+                  <td>2994.00</td>
+                  <td>4855.7</td>
+                </tr>
+                <tr>
+                  <th>Other sources</th>
+                  <td>538.00</td>
+                  <td>872.5</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+
+        <section>
+          <h3>Generation by source</h3>
+          <table>
+            <tbody>
+              <tr>
+                <th>Coal</th>
+                <td>504.00</td>
+                <td>817.4</td>
+              </tr>
+              <tr>
+                <th>Gas</th>
+                <td>2130.00</td>
+                <td>3454.4</td>
+              </tr>
+              <tr>
+                <th>Nuclear</th>
+                <td>0.00</td>
+                <td>0.0</td>
+              </tr>
+              <tr>
+                <th>Solar</th>
+                <td>101.00</td>
+                <td>163.8</td>
+              </tr>
+              <tr>
+                <th>Wind</th>
+                <td>2188.00</td>
+                <td>3548.5</td>
+              </tr>
+              <tr>
+                <th>Hydro</th>
+                <td>705.00</td>
+                <td>1143.4</td>
+              </tr>
+              <tr>
+                <th>Biomass</th>
+                <td>0.00</td>
+                <td>0.0</td>
+              </tr>
+              <tr>
+                <th>Oil</th>
+                <td>0.00</td>
+                <td>0.0</td>
+              </tr>
+              <tr>
+                <th>Other</th>
+                <td>538.00</td>
+                <td>872.5</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+    </main>
+
+    <footer>
+      <div>
+        Independent website using third-party energy data.
+      </div>
+    </footer>
+
+    <dialog>
+      <h2></h2>
+      <form method="dialog"><button><svg viewBox="0 0 30 30"><path d="M6,6 24,24"/><path d="M6,24 24,6"/></svg></button></form>
+      <div></div>
+    </dialog>
+  </body>
+</html>
