@@ -5,7 +5,10 @@ namespace KateMorley\Grid\UI;
 use KateMorley\Grid\State\UsState;
 
 class UsUI {
-  public static function output(UsState $state): void {
+  public static function output(
+    UsState $state,
+    string $assetPath = '../'
+  ): void {
     $sampleTime = strtotime((string)($state->latest['time'] ?? ''));
     $sourceLabel = htmlspecialchars(
       (string)($state->latest['source']['label'] ?? 'EIA'),
@@ -35,13 +38,13 @@ class UsUI {
     >
     <link
       rel="stylesheet"
-      href="../grid.css?<?= filemtime(__DIR__ . '/../../public/grid.css') ?>"
+      href="<?= htmlspecialchars($assetPath, ENT_QUOTES, 'UTF-8') ?>grid.css?<?= filemtime(__DIR__ . '/../../public/grid.css') ?>"
       type="text/css"
     >
-    <link rel="icon" href="../favicon.png" type="image/png">
-    <link rel="icon" href="../favicon.svg?<?= floor(time() / 300) ?>" type="image/svg+xml">
+    <link rel="icon" href="<?= htmlspecialchars($assetPath, ENT_QUOTES, 'UTF-8') ?>favicon.png" type="image/png">
+    <link rel="icon" href="<?= htmlspecialchars($assetPath, ENT_QUOTES, 'UTF-8') ?>favicon.svg?<?= floor(time() / 300) ?>" type="image/svg+xml">
     <script
-      src="../grid.js?<?= filemtime(__DIR__ . '/../../public/grid.js') ?>"
+      src="<?= htmlspecialchars($assetPath, ENT_QUOTES, 'UTF-8') ?>grid.js?<?= filemtime(__DIR__ . '/../../public/grid.js') ?>"
       defer
     ></script>
 <?php UsAds::outputHeadScript(); ?>
@@ -91,7 +94,7 @@ class UsUI {
     <footer id="us-footer">
       <div>
         Independent website using third-party energy data.
-        <a href="../privacy/">Privacy &amp; cookies</a>
+        <a href="<?= htmlspecialchars($assetPath, ENT_QUOTES, 'UTF-8') ?>privacy/">Privacy &amp; cookies</a>
       </div>
     </footer>
 

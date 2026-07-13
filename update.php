@@ -12,7 +12,6 @@ use KateMorley\Grid\Data\Pricing;
 use KateMorley\Grid\Data\Visits;
 use KateMorley\Grid\State\UsState;
 use KateMorley\Grid\UI\Favicon;
-use KateMorley\Grid\UI\UI;
 use KateMorley\Grid\UI\UsAds;
 use KateMorley\Grid\UI\UsUI;
 
@@ -57,10 +56,6 @@ foreach ([
   'Outputting files…    ' => function ($database) {
     $state = $database->getState();
 
-    ob_start();
-    UI::output($state);
-    file_put_contents(__DIR__ . '/public/index.html', ob_get_clean(), LOCK_EX);
-
     file_put_contents(
       __DIR__ . '/public/favicon.svg',
       Favicon::create($state->latest->types),
@@ -68,6 +63,10 @@ foreach ([
     );
 
     $usState = UsState::build();
+
+    ob_start();
+    UsUI::output($usState, './');
+    file_put_contents(__DIR__ . '/public/index.html', ob_get_clean(), LOCK_EX);
 
     $outputDir = __DIR__ . '/public/us';
 
