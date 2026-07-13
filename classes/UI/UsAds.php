@@ -4,6 +4,7 @@ namespace KateMorley\Grid\UI;
 
 class UsAds {
   private const CLIENT_ENV = 'GOOGLE_ADSENSE_CLIENT';
+  private const DEFAULT_CLIENT = 'ca-pub-9859724881253160';
   private const SLOTS = [
     'top' => 'GOOGLE_ADSENSE_SLOT_TOP',
     'mid' => 'GOOGLE_ADSENSE_SLOT_MID',
@@ -62,7 +63,9 @@ class UsAds {
   }
 
   private static function client(): string {
-    return trim((string)getenv(self::CLIENT_ENV));
+    $client = trim((string)getenv(self::CLIENT_ENV));
+
+    return $client !== '' ? $client : self::DEFAULT_CLIENT;
   }
 
   private static function publisherId(): string {
