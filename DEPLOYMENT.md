@@ -119,8 +119,9 @@ To enable it:
 2. In GitHub, open the repository settings.
 3. Go to **Secrets and variables** > **Actions**.
 4. Add a repository secret named `EIA_API_KEY`.
-5. Optional for adverts: add `GOOGLE_ADSENSE_CLIENT`,
-   `GOOGLE_ADSENSE_SLOT_TOP`, and `GOOGLE_ADSENSE_SLOT_MID`.
+5. Optional for fixed in-page adverts: add `GOOGLE_ADSENSE_SLOT_TOP` and
+   `GOOGLE_ADSENSE_SLOT_MID`. The site's AdSense publisher ID is already
+   configured in the application.
 6. Go to **Pages**.
 7. Set **Source** to **GitHub Actions**.
 8. Open the **Actions** tab.
@@ -144,17 +145,22 @@ long-running historical charts.
 Before applying to AdSense, deploy the site and confirm that the public privacy
 policy is available at `/privacy/` and linked from the US page footer.
 
-When the site is approved, add these to `.env`:
+The site's AdSense publisher ID is configured in the application so the loader
+and `ads.txt` are present during site review. When the site is approved, add
+these optional fixed in-page slot IDs to `.env`:
 
 ```text
-GOOGLE_ADSENSE_CLIENT=ca-pub-...
 GOOGLE_ADSENSE_SLOT_TOP=...
 GOOGLE_ADSENSE_SLOT_MID=...
 ```
 
-The page only emits AdSense markup when these values are present. The update
-script also writes `public/ads.txt` from `GOOGLE_ADSENSE_CLIENT`, so the public
-site will serve `/ads.txt` after the next successful update.
+`GOOGLE_ADSENSE_CLIENT` may still be set to override the configured publisher
+ID for another deployment.
+
+The page always emits the AdSense loader for the configured publisher. Fixed
+in-page ad units are emitted only when their slot IDs are present. The update
+script also writes `public/ads.txt`, so the public site will serve `/ads.txt`
+after the next successful update.
 
 You need these values from Google AdSense before adverts can go live:
 
