@@ -42,6 +42,8 @@ jobs:
           GOOGLE_ADSENSE_CLIENT=${{ secrets.GOOGLE_ADSENSE_CLIENT }}
           GOOGLE_ADSENSE_SLOT_TOP=${{ secrets.GOOGLE_ADSENSE_SLOT_TOP }}
           GOOGLE_ADSENSE_SLOT_MID=${{ secrets.GOOGLE_ADSENSE_SLOT_MID }}
+          GOOGLE_ADSENSE_SLOT_LEFT=${{ secrets.GOOGLE_ADSENSE_SLOT_LEFT }}
+          GOOGLE_ADSENSE_SLOT_RIGHT=${{ secrets.GOOGLE_ADSENSE_SLOT_RIGHT }}
           EOF
 
       - name: Build Docker services

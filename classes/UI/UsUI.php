@@ -65,7 +65,8 @@ class UsUI {
         </div>
       </nav>
     </header>
-    <main>
+    <div class="us-site-layout">
+      <main>
       <h1>US Electricity System: Live</h1>
       <p>
         The US electricity system is made up of regional power grids and balancing authorities that supply electricity across the country.
@@ -89,7 +90,18 @@ class UsUI {
 <?php UsAbout::output($state); ?>
       </div>
 
-    </main>
+      </main>
+
+      <aside class="us-ad-rail us-ad-rail-left" aria-label="Advertisement">
+        <span aria-hidden="true">Advertisement</span>
+<?php UsAds::outputSlot('left'); ?>
+      </aside>
+
+      <aside class="us-ad-rail us-ad-rail-right" aria-label="Advertisement">
+        <span aria-hidden="true">Advertisement</span>
+<?php UsAds::outputSlot('right'); ?>
+      </aside>
+    </div>
 
     <footer id="us-footer">
       <div>
