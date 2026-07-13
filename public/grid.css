@@ -1076,6 +1076,82 @@ body.us-grid [data-operator]::after {
   font-size: 18px;
 }
 
+@media screen and (min-width:960px) {
+  /* Balance the primary links around the centred site mark. */
+  body.us-grid header nav > div {
+    display: contents;
+  }
+
+  body.us-grid header nav > div > a:first-child {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  body.us-grid header nav > div > a:last-child {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: start;
+  }
+
+  body.us-grid header nav > div > a + a::after {
+    display: none;
+  }
+
+  body.us-grid main > p {
+    font-size: 19px;
+  }
+
+  /* Centre the headline equation without changing equations in the data tabs. */
+  body.us-grid #status section:last-child {
+    display: grid;
+    align-items: center;
+  }
+
+  body.us-grid #status section:last-child .us-equation {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 0.35em 4px;
+    align-items: center;
+    justify-items: center;
+  }
+
+  body.us-grid #status section:last-child .us-equation dt:nth-child(1),
+  body.us-grid #status section:last-child .us-equation dd:nth-child(2) {
+    grid-column: 1;
+  }
+
+  body.us-grid #status section:last-child .us-equation dt:nth-child(3),
+  body.us-grid #status section:last-child .us-equation dd:nth-child(4) {
+    grid-column: 3;
+  }
+
+  body.us-grid #status section:last-child .us-equation dt:nth-child(5),
+  body.us-grid #status section:last-child .us-equation dd:nth-child(6) {
+    grid-column: 5;
+  }
+
+  body.us-grid #status section:last-child .us-equation dd {
+    font-size: clamp(27px, 2.5vw, 36px);
+  }
+
+  body.us-grid #status section:last-child .us-equation::before,
+  body.us-grid #status section:last-child .us-equation::after {
+    align-self: center;
+    justify-self: center;
+    font-size: 30px;
+    line-height: 1;
+  }
+
+  body.us-grid #status section:last-child .us-equation::before {
+    grid-area: 2 / 2 / 3 / 3;
+  }
+
+  body.us-grid #status section:last-child .us-equation::after {
+    grid-area: 2 / 4 / 3 / 5;
+  }
+}
+
 body.us-grid main h2 {
   margin: -20px -20px 20px;
   padding: 15px 20px;
