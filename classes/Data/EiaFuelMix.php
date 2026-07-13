@@ -4,7 +4,7 @@ namespace KateMorley\Grid\Data;
 
 class EiaFuelMix {
   private const PAGE_LENGTH = 5000;
-  private const HISTORY_PAGES = 3;
+  private const HISTORY_PAGES = 1;
 
   /**
    * Maps EIA fuel codes to internal keys for the site.
@@ -55,7 +55,7 @@ class EiaFuelMix {
    */
   private static function fetchPage(string $apiKey, int $offset): array {
     $url = sprintf(
-      'https://api.eia.gov/v2/electricity/rto/fuel-type-data/data/?api_key=%s&frequency=hourly&data[0]=value&sort[0][column]=period&sort[0][direction]=desc&offset=%d&length=%d',
+      'https://api.eia.gov/v2/electricity/rto/fuel-type-data/data/?api_key=%s&frequency=hourly&data[0]=value&facets[respondent][]=US48&sort[0][column]=period&sort[0][direction]=desc&offset=%d&length=%d',
       urlencode($apiKey),
       $offset,
       self::PAGE_LENGTH
@@ -72,7 +72,19 @@ class EiaFuelMix {
       ]
     ]);
 
-    $rawData = @file_get_contents($url, false, $context);
+    $rawData = false;
+
+    for ($attempt = 0; $attempt < 3; $attempt ++) {
+      if ($attempt > 0) {
+        sleep($attempt);
+      }
+
+      $rawData = @file_get_contents($url, false, $context);
+
+      if ($rawData !== false) {
+        break;
+      }
+    }
 
     if ($rawData === false) {
       throw new DataException('Failed to read EIA fuel mix data');

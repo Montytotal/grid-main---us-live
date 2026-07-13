@@ -6,10 +6,10 @@ use KateMorley\Grid\State\UsState;
 
 class UsTabs {
   private const PERIODS = [
-    ['tab-panel-day', 'tab-day', 'Past day', 86400, 6, 'g:ia', 0],
-    ['tab-panel-week', 'tab-week', 'Past week', 604800, 24, 'D', 21600],
-    ['tab-panel-year', 'tab-year', 'Past year', 31536000, 168, 'j M', 86400],
-    ['tab-panel-all', 'tab-all', 'All time', null, 168, 'Y', 86400],
+    ['tab-panel-day', 'tab-day', 'Past day', 86400, 6, 'g:ia', 0, 'live'],
+    ['tab-panel-week', 'tab-week', 'Past week', 604800, 24, 'D', 21600, 'live'],
+    ['tab-panel-year', 'tab-year', 'Past year', 31536000, 168, 'j M', 86400, 'year'],
+    ['tab-panel-all', 'tab-all', 'All time', null, 168, 'Y', 86400, 'all'],
   ];
 
   private const SOURCE_META = [
@@ -38,6 +38,7 @@ class UsTabs {
 
   public static function output(UsState $state): void {
     $history = self::getHistory($state);
+    $historicalHistory = self::getHistoricalHistory($state);
 ?>
       <section>
         <div role="tablist">
@@ -49,13 +50,16 @@ class UsTabs {
 <?php
 
     foreach (self::PERIODS as $period) {
+      $series = self::periodSeries($history, $period[3]);
+
       self::outputPanel(
         $period[0],
         $period[1],
         $period[2],
         $state,
         $period[3],
-        self::periodSeries($history, $period[3]),
+        $series,
+        self::summarySeries($series, $historicalHistory, $period[7]),
         $period[4],
         $period[5],
         $period[6]
@@ -74,11 +78,12 @@ class UsTabs {
     UsState $state,
     ?int    $seconds,
     array   $series,
+    array   $summarySeries,
     int     $timeStep,
     string  $timeFormat,
     int     $averageSeconds
   ): void {
-    $generationMap = self::averageGeneration($series);
+    $generationMap = self::averageGeneration($summarySeries ?: $series);
     $generation = array_sum($generationMap);
     $sourceRows = self::getSourceRows($generationMap);
     $typeRows = self::getTypeRows($generationMap);
@@ -233,6 +238,42 @@ class UsTabs {
     return $history;
   }
 
+  private static function getHistoricalHistory(UsState $state): array {
+    $history = $state->latest['historical_generation']['history'] ?? [];
+
+    if (!is_array($history)) {
+      return [];
+    }
+
+    $history = array_values(array_filter(
+      $history,
+      static fn ($point) => isset($point['timestamp'], $point['generation'])
+    ));
+
+    usort(
+      $history,
+      static fn ($a, $b) => ((int)$a['timestamp']) <=> ((int)$b['timestamp'])
+    );
+
+    return $history;
+  }
+
+  private static function summarySeries(
+    array  $liveSeries,
+    array  $historicalSeries,
+    string $range
+  ): array {
+    if (!$historicalSeries || $range === 'live') {
+      return $liveSeries;
+    }
+
+    if ($range === 'year') {
+      return array_slice($historicalSeries, -12);
+    }
+
+    return $historicalSeries;
+  }
+
   private static function hasField(array $series, string $field): bool {
     foreach ($series as $point) {
       if (isset($point[$field])) {
@@ -383,20 +424,28 @@ class UsTabs {
 
   private static function averageGeneration(array $series): array {
     $generation = self::emptyGeneration();
+    $totalWeight = 0.0;
 
     foreach ($series as $point) {
-      foreach ($generation as $key => $value) {
-        $generation[$key] += max(
-          0.0,
-          (float)($point['generation'][$key] ?? 0)
-        );
+      $weight = max(0.0, (float)($point['weight'] ?? 1));
+
+      if ($weight <= 0) {
+        continue;
       }
+
+      foreach ($generation as $key => $value) {
+        $generation[$key] += max(0.0, (float)(
+          $point['generation'][$key] ?? 0
+        )) * $weight;
+      }
+
+      $totalWeight += $weight;
     }
 
-    $count = max(1, count($series));
+    $totalWeight = max(1.0, $totalWeight);
 
     foreach ($generation as $key => $value) {
-      $generation[$key] = $value / $count;
+      $generation[$key] = $value / $totalWeight;
     }
 
     return $generation;
