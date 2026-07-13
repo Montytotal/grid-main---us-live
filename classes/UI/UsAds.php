@@ -8,6 +8,8 @@ class UsAds {
   private const SLOTS = [
     'top' => 'GOOGLE_ADSENSE_SLOT_TOP',
     'mid' => 'GOOGLE_ADSENSE_SLOT_MID',
+    'left' => 'GOOGLE_ADSENSE_SLOT_LEFT',
+    'right' => 'GOOGLE_ADSENSE_SLOT_RIGHT',
   ];
 
   public static function outputHeadScript(): void {
@@ -39,8 +41,8 @@ class UsAds {
           style="display:block"
           data-ad-client="<?= htmlspecialchars($client, ENT_QUOTES, 'UTF-8') ?>"
           data-ad-slot="<?= htmlspecialchars($slotId, ENT_QUOTES, 'UTF-8') ?>"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
+          data-ad-format="<?= self::format($slot) ?>"
+          data-full-width-responsive="<?= self::isSideRail($slot) ? 'false' : 'true' ?>"
         ></ins>
         <script>
           (adsbygoogle = window.adsbygoogle || []).push({});
@@ -88,5 +90,13 @@ class UsAds {
     }
 
     return trim((string)getenv(self::SLOTS[$slot]));
+  }
+
+  private static function format(string $slot): string {
+    return self::isSideRail($slot) ? 'vertical' : 'auto';
+  }
+
+  private static function isSideRail(string $slot): bool {
+    return $slot === 'left' || $slot === 'right';
   }
 }

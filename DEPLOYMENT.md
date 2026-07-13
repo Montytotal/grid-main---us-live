@@ -119,8 +119,9 @@ To enable it:
 2. In GitHub, open the repository settings.
 3. Go to **Secrets and variables** > **Actions**.
 4. Add a repository secret named `EIA_API_KEY`.
-5. Optional for fixed in-page adverts: add `GOOGLE_ADSENSE_SLOT_TOP` and
-   `GOOGLE_ADSENSE_SLOT_MID`. The site's AdSense publisher ID is already
+5. Optional for fixed adverts: add `GOOGLE_ADSENSE_SLOT_TOP`,
+   `GOOGLE_ADSENSE_SLOT_MID`, `GOOGLE_ADSENSE_SLOT_LEFT`, and
+   `GOOGLE_ADSENSE_SLOT_RIGHT`. The site's AdSense publisher ID is already
    configured in the application.
 6. Go to **Pages**.
 7. Set **Source** to **GitHub Actions**.
@@ -152,21 +153,27 @@ these optional fixed in-page slot IDs to `.env`:
 ```text
 GOOGLE_ADSENSE_SLOT_TOP=...
 GOOGLE_ADSENSE_SLOT_MID=...
+GOOGLE_ADSENSE_SLOT_LEFT=...
+GOOGLE_ADSENSE_SLOT_RIGHT=...
 ```
 
 `GOOGLE_ADSENSE_CLIENT` may still be set to override the configured publisher
 ID for another deployment.
 
 The page always emits the AdSense loader for the configured publisher. Fixed
-in-page ad units are emitted only when their slot IDs are present. The update
-script also writes `public/ads.txt`, so the public site will serve `/ads.txt`
-after the next successful update.
+ad units are emitted only when their slot IDs are present. The left and right
+vertical rails appear only on desktop viewports at least 1760 pixels wide, so
+they do not squeeze the central data layout. The update script also writes
+`public/ads.txt`, so the public site will serve `/ads.txt` after the next
+successful update.
 
 You need these values from Google AdSense before adverts can go live:
 
 - Publisher ID, usually shown as `ca-pub-0000000000000000`
 - Top banner ad slot ID
 - Middle banner ad slot ID
+- Left vertical ad slot ID
+- Right vertical ad slot ID
 
 The AdSense loader also supports Auto ads. To place ads on both sides of the
 page on wide screens, open the site in AdSense, edit **Auto ads**, open
