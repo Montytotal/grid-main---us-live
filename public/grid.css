@@ -956,6 +956,40 @@ body.us-grid #status section:first-child dd {
   font-size: clamp(18px, 1.6vw, 26px);
 }
 
+/* Keep the longer source timestamp inside the status card. */
+body.us-grid #status section:first-child {
+  min-width: 0;
+}
+
+body.us-grid #status section:first-child dl {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body.us-grid #status section:first-child dt:nth-child(1),
+body.us-grid #status section:first-child dd:nth-child(2) {
+  grid-column: 1 / -1;
+}
+
+body.us-grid #status section:first-child dt:nth-child(3),
+body.us-grid #status section:first-child dd:nth-child(4) {
+  grid-column: 1;
+}
+
+body.us-grid #status section:first-child dt:nth-child(5),
+body.us-grid #status section:first-child dd:nth-child(6) {
+  grid-column: 2;
+}
+
+body.us-grid #status section:first-child dt:nth-child(3),
+body.us-grid #status section:first-child dt:nth-child(5) {
+  grid-row: 3;
+}
+
+body.us-grid #status section:first-child dd:nth-child(4),
+body.us-grid #status section:first-child dd:nth-child(6) {
+  grid-row: 4;
+}
+
 body.us-grid [role="tabpanel"] dl {
   gap: 0.35em 0.85em;
 }
@@ -1081,6 +1115,39 @@ body.us-grid .us-ad .adsbygoogle {
 body.us-grid footer {
   color: #555;
   font-size: 0.9rem;
+}
+
+body.us-grid footer a,
+body.us-grid.privacy-page main a {
+  color: #9ecbff;
+}
+
+body.us-grid footer a {
+  margin-left: 0.75rem;
+}
+
+body.us-grid.privacy-page main {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+body.us-grid.privacy-page main > * {
+  max-width: 900px;
+}
+
+body.us-grid.privacy-page section p,
+body.us-grid.privacy-page section li {
+  line-height: 1.55;
+}
+
+body.us-grid.privacy-page section ul {
+  padding-left: 1.25rem;
+}
+
+body.us-grid.privacy-page .privacy-updated {
+  color: #aaa;
+  font-size: 0.95rem;
 }
 
 @media screen and (max-width:959px) {
