@@ -24,6 +24,9 @@ class UsAbout {
             The EIA-930 data used here cover the Lower 48 states and are supplied by balancing authorities. They do not provide a complete picture of every US electric system, and reported generation can exclude distributed resources, including rooftop solar, or resources that a balancing authority does not directly monitor.
           </p>
           <p>
+            The past-year and all-time generation pies and source tables use monthly EIA-923 US generation data. The past year means the latest 12 published months, while all time begins with the available series in 2001. EIA-923 is published several months in arrears, so these longer-range summaries do not end at the reporting hour shown for the live EIA-930 data.
+          </p>
+          <p>
             Generation, demand, and interchange are reported separately and can have different coverage, revisions, and reporting times. The figures may therefore not reconcile exactly, and the demand-minus-generation value must not be read as a measured real-time transfer.
           </p>
           <p>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace KateMorley\Grid\State;
 
+use KateMorley\Grid\Data\EiaHistoricalGeneration;
 use KateMorley\Grid\Data\UsLatestGeneration;
 use KateMorley\Grid\Data\UsLatestOperations;
 use KateMorley\Grid\Data\UsStateMap;
@@ -26,6 +27,17 @@ class UsState
     public static function build(): self
     {
         $latest = UsLatestGeneration::fetch();
+
+        try {
+            $latest['historical_generation'] = EiaHistoricalGeneration::fetch();
+        } catch (\Throwable $e) {
+            $latest['historical_generation'] = [
+                'history' => [],
+                'diagnostics' => [
+                    'error' => $e->getMessage(),
+                ],
+            ];
+        }
 
         try {
             $latest['operations'] = UsLatestOperations::fetch();
