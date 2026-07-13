@@ -141,6 +141,9 @@ long-running historical charts.
 
 ## Google AdSense
 
+Before applying to AdSense, deploy the site and confirm that the public privacy
+policy is available at `/privacy/` and linked from the US page footer.
+
 When the site is approved, add these to `.env`:
 
 ```text
@@ -158,6 +161,19 @@ You need these values from Google AdSense before adverts can go live:
 - Publisher ID, usually shown as `ca-pub-0000000000000000`
 - Top banner ad slot ID
 - Middle banner ad slot ID
+
+The AdSense loader also supports Auto ads. To place ads on both sides of the
+page on wide screens, open the site in AdSense, edit **Auto ads**, open
+**Overlay formats**, enable **Side rail ads**, and choose **Left and right**.
+Auto side rails use the publisher client ID and do not require separate ad-slot
+IDs in this repository.
+
+Before enabling ads for visitors in the EEA, the UK, or Switzerland, open
+**Privacy & messaging** in AdSense and publish a Google-certified European
+regulations message. Use the deployed `/privacy/` URL as the privacy-policy URL
+and enable the choices appropriate for the site. AdSense automatically adds its
+consent-revocation control to approved sites using its European regulations
+message.
 
 ## Quick Health Checks
 

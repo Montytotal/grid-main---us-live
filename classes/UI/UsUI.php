@@ -21,7 +21,7 @@ class UsUI {
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-    <title>US Grid: Live</title>
+    <title>US Electricity System: Live</title>
     <meta
       name="description"
       content="Live electricity generation snapshot for the United States using <?= $sourceLabel ?> fuel-mix data"
@@ -49,16 +49,13 @@ class UsUI {
   <body class="us-grid">
     <header aria-label="Site">
       <nav>
-        <a href="/us/">
+        <a href="./" aria-label="US Electricity System: Live">
           <svg viewBox="0 0 160 160" role="img" aria-labelledby="us-grid-logo-title">
-            <title id="us-grid-logo-title">US Grid</title>
+            <title id="us-grid-logo-title">US Electricity System</title>
             <path d="M80 8 22 42v76l58 34 58-34V42zM40 52l40-24 40 24v56l-40 24-40-24z"/>
             <path d="M54 86h52v16H54zm0-28h52v16H54z"/>
           </svg>
         </a>
-        <div>
-          <a href="/us/" class="section">US</a>
-        </div>
         <div>
           <a href="#latest">Live</a>
           <a href="#transition">Data</a>
@@ -66,9 +63,9 @@ class UsUI {
       </nav>
     </header>
     <main>
-      <h1>US Grid: Live</h1>
+      <h1>US Electricity System: Live</h1>
       <p>
-        The US grid is the electric power system for the United States
+        The US electricity system is made up of regional power grids and balancing authorities that supply electricity across the country.
       </p>
 
       <div id="status" class="columns">
@@ -94,6 +91,7 @@ class UsUI {
     <footer id="us-footer">
       <div>
         Independent website using third-party energy data.
+        <a href="../privacy/">Privacy &amp; cookies</a>
       </div>
     </footer>
 

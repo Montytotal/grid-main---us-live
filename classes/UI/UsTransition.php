@@ -16,7 +16,7 @@ class UsTransition {
             This prototype currently shows the latest EIA national fuel-mix snapshot, recent fuel-mix trends, and US-wide demand and transfer trends where those feeds publish them. It does not yet include storage charging and discharge, prices, or emissions.
           </p>
           <p>
-            As more US data paths are added, this section can track the same long-term changes shown by the live mix above, using US-wide data rather than Great Britain data.
+            As more US data sources are added, this section can track longer-term changes in the national energy mix.
           </p>
         </section>
 <?php
