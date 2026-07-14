@@ -50,17 +50,7 @@ class UsLatestView
         );
 
         $totalGeneration = array_sum($sources);
-        $matchedOperations = self::operationsAtTime(
-            $latest,
-            (string)($latest['time'] ?? '')
-        );
-        $demand = $totalGeneration;
-        $transfers = null;
-
-        if (isset($matchedOperations['demand'])) {
-            $demand = max(0.0, (float)$matchedOperations['demand']);
-            $transfers = $demand - $totalGeneration;
-        }
+        $equation = self::latestEquation($latest);
 
         $sourceLabel = (string)($latest['source']['label'] ?? 'EIA');
 
@@ -73,30 +63,35 @@ class UsLatestView
 
             'sources' => self::rows($sources, $totalGeneration),
             'types'   => self::rows($types, $totalGeneration),
+            'equation' => $equation,
 
             'summary' => [
                 'generation'   => $totalGeneration,
-                'demand'       => $demand,
-                'transfers'    => $transfers,
                 'source_count' => count($sources),
                 'largest_source' => self::largestSource($sources),
             ],
         ];
     }
 
-    private static function operationsAtTime(array $latest, string $time): array
+    private static function latestEquation(array $latest): array
     {
-        if ($time === '') {
+        $operations = $latest['operations']['latest']['balance'] ?? [];
+
+        if (!is_array($operations) || !isset(
+            $operations['demand'],
+            $operations['generation'],
+            $operations['net_imports']
+        )) {
             return [];
         }
 
-        $operations = $latest['operations']['by_time'] ?? [];
-
-        if (!is_array($operations)) {
-            return [];
-        }
-
-        return is_array($operations[$time] ?? null) ? $operations[$time] : [];
+        return [
+            'time' => (string)($operations['time'] ?? ''),
+            'timestamp' => (int)($operations['timestamp'] ?? 0),
+            'demand' => max(0.0, (float)$operations['demand']),
+            'generation' => max(0.0, (float)$operations['generation']),
+            'net_imports' => (float)$operations['net_imports'],
+        ];
     }
 
     private static function largestSource(array $sources): array

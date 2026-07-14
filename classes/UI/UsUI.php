@@ -9,15 +9,20 @@ class UsUI {
     UsState $state,
     string $assetPath = '../'
   ): void {
-    $sampleTime = strtotime((string)($state->latest['time'] ?? ''));
+    $sampleTime = (int)($state->view['equation']['timestamp'] ?? 0);
+    $timeLabel = $sampleTime > 0 ? 'Balance time' : 'Fuel-mix time';
     $sourceLabel = htmlspecialchars(
       (string)($state->latest['source']['label'] ?? 'EIA'),
       ENT_QUOTES,
       'UTF-8'
     );
 
-    if ($sampleTime === false) {
-      $sampleTime = time();
+    if ($sampleTime <= 0) {
+      $sampleTime = strtotime((string)($state->latest['time'] ?? ''));
+
+      if ($sampleTime === false) {
+        $sampleTime = time();
+      }
     }
 
     $isCanonicalHome = $assetPath === './';
@@ -29,7 +34,7 @@ class UsUI {
     <title>US Electricity Grid Data: Energy Mix &amp; Demand | USPowerData</title>
     <meta
       name="description"
-      content="See the latest US electricity grid data, including power generation by source, demand, cross-border transfers and historical energy mix trends from the <?= $sourceLabel ?>."
+      content="See the latest US electricity grid data, including power generation by source, demand, net cross-border flow and historical energy mix trends from the <?= $sourceLabel ?>."
     >
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="canonical" href="https://uspowerdata.com/">
@@ -39,7 +44,7 @@ class UsUI {
     <meta property="og:title" content="US Electricity Grid Data: Energy Mix &amp; Demand">
     <meta
       property="og:description"
-      content="Explore the latest US electricity generation mix, reported demand, cross-border transfers and historical EIA trends."
+      content="Explore the latest US electricity generation mix, reported demand, net cross-border flow and historical EIA trends."
     >
     <meta property="og:url" content="https://uspowerdata.com/">
 <?php if ($isCanonicalHome) { ?>
@@ -50,7 +55,7 @@ class UsUI {
         "name": "US Power Data",
         "alternateName": ["USPowerData", "uspowerdata.com"],
         "url": "https://uspowerdata.com/",
-        "description": "US electricity grid data covering generation by source, reported demand, cross-border transfers and historical energy mix trends.",
+        "description": "US electricity grid data covering generation by source, reported demand, net cross-border flow and historical energy mix trends.",
         "inLanguage": "en-US"
       }
     </script>
@@ -122,12 +127,12 @@ class UsUI {
       <main>
       <h1>US Electricity Grid Data</h1>
       <p>
-        Explore the latest available US power data, including electricity generation by source, reported demand and cross-border transfers. Compare the past day, week, year and all-time energy mix using EIA data, which typically arrives with at least a one-day delay.
+        Explore the latest available US power data, including electricity generation by source, reported demand and net cross-border flow. Compare the past day, week, year and all-time energy mix using EIA data, which typically arrives with at least a one-day delay.
       </p>
 
       <div id="status" class="columns">
         <section>
-<?php UsStatus::output($state, UsStatus::time($sampleTime), true); ?>
+<?php UsStatus::output($state, UsStatus::time($sampleTime), $timeLabel); ?>
         </section>
         <section>
 <?php UsEquation::output($state); ?>

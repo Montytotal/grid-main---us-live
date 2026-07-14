@@ -6,10 +6,10 @@ use KateMorley\Grid\State\UsState;
 
 class UsTabs {
   private const PERIODS = [
-    ['tab-panel-day', 'tab-day', 'Past day', 86400, 6, 'g:ia', 0, 'live'],
-    ['tab-panel-week', 'tab-week', 'Past week', 604800, 24, 'D', 21600, 'live'],
-    ['tab-panel-year', 'tab-year', 'Past year', 31536000, 168, 'j M', 86400, 'year'],
-    ['tab-panel-all', 'tab-all', 'All time', null, 168, 'Y', 86400, 'all'],
+    ['tab-panel-day', 'tab-day', 'Past day', 86400, 6, 'g:ia', 0, 'live', true],
+    ['tab-panel-week', 'tab-week', 'Past week', 604800, 24, 'D', 21600, 'live', true],
+    ['tab-panel-year', 'tab-year', 'Past year', 31536000, 168, 'j M', 86400, 'year', false],
+    ['tab-panel-all', 'tab-all', 'All time', null, 168, 'Y', 86400, 'all', false],
   ];
 
   private const SOURCE_META = [
@@ -49,7 +49,7 @@ class UsTabs {
           <button type="button" id="tab-all" role="tab" aria-controls="tab-panel-all" aria-selected="false" data-period="all-time" tabindex="-1">All<span> time</span></button>
         </div>
         <p class="history-lede">
-          Compare US electricity demand, generation by energy source and reported cross-border transfers over the past day, week, year or all available history. Select a period to update every chart and generation summary below.
+          Compare recent US demand, generation and net cross-border flow over the past day or week. Past year and all time use the longer-running generation series; full-range demand and interchange history has not yet been loaded on this site.
         </p>
 <?php
 
@@ -66,7 +66,8 @@ class UsTabs {
         self::summarySeries($series, $historicalHistory, $period[7]),
         $period[4],
         $period[5],
-        $period[6]
+        $period[6],
+        $period[8]
       );
     }
 
@@ -85,19 +86,49 @@ class UsTabs {
     array   $summarySeries,
     int     $timeStep,
     string  $timeFormat,
-    int     $averageSeconds
+    int     $averageSeconds,
+    bool    $showOperations
   ): void {
-    $generationMap = self::averageGeneration($summarySeries ?: $series);
+    $generationSeries = $showOperations
+      ? ($summarySeries ?: $series)
+      : $summarySeries;
+    $generationMap = self::averageGeneration($generationSeries);
     $generation = array_sum($generationMap);
+    $hasGeneration = $generationSeries && $generation > 0;
     $sourceRows = self::getSourceRows($generationMap);
     $typeRows = self::getTypeRows($generationMap);
-    $operationSeries = self::periodSeries(
-      self::getOperationHistory($state),
+    $operationHistory = self::getOperationHistory($state);
+    $demandHistory = self::fieldSeries($operationHistory, 'demand');
+    $flowHistory = self::fieldSeries($operationHistory, 'net_imports');
+    $balanceHistory = self::completeSeries(
+      $operationHistory,
+      ['demand', 'generation', 'net_imports']
+    );
+    $demandSeries = self::periodSeries(
+      $demandHistory,
       $seconds
     );
-    $graphSeries = self::averageFuelSeries($series, $averageSeconds);
-    $operationGraphSeries = self::averageOperationSeries(
-      $operationSeries,
+    $flowSeries = self::periodSeries($flowHistory, $seconds);
+    $balanceSeries = self::periodSeries($balanceHistory, $seconds);
+    $hasDemandCoverage = $showOperations
+      && self::hasPeriodCoverage($demandSeries, $seconds);
+    $hasFlowCoverage = $showOperations
+      && self::hasPeriodCoverage($flowSeries, $seconds);
+    $hasBalanceCoverage = $showOperations
+      && self::hasPeriodCoverage($balanceSeries, $seconds);
+    $equation = $hasBalanceCoverage
+      ? self::averageBalanceSummary($balanceSeries)
+      : [];
+    $graphSeries = self::averageFuelSeries(
+      $generationSeries,
+      $averageSeconds
+    );
+    $demandGraphSeries = self::averageOperationSeries(
+      $demandSeries,
+      $averageSeconds
+    );
+    $flowGraphSeries = self::averageOperationSeries(
+      $flowSeries,
       $averageSeconds
     );
 ?>
@@ -106,16 +137,26 @@ class UsTabs {
 <?php UsStatus::output($state, $title); ?>
           </div>
           <div>
-<?php UsEquation::output($state, $generation); ?>
+<?php UsEquation::output($state, $equation); ?>
           </div>
           <div>
-<?php UsPieChart::output($sourceRows, $typeRows, $generation); ?>
+<?php
+  if ($hasGeneration) {
+    UsPieChart::output($sourceRows, $typeRows, $generation);
+  } else {
+    UsGraph::outputUnavailable('Generation history is unavailable for this period');
+  }
+?>
           </div>
           <div>
+<?php if ($hasGeneration) { ?>
             <h3>Generation by type</h3>
 <?php self::outputRows($typeRows, $generation, $title . ' generation by type'); ?>
             <h3>Generation by source</h3>
 <?php self::outputRows($sourceRows, $generation, $title . ' generation by source'); ?>
+<?php } else { ?>
+<?php UsGraph::outputUnavailable('Generation history is unavailable for this period'); ?>
+<?php } ?>
           </div>
           <div>
             <h3>Price per MWh</h3>
@@ -128,9 +169,9 @@ class UsTabs {
           <div>
             <h3>Demand</h3>
 <?php
-  if (self::hasField($operationGraphSeries, 'demand')) {
+  if ($hasDemandCoverage && self::hasField($demandGraphSeries, 'demand')) {
     UsGraph::outputField(
-      $operationGraphSeries,
+      $demandGraphSeries,
       'demand',
       'demand',
       'GW',
@@ -139,38 +180,29 @@ class UsTabs {
       1
     );
   } else {
-    UsGraph::outputTotal($graphSeries, 'demand', 'GW', $timeStep, $timeFormat, 1);
+    UsGraph::outputUnavailable(
+      'Full-range US demand history is not loaded for this period'
+    );
   }
 ?>
           </div>
           <div>
             <h3>Generation</h3>
-<?php UsGraph::outputSources($graphSeries, 'GW', $timeStep, $timeFormat, 2); ?>
+<?php
+  if ($hasGeneration) {
+    UsGraph::outputSources($graphSeries, 'GW', $timeStep, $timeFormat, 2);
+  } else {
+    UsGraph::outputUnavailable('Generation history is unavailable for this period');
+  }
+?>
           </div>
           <div>
-            <h3>Transfers</h3>
+            <h3>Net cross-border flow</h3>
 <?php
-  if (
-    self::hasField($operationGraphSeries, 'canada')
-    || self::hasField($operationGraphSeries, 'mexico')
-  ) {
-    UsGraph::outputFields(
-      $operationGraphSeries,
-      [
-        'canada' => 'canada',
-        'mexico' => 'mexico',
-        'transfers' => 'transfers',
-      ],
-      'GW',
-      $timeStep,
-      $timeFormat,
-      1,
-      true
-    );
-  } elseif (self::hasField($operationGraphSeries, 'transfers')) {
+  if ($hasFlowCoverage && self::hasField($flowGraphSeries, 'net_imports')) {
     UsGraph::outputField(
-      $operationGraphSeries,
-      'transfers',
+      $flowGraphSeries,
+      'net_imports',
       'transfers',
       'GW',
       $timeStep,
@@ -178,8 +210,13 @@ class UsTabs {
       1,
       true
     );
+    self::outputFlowCoverage($flowSeries);
   } else {
-    UsGraph::outputUnavailable('No US transfer series is available yet');
+    UsGraph::outputUnavailable(
+      $showOperations
+        ? 'Recent cross-border flow is temporarily incomplete for this period.'
+        : 'Cross-border history is not yet loaded for this range. Select Past day or Past week for recent flows.'
+    );
   }
 ?>
           </div>
@@ -242,6 +279,111 @@ class UsTabs {
     return $history;
   }
 
+  private static function fieldSeries(array $history, string $field): array {
+    return array_values(array_filter(
+      $history,
+      static fn ($point) => isset($point['timestamp'], $point[$field])
+    ));
+  }
+
+  private static function completeSeries(array $history, array $fields): array {
+    return array_values(array_filter(
+      $history,
+      static function ($point) use ($fields): bool {
+        if (!isset($point['timestamp'])) {
+          return false;
+        }
+
+        foreach ($fields as $field) {
+          if (!isset($point[$field])) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+    ));
+  }
+
+  private static function hasPeriodCoverage(
+    array $series,
+    ?int  $seconds
+  ): bool {
+    if ($seconds === null || count($series) < 2) {
+      return false;
+    }
+
+    $timestamps = array_map(
+      static fn ($point) => (int)$point['timestamp'],
+      $series
+    );
+
+    sort($timestamps);
+
+    if (max($timestamps) - min($timestamps) < max(0, $seconds - 7200)) {
+      return false;
+    }
+
+    $minimumSamples = max(2, (int)floor(($seconds / 3600) * 0.75));
+
+    if (count($timestamps) < $minimumSamples) {
+      return false;
+    }
+
+    for ($index = 1; $index < count($timestamps); $index ++) {
+      if ($timestamps[$index] - $timestamps[$index - 1] > 14400) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private static function averageBalanceSummary(array $series): array {
+    $series = self::completeSeries(
+      $series,
+      ['demand', 'generation', 'net_imports']
+    );
+
+    if (!$series) {
+      return [];
+    }
+
+    $sums = [
+      'demand' => 0.0,
+      'generation' => 0.0,
+      'net_imports' => 0.0,
+    ];
+
+    foreach ($series as $point) {
+      foreach ($sums as $field => $sum) {
+        $sums[$field] += (float)$point[$field];
+      }
+    }
+
+    $count = count($series);
+
+    return array_map(
+      static fn ($sum) => $sum / $count,
+      $sums
+    );
+  }
+
+  private static function outputFlowCoverage(array $series): void {
+    if (!$series) {
+      return;
+    }
+
+    $first = (int)$series[0]['timestamp'];
+    $last = (int)$series[count($series) - 1]['timestamp'];
+?>
+            <p class="transfer-coverage">
+              Coverage: <?= gmdate('j M Y, g:ia', $first) ?>&ndash;<?= gmdate('j M Y, g:ia', $last) ?> UTC.
+              Above zero shows net imports; below zero shows net exports. Missing reporting hours are omitted.
+            </p>
+<?php
+  }
+
   private static function getHistoricalHistory(UsState $state): array {
     $history = $state->latest['historical_generation']['history'] ?? [];
 
@@ -267,8 +409,12 @@ class UsTabs {
     array  $historicalSeries,
     string $range
   ): array {
-    if (!$historicalSeries || $range === 'live') {
+    if ($range === 'live') {
       return $liveSeries;
+    }
+
+    if (!$historicalSeries) {
+      return [];
     }
 
     if ($range === 'year') {
@@ -352,7 +498,7 @@ class UsTabs {
     $fields = [
       'demand',
       'generation',
-      'transfers',
+      'net_imports',
       'interchange',
       'canada',
       'mexico',

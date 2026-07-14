@@ -60,16 +60,20 @@ class UsLatestSection {
         </section>
 
         <section id="transfers">
-          <h2>Transfers</h2>
+          <h2>Cross-border flow by country</h2>
 <?php
-    $transferRows = self::getTransferRows($state);
+    $transferData = self::getTransferData($state);
 
-    if ($transferRows) {
-      self::outputTransferRows($transferRows);
+    if ($transferData['rows']) {
+      self::outputTransferRows($transferData['rows']);
+      self::outputTransferTime(
+        (int)$transferData['timestamp'],
+        (bool)$transferData['complete']
+      );
     } else {
       self::outputUnavailableRows([[
         'class' => 'transfers',
-        'label' => 'Regional flows'
+        'label' => 'Country breakdown'
       ]]);
     }
 ?>
@@ -254,29 +258,41 @@ class UsLatestSection {
 <?php
   }
 
-  private static function getTransferRows(UsState $state): array {
-    $latest = $state->latest['operations']['latest'] ?? [];
+  private static function getTransferData(UsState $state): array {
+    $snapshot = $state->latest['operations']['latest']['country'] ?? [];
+    $values = is_array($snapshot['values'] ?? null)
+      ? $snapshot['values']
+      : [];
     $rows = [];
 
     foreach ([
       'canada' => ['class' => 'canada', 'label' => 'Canada'],
       'mexico' => ['class' => 'mexico', 'label' => 'Mexico'],
-      'transfers' => ['class' => 'transfers', 'label' => 'Total'],
     ] as $field => $meta) {
-      $point = $latest[$field] ?? null;
-
-      if (!is_array($point) || !isset($point['value'])) {
+      if (!isset($values[$field])) {
         continue;
       }
 
       $rows[] = [
         'class' => $meta['class'],
         'label' => $meta['label'],
-        'power' => (float)$point['value'],
+        'power' => (float)$values[$field],
       ];
     }
 
-    return $rows;
+    if (isset($snapshot['total'])) {
+      $rows[] = [
+        'class' => 'transfers',
+        'label' => 'Canada + Mexico',
+        'power' => (float)$snapshot['total'],
+      ];
+    }
+
+    return [
+      'rows' => $rows,
+      'timestamp' => (int)($snapshot['timestamp'] ?? 0),
+      'complete' => (bool)($snapshot['complete'] ?? false),
+    ];
   }
 
   private static function outputTransferRows(array $rows): void {
@@ -301,6 +317,24 @@ class UsLatestSection {
 
 ?>
           </table>
+<?php
+  }
+
+  private static function outputTransferTime(
+    int  $timestamp,
+    bool $complete
+  ): void {
+    if ($timestamp <= 0) {
+      return;
+    }
+?>
+          <p class="transfer-reporting-time">
+            <?= $complete ? 'Latest complete' : 'Latest available partial' ?> country report:
+            <?= UsStatus::time($timestamp) ?>.
+            <?= $complete
+              ? 'Country data normally arrive later than the overall flow.'
+              : 'One country has not yet reported for this hour.' ?>
+          </p>
 <?php
   }
 

@@ -1058,6 +1058,19 @@ body.us-grid .us-equation dd {
   font-size: clamp(32px, 3vw, 52px);
 }
 
+body.us-grid .us-equation[data-equals]::before {
+  content: attr(data-equals);
+}
+
+body.us-grid #transfers .transfer-reporting-time,
+body.us-grid .transfer-coverage {
+  margin: 10px 0 0;
+  color: #bbb;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+}
+
 body.us-grid #status section:first-child dd {
   font-size: clamp(18px, 1.6vw, 26px);
 }
