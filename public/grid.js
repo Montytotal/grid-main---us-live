@@ -6,7 +6,7 @@ const LABELS = {
   fossils     : 'Fossil fuels',
   renewables  : 'Renewables',
   others      : 'Other sources',
-  transfers   : 'Transfers',
+  transfers   : 'Net cross-border flow',
   coal        : 'Coal',
   gas         : 'Gas',
   solar       : 'Solar',

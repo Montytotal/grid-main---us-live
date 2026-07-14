@@ -5,31 +5,49 @@ namespace KateMorley\Grid\UI;
 use KateMorley\Grid\State\UsState;
 
 class UsEquation {
-  public static function output(UsState $state, ?float $generation = null): void {
-    $useSummary = ($generation === null);
-    $generation ??= (float)($state->view['summary']['generation'] ?? 0);
-    $demand = $useSummary
-      ? (float)($state->view['summary']['demand'] ?? $generation)
-      : $generation;
-    $transfers = $useSummary
-      ? ($state->view['summary']['transfers'] ?? null)
-      : null;
+  public static function output(UsState $state, ?array $equation = null): void {
+    $equation ??= is_array($state->view['equation'] ?? null)
+      ? $state->view['equation']
+      : [];
+
+    $demand = self::value($equation, 'demand');
+    $generation = self::value($equation, 'generation');
+    $netImports = self::value($equation, 'net_imports');
+    $available = $demand !== null
+      && $generation !== null
+      && $netImports !== null;
+    $isExport = $available && $netImports < 0;
+    $flowLabel = !$available || $netImports === 0.0
+      ? 'Net flow'
+      : ($isExport ? 'Net exports' : 'Net imports');
 ?>
-          <dl class="us-equation" data-operator="+">
+          <dl
+            class="us-equation<?= $available ? '' : ' is-unavailable' ?>"
+            data-equals="<?= $available ? '&asymp;' : '' ?>"
+            data-operator="<?= $available ? ($isExport ? '&minus;' : '+') : '' ?>"
+          >
             <dt>Demand</dt>
-            <dd><?= Value::formatTotalPower($demand) ?><abbr>GW</abbr></dd>
-            <dt>Generation</dt>
-            <dd><?= Value::formatTotalPower($generation) ?><abbr>GW</abbr></dd>
-            <dt>Transfers</dt>
-            <dd><?php
-              if ($transfers === null) {
-                echo '&mdash;';
-              } else {
-                echo Value::formatTotalPower((float)$transfers);
-                echo '<abbr>GW</abbr>';
-              }
-            ?></dd>
+            <dd><?= self::formatPower($demand) ?></dd>
+            <dt>Net generation</dt>
+            <dd><?= self::formatPower($generation) ?></dd>
+            <dt><?= $flowLabel ?></dt>
+            <dd><?= self::formatPower($netImports, true) ?></dd>
           </dl>
 <?php
+  }
+
+  private static function value(array $equation, string $field): ?float {
+    return isset($equation[$field]) && is_numeric($equation[$field])
+      ? (float)$equation[$field]
+      : null;
+  }
+
+  private static function formatPower(?float $value, bool $absolute = false): string {
+    if ($value === null) {
+      return '&mdash;';
+    }
+
+    return Value::formatTotalPower($absolute ? abs($value) : $value)
+      . '<abbr>GW</abbr>';
   }
 }
