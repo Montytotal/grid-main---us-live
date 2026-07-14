@@ -52,13 +52,21 @@ jobs:
       - name: Wait for services
         run: sleep 20
 
+      - name: Remove stale generated files
+        run: rm -f public/index.html public/us/index.html public/ads.txt
+
       - name: Generate static site
         run: docker compose exec -T php php /var/grid/update.php
 
       - name: Check generated files
         run: |
-          test -f public/index.html
-          test -f public/us/index.html
+          test -s public/index.html
+          test -s public/us/index.html
+          test -s public/ads.txt
+          grep -Fq 'ca-pub-9859724881253160' public/index.html
+          grep -Fxq 'google.com, pub-9859724881253160, DIRECT, f08c47fec0942fa0' public/ads.txt
+          grep -Fq 'User-agent: Google-Display-Ads-Bot' public/robots.txt
+          grep -Fq 'User-agent: Mediapartners-Google' public/robots.txt
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -71,3 +79,40 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify public AdSense endpoints
+        run: |
+          for url in \
+            http://uspowerdata.com/ \
+            https://uspowerdata.com/ \
+            http://www.uspowerdata.com/ \
+            https://www.uspowerdata.com/
+          do
+            curl --fail --silent --show-error --location \
+              --retry 6 --retry-delay 10 --retry-all-errors \
+              --connect-timeout 10 --max-time 30 \
+              --user-agent 'Google-Display-Ads-Bot' \
+              "$url" -o /dev/null
+          done
+
+          curl --fail --silent --show-error --location \
+            --retry 6 --retry-delay 10 --retry-all-errors \
+            --connect-timeout 10 --max-time 30 \
+            --user-agent 'Google-Display-Ads-Bot' \
+            https://uspowerdata.com/ -o /tmp/uspowerdata-index.html
+          grep -Fq 'ca-pub-9859724881253160' /tmp/uspowerdata-index.html
+
+          curl --fail --silent --show-error --location \
+            --retry 6 --retry-delay 10 --retry-all-errors \
+            --connect-timeout 10 --max-time 30 \
+            --user-agent 'Mediapartners-Google' \
+            https://uspowerdata.com/robots.txt -o /tmp/uspowerdata-robots.txt
+          grep -Fq 'User-agent: *' /tmp/uspowerdata-robots.txt
+          grep -Fq 'Allow: /' /tmp/uspowerdata-robots.txt
+
+          curl --fail --silent --show-error --location \
+            --retry 6 --retry-delay 10 --retry-all-errors \
+            --connect-timeout 10 --max-time 30 \
+            --user-agent 'Mediapartners-Google' \
+            https://uspowerdata.com/ads.txt -o /tmp/uspowerdata-ads.txt
+          grep -Fxq 'google.com, pub-9859724881253160, DIRECT, f08c47fec0942fa0' /tmp/uspowerdata-ads.txt

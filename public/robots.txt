@@ -1,6 +1,12 @@
 User-agent: ia_archiver
 Disallow: /
 
+User-agent: Google-Display-Ads-Bot
+Allow: /
+
+User-agent: Mediapartners-Google
+Allow: /
+
 User-agent: *
 Allow: /
 
