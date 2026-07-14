@@ -47,7 +47,35 @@ class UsUI {
       src="<?= htmlspecialchars($assetPath, ENT_QUOTES, 'UTF-8') ?>grid.js?<?= filemtime(__DIR__ . '/../../public/grid.js') ?>"
       defer
     ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+
+      gtag('consent', 'default', {
+        'analytics_storage': 'granted'
+      });
+
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied',
+        'wait_for_update': 500,
+        'region': [
+          'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR',
+          'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL',
+          'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'IS', 'LI', 'NO',
+          'GB', 'CH'
+        ]
+      });
+    </script>
 <?php UsAds::outputHeadScript(); ?>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DDT6043DWS"></script>
+    <script>
+      gtag('js', new Date());
+      gtag('config', 'G-DDT6043DWS');
+    </script>
   </head>
   <body class="us-grid">
     <header aria-label="Site">

@@ -188,6 +188,13 @@ and enable the choices appropriate for the site. AdSense automatically adds its
 consent-revocation control to approved sites using its European regulations
 message.
 
+In that European regulations message's settings, enable **Consent mode** so the
+visitor's choice updates Google Analytics as well as advertising consent. The
+site sets analytics and advertising storage to denied by default in the EEA, the
+UK, and Switzerland, then waits for Google's consent platform to update those
+settings. The configured Google Analytics 4 measurement ID is
+`G-DDT6043DWS`.
+
 ## Quick Health Checks
 
 From the server:
