@@ -36,8 +36,11 @@ class UsLatestSection {
           <div class="pie-chart-container">
             <?php UsPieChart::output($sourceRows, $typeRows, $generation); ?>
           </div>
-          <div>
-            Percentages are shares of displayed generation.
+          <div class="generation-notes">
+            <p>Percentages are shares of displayed generation.</p>
+            <p>
+              The &ldquo;Other sources&rdquo; group combines nuclear, biomass and the &ldquo;Other&rdquo; bucket. That bucket contains EIA-reported Other, geothermal and any unmapped fuel types.
+            </p>
           </div>
         </section>
 
