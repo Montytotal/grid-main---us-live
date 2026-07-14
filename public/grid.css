@@ -995,6 +995,19 @@ body.us-grid #storage p {
   text-align: center;
 }
 
+body.us-grid #generation .generation-notes p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+body.us-grid #generation .generation-notes p + p {
+  margin-top: 8px;
+  color: #bbb;
+  font-size: 14px;
+  line-height: 18px;
+}
+
 body.us-grid dl {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.35em 0.75em;
