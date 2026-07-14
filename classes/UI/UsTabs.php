@@ -40,13 +40,17 @@ class UsTabs {
     $history = self::getHistory($state);
     $historicalHistory = self::getHistoricalHistory($state);
 ?>
-      <section>
-        <div role="tablist">
-          <h2 id="tab-day" role="tab" aria-controls="tab-panel-day" aria-selected="true"><span>Past </span>day</h2>
-          <h2 id="tab-week" role="tab" aria-controls="tab-panel-week" aria-selected="false"><span>Past </span>week</h2>
-          <h2 id="tab-year" role="tab" aria-controls="tab-panel-year" aria-selected="false"><span>Past </span>year</h2>
-          <h2 id="tab-all" role="tab" aria-controls="tab-panel-all" aria-selected="false">All<span> time</span></h2>
+      <section id="history" aria-labelledby="history-heading">
+        <h2 id="history-heading" class="visually-hidden">US electricity data by time period</h2>
+        <div role="tablist" aria-label="Select a time period">
+          <button type="button" id="tab-day" role="tab" aria-controls="tab-panel-day" aria-selected="true" data-period="past-day" tabindex="0"><span>Past </span>day</button>
+          <button type="button" id="tab-week" role="tab" aria-controls="tab-panel-week" aria-selected="false" data-period="past-week" tabindex="-1"><span>Past </span>week</button>
+          <button type="button" id="tab-year" role="tab" aria-controls="tab-panel-year" aria-selected="false" data-period="past-year" tabindex="-1"><span>Past </span>year</button>
+          <button type="button" id="tab-all" role="tab" aria-controls="tab-panel-all" aria-selected="false" data-period="all-time" tabindex="-1">All<span> time</span></button>
         </div>
+        <p class="history-lede">
+          Compare US electricity demand, generation by energy source and reported cross-border transfers over the past day, week, year or all available history. Select a period to update every chart and generation summary below.
+        </p>
 <?php
 
     foreach (self::PERIODS as $period) {
@@ -109,9 +113,9 @@ class UsTabs {
           </div>
           <div>
             <h3>Generation by type</h3>
-<?php self::outputRows($typeRows, $generation); ?>
+<?php self::outputRows($typeRows, $generation, $title . ' generation by type'); ?>
             <h3>Generation by source</h3>
-<?php self::outputRows($sourceRows, $generation); ?>
+<?php self::outputRows($sourceRows, $generation, $title . ' generation by source'); ?>
           </div>
           <div>
             <h3>Price per MWh</h3>
@@ -511,17 +515,22 @@ class UsTabs {
     return $rows;
   }
 
-  private static function outputRows(array $rows, float $generation): void {
+  private static function outputRows(
+    array  $rows,
+    float  $generation,
+    string $caption
+  ): void {
 ?>
             <table class="sources">
+              <caption class="visually-hidden"><?= htmlspecialchars($caption, ENT_QUOTES, 'UTF-8') ?></caption>
 <?php
 
     foreach ($rows as $row) {
       echo '              <tr><td class="';
       echo htmlspecialchars($row['class'], ENT_QUOTES, 'UTF-8');
-      echo '"></td><td>';
+      echo '"></td><th scope="row">';
       echo htmlspecialchars($row['label'], ENT_QUOTES, 'UTF-8');
-      echo '</td><td>';
+      echo '</th><td>';
       echo Value::formatPower((float)$row['power']);
       echo '</td><td>';
       echo Value::formatPercentage($generation > 0 ? ((float)$row['power'] / $generation) : 0);

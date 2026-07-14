@@ -32,7 +32,7 @@ class UsLatestSection {
 ?>
       <div id="latest">
         <section id="generation">
-          <h2>Generation</h2>
+          <h2>Latest generation mix</h2>
           <div class="pie-chart-container">
             <?php UsPieChart::output($sourceRows, $typeRows, $generation); ?>
           </div>
@@ -46,17 +46,17 @@ class UsLatestSection {
 
         <section id="fossils">
           <h2><?= self::formatGenerationPercentage(self::getRowPower($typeRows, 'fossils'), $generation) ?>% fossil fuels</h2>
-<?php self::outputRows(self::getRowsByClasses($sourceRows, ['coal', 'gas', 'oil']), $generation); ?>
+<?php self::outputRows(self::getRowsByClasses($sourceRows, ['coal', 'gas', 'oil']), $generation, 'Fossil fuel generation'); ?>
         </section>
 
         <section id="renewables">
           <h2><?= self::formatGenerationPercentage(self::getRowPower($typeRows, 'renewables'), $generation) ?>% renewables</h2>
-<?php self::outputRows(self::getRowsByClasses($sourceRows, ['solar', 'wind', 'hydro']), $generation); ?>
+<?php self::outputRows(self::getRowsByClasses($sourceRows, ['solar', 'wind', 'hydro']), $generation, 'Renewable electricity generation'); ?>
         </section>
 
         <section id="others">
           <h2><?= self::formatGenerationPercentage(self::getRowPower($typeRows, 'others'), $generation) ?>% other sources</h2>
-<?php self::outputRows(self::getRowsByClasses($sourceRows, ['nuclear', 'biomass', 'others']), $generation); ?>
+<?php self::outputRows(self::getRowsByClasses($sourceRows, ['nuclear', 'biomass', 'others']), $generation, 'Other electricity generation sources'); ?>
         </section>
 
         <section id="transfers">
@@ -77,7 +77,7 @@ class UsLatestSection {
 
         <section id="storage">
           <h2>Storage</h2>
-<?php self::outputUnavailableRows([['class' => 'battery', 'label' => 'Battery storage']]); ?>
+<?php self::outputUnavailableRows([['class' => 'battery', 'label' => 'Battery storage']], 'Battery storage availability'); ?>
         </section>
       </div>
 <?php
@@ -198,20 +198,22 @@ class UsLatestSection {
   }
 
   private static function outputRows(
-    array $rows,
-    float $generation,
-    bool  $isTotal = false
+    array  $rows,
+    float  $generation,
+    string $caption,
+    bool   $isTotal = false
   ): void {
 ?>
           <table class="sources">
+            <caption class="visually-hidden"><?= htmlspecialchars($caption, ENT_QUOTES, 'UTF-8') ?></caption>
 <?php
 
     foreach ($rows as $row) {
       echo '            <tr><td class="';
       echo htmlspecialchars($row['class'], ENT_QUOTES, 'UTF-8');
-      echo '"></td><td>';
+      echo '"></td><th scope="row">';
       echo htmlspecialchars($row['label'], ENT_QUOTES, 'UTF-8');
-      echo '</td><td>';
+      echo '</th><td>';
 
       if ($isTotal) {
         echo Value::formatTotalPower((float)$row['power']);
@@ -229,17 +231,21 @@ class UsLatestSection {
 <?php
   }
 
-  private static function outputUnavailableRows(array $rows): void {
+  private static function outputUnavailableRows(
+    array  $rows,
+    string $caption = 'Unavailable electricity data'
+  ): void {
 ?>
           <table class="sources">
+            <caption class="visually-hidden"><?= htmlspecialchars($caption, ENT_QUOTES, 'UTF-8') ?></caption>
 <?php
 
     foreach ($rows as $row) {
       echo '            <tr><td class="';
       echo htmlspecialchars($row['class'], ENT_QUOTES, 'UTF-8');
-      echo '"></td><td>';
+      echo '"></td><th scope="row">';
       echo htmlspecialchars($row['label'], ENT_QUOTES, 'UTF-8');
-      echo '</td><td>&mdash;</td><td>&mdash;</td></tr>';
+      echo '</th><td>&mdash;</td><td>&mdash;</td></tr>';
       echo "\n";
     }
 
@@ -276,6 +282,7 @@ class UsLatestSection {
   private static function outputTransferRows(array $rows): void {
 ?>
           <table class="sources transfer-table">
+            <caption class="visually-hidden">Latest reported US cross-border electricity transfers</caption>
 <?php
 
     foreach ($rows as $row) {
@@ -283,9 +290,9 @@ class UsLatestSection {
 
       echo '            <tr><td class="';
       echo htmlspecialchars($row['class'], ENT_QUOTES, 'UTF-8');
-      echo '"></td><td>';
+      echo '"></td><th scope="row">';
       echo htmlspecialchars($row['label'], ENT_QUOTES, 'UTF-8');
-      echo '</td><td>';
+      echo '</th><td>';
       echo Value::formatPower(abs($power));
       echo '</td><td>';
       echo $power >= 0 ? 'import' : 'export';

@@ -12,8 +12,8 @@ class UsAbout {
       'UTF-8'
     );
 ?>
-        <section>
-          <h2>About this site</h2>
+        <section id="about">
+          <h2>About the data</h2>
           <p>
             This is a best-effort public view of <?= $sourceLabel ?> hourly grid data, not a real-time operational dashboard or a complete national accounting of electricity flows.
           </p>
