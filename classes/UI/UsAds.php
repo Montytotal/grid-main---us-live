@@ -67,7 +67,15 @@ class UsAds {
   private static function client(): string {
     $client = trim((string)getenv(self::CLIENT_ENV));
 
-    return $client !== '' ? $client : self::DEFAULT_CLIENT;
+    if (preg_match('/^pub-[0-9]+$/', $client)) {
+      $client = 'ca-' . $client;
+    }
+
+    if (preg_match('/^ca-pub-[0-9]+$/', $client)) {
+      return $client;
+    }
+
+    return self::DEFAULT_CLIENT;
   }
 
   private static function publisherId(): string {
