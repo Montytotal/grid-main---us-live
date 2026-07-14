@@ -28,6 +28,8 @@ const LABELS = {
 }
 
 const KEY_MARGIN = 8
+const REFRESH_INTERVAL = 30 * 60 * 1000
+const REFRESH_OFFSET = 2 * 60 * 1000
 
 const IDS_TO_UPDATE = [
   'status',
@@ -51,9 +53,14 @@ document.body.addEventListener('click', handleClick)
 let tabList = document.querySelector('[role="tablist"]')
 
 if (tabList) {
-  selectTab(tabList, tabList.firstElementChild)
+  let initialTab = getTabFromHash(tabList)
+    || tabList.querySelector('[aria-selected="true"]')
+    || tabList.firstElementChild
+
+  selectTab(tabList, initialTab)
   tabList.addEventListener('click', handleTabClick)
   tabList.addEventListener('keydown', handleTabKeyDown)
+  window.addEventListener('hashchange', handleTabHashChange)
 }
 
 addGraphListeners()
@@ -105,7 +112,7 @@ function updatePieChartKey(e, showDetails) {
 }
 
 // Selects a tab
-function selectTab(tabList, tab) {
+function selectTab(tabList, tab, updateHash = false) {
   if (!tabList || !tab) {
     return
   }
@@ -126,14 +133,40 @@ function selectTab(tabList, tab) {
       panel.style.display = (selected ? 'grid' : 'none')
     }
   }
+
+  if (updateHash && tab.dataset.period) {
+    window.history.replaceState(null, '', '#' + tab.dataset.period)
+  }
+}
+
+// Finds a range tab from a shareable URL fragment.
+function getTabFromHash(tabList) {
+  let period = window.location.hash.substring(1)
+
+  for (let tab of tabList.children) {
+    if (tab.dataset.period === period) {
+      return tab
+    }
+  }
+
+  return null
+}
+
+// Updates the selected range when a shared period URL is opened.
+function handleTabHashChange() {
+  let tab = getTabFromHash(tabList)
+
+  if (tab) {
+    selectTab(tabList, tab)
+  }
 }
 
 // Handles a click on a tab
 function handleTabClick(e) {
   if (e.target.parentNode === this) {
-    selectTab(this, e.target)
+    selectTab(this, e.target, true)
   } else if (e.target.parentNode.parentNode === this) {
-    selectTab(this, e.target.parentNode)
+    selectTab(this, e.target.parentNode, true)
   }
 }
 
@@ -141,7 +174,7 @@ function handleTabClick(e) {
 function handleTabKeyDown(e) {
   let tabs  = Array.from(this.children)
   let count = tabs.length
-  let index = tabs.indexOf(this.querySelector('[aria-selected="true"'))
+  let index = tabs.indexOf(this.querySelector('[aria-selected="true"]'))
 
   let preventDefault = true
 
@@ -157,7 +190,7 @@ function handleTabKeyDown(e) {
     e.preventDefault()
   }
 
-  selectTab(this, tabs[index])
+  selectTab(this, tabs[index], true)
   tabs[index].focus()
 }
 
@@ -221,30 +254,33 @@ function hideGraphKey() {
   key.remove()
 }
 
-// Schedules an update. Updates occur every five minutes, with an offset of two
+// Schedules an update after each 30-minute site build, with an offset of two
 // minutes plus a visitor-specific random delay of up to a minute to reduce
-// server load.
+// simultaneous requests.
 function scheduleUpdate() {
-  setTimeout(update, (420000 - (Date.now() % 300000)  + delay) % 300000)
+  setTimeout(
+    update,
+    (
+      REFRESH_INTERVAL
+      + REFRESH_OFFSET
+      - (Date.now() % REFRESH_INTERVAL)
+      + delay
+    ) % REFRESH_INTERVAL
+  )
 }
 
 // Updates the user interface. The 'unscheduled' flag is used for updates
 // triggered when the page becomes visible again after updates were suspended
 // while the page was not visible.
 function update(unscheduled) {
-  let time = Math.floor(Date.now() / 300000)
+  let time = Math.floor(Date.now() / REFRESH_INTERVAL)
 
-  if (unscheduled && (Date.now() % 300000) < (120000 + delay)) {
+  if (
+    unscheduled
+    && (Date.now() % REFRESH_INTERVAL) < (REFRESH_OFFSET + delay)
+  ) {
     time --
   }
-
-  document.querySelectorAll('link[type*="svg"]').forEach(link => {
-    let href = link.getAttribute('href')
-
-    if (href) {
-      link.href = href.split('?')[0] + '?' + time
-    }
-  })
 
   if (document.visibilityState === 'visible') {
     fetch('?v=' + time).then(response => response.text()).then(html => {

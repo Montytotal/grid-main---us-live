@@ -20,16 +20,41 @@ class UsUI {
       $sampleTime = time();
     }
 
+    $isCanonicalHome = $assetPath === './';
+
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-    <title>US Electricity System: Live</title>
+    <title>US Electricity Grid Data: Energy Mix &amp; Demand | USPowerData</title>
     <meta
       name="description"
-      content="Live electricity generation snapshot for the United States using <?= $sourceLabel ?> fuel-mix data"
+      content="See the latest US electricity grid data, including power generation by source, demand, cross-border transfers and historical energy mix trends from the <?= $sourceLabel ?>."
     >
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="canonical" href="https://uspowerdata.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="US Power Data">
+    <meta property="og:title" content="US Electricity Grid Data: Energy Mix &amp; Demand">
+    <meta
+      property="og:description"
+      content="Explore the latest US electricity generation mix, reported demand, cross-border transfers and historical EIA trends."
+    >
+    <meta property="og:url" content="https://uspowerdata.com/">
+<?php if ($isCanonicalHome) { ?>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "US Power Data",
+        "alternateName": ["USPowerData", "uspowerdata.com"],
+        "url": "https://uspowerdata.com/",
+        "description": "US electricity grid data covering generation by source, reported demand, cross-border transfers and historical energy mix trends.",
+        "inLanguage": "en-US"
+      }
+    </script>
+<?php } ?>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -80,24 +105,24 @@ class UsUI {
   <body class="us-grid">
     <header aria-label="Site">
       <nav>
-        <a href="./" aria-label="US Electricity System: Live">
+        <a href="<?= htmlspecialchars($assetPath, ENT_QUOTES, 'UTF-8') ?>" aria-label="US Power Data home">
           <svg viewBox="0 0 160 160" role="img" aria-labelledby="us-grid-logo-title">
-            <title id="us-grid-logo-title">US Electricity System</title>
+            <title id="us-grid-logo-title">US Power Data</title>
             <path d="M80 8 22 42v76l58 34 58-34V42zM40 52l40-24 40 24v56l-40 24-40-24z"/>
             <path d="M54 86h52v16H54zm0-28h52v16H54z"/>
           </svg>
         </a>
         <div>
           <a href="#latest">Live</a>
-          <a href="#transition">Data</a>
+          <a href="#history">Data</a>
         </div>
       </nav>
     </header>
     <div class="us-site-layout">
       <main>
-      <h1>US Electricity System: Live</h1>
+      <h1>US Electricity Grid Data</h1>
       <p>
-        The US electricity system is made up of regional power grids and balancing authorities that supply electricity across the country.
+        Explore the latest available US power data, including electricity generation by source, reported demand and cross-border transfers. Compare the past day, week, year and all-time energy mix using EIA data, which typically arrives with at least a one-day delay.
       </p>
 
       <div id="status" class="columns">
@@ -133,13 +158,18 @@ class UsUI {
 
     <footer id="us-footer">
       <div>
-        Independent website using third-party energy data.
-        <a href="<?= htmlspecialchars($assetPath, ENT_QUOTES, 'UTF-8') ?>privacy/">Privacy &amp; cookies</a>
+        <p>Independent website using third-party energy data.</p>
+        <nav aria-label="Footer">
+          <a href="#latest">Latest generation</a>
+          <a href="#history">Historical trends</a>
+          <a href="#about">About the data</a>
+          <a href="<?= htmlspecialchars($assetPath, ENT_QUOTES, 'UTF-8') ?>privacy/">Privacy &amp; cookies</a>
+        </nav>
       </div>
     </footer>
 
     <dialog>
-      <h2></h2>
+      <h2>Chart details</h2>
       <form method="dialog"><button><svg viewBox="0 0 30 30"><path d="M6,6 24,24"/><path d="M6,24 24,6"/></svg></button></form>
       <div></div>
     </dialog>

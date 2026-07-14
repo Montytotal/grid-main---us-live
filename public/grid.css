@@ -36,12 +36,21 @@
   }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
-
 *,
 ::before,
 ::after {
   box-sizing: border-box;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
 }
 
 html {
@@ -428,7 +437,8 @@ dd:nth-child(6) {
   color: inherit;
 }
 
-.sources td {
+.sources td,
+.sources th {
   vertical-align: top;
 }
 
@@ -452,9 +462,15 @@ dd:nth-child(6) {
   background: transparent;
 }
 
-.sources td:nth-child(2) {
+.sources td:nth-child(2),
+.sources th:nth-child(2) {
   width: 100%;
   padding: 0 0 1em 0.5em;
+}
+
+.sources th {
+  font-weight: inherit;
+  text-align: left;
 }
 
 .sources td:nth-child(3),
@@ -531,35 +547,44 @@ dd:nth-child(6) {
   margin: -1rem -1rem 1rem;
 }
 
-[role="tablist"] h2 {
+[role="tablist"] [role="tab"] {
   margin: 0;
+  padding: 0.75rem 1rem;
+  border: 0;
   border-radius: 0;
+  background: var(--heading-background);
+  color: var(--heading-text);
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
   text-align: center;
   -webkit-user-select: none;
   user-select: none;
 }
 
-[role="tablist"] h2:first-child {
+[role="tablist"] [role="tab"]:first-child {
   border-top-left-radius: var(--rounding);
 }
 
-[role="tablist"] h2:last-child {
+[role="tablist"] [role="tab"]:last-child {
   border-top-right-radius: var(--rounding);
 }
 
-h2[aria-selected="true"] {
+[role="tab"][aria-selected="true"] {
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
   background: var(--selected-background);
   color: var(--content-text);
 }
 
-h2[aria-selected="false"] {
+[role="tab"][aria-selected="false"] {
   cursor: pointer;
 }
 
 @media screen and (max-width:34rem) {
-  [role="tablist"] h2 {
+  [role="tablist"] [role="tab"] {
     text-transform: capitalize;
   }
 
@@ -569,14 +594,14 @@ h2[aria-selected="false"] {
 }
 
 [role="tabpanel"] {
-  display: grid;
+  display: none;
   grid-template-columns: 1fr var(--table-width) 1fr;
   grid-template-areas: "pie status demand" "pie equation demand" "pie table demand" "price table generation" "emissions table transfers";
   gap: 1rem 3rem;
 }
 
-[role="tabpanel"]:nth-child(n + 3) {
-  display: none;
+[role="tabpanel"][aria-labelledby="tab-day"] {
+  display: grid;
 }
 
 [role="tabpanel"] > div {
@@ -1188,16 +1213,21 @@ body.us-grid [role="tablist"] {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
-body.us-grid [role="tablist"] h2 {
+body.us-grid [role="tablist"] [role="tab"] {
   margin: 0;
   padding: 15px 10px;
   border-radius: 0;
   background: #444;
   color: #ddd;
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0;
   box-shadow: none;
 }
 
-body.us-grid [role="tablist"] h2[aria-selected="true"] {
+body.us-grid [role="tablist"] [role="tab"][aria-selected="true"] {
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   background: #181818;
@@ -1205,9 +1235,17 @@ body.us-grid [role="tablist"] h2[aria-selected="true"] {
   box-shadow: inset 0 -3px 0 #aaa;
 }
 
-body.us-grid [role="tablist"] h2[aria-selected="false"]:hover {
+body.us-grid [role="tablist"] [role="tab"][aria-selected="false"]:hover {
   background: #555;
   color: #fff;
+}
+
+body.us-grid .history-lede {
+  max-width: 62rem;
+  margin: 0 0 24px;
+  color: #ccc;
+  font-size: 17px;
+  line-height: 25px;
 }
 
 body.us-grid #generation h2 {
@@ -1219,7 +1257,7 @@ body.us-grid #fossils h2 {
 }
 
 body.us-grid #renewables h2 {
-  background: #5b5;
+  background: #287f3f;
 }
 
 body.us-grid #others h2 {
@@ -1261,12 +1299,43 @@ body.us-grid .sources td:nth-child(1)::after {
   height: 0.9em;
 }
 
-body.us-grid .sources td:nth-child(2) {
+body.us-grid .sources td:nth-child(2),
+body.us-grid .sources th:nth-child(2) {
   padding-left: 0.5rem;
+}
+
+body.us-grid [role="tab"]:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid #fff;
+  outline-offset: -4px;
 }
 
 body.us-grid [role="tabpanel"] h3 + h3 {
   margin-top: 1rem;
+}
+
+body.us-grid .data-guide h3 {
+  margin: 1.25rem 0 0.4rem;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 23px;
+  text-align: left;
+}
+
+body.us-grid .data-guide h3:first-of-type {
+  margin-top: 0;
+}
+
+body.us-grid .data-guide p {
+  margin: 0;
+  color: #ccc;
+  line-height: 1.5;
+}
+
+body.us-grid .data-guide a {
+  color: #9ecbff;
 }
 
 body.us-grid .graph {
@@ -1307,13 +1376,24 @@ body.us-grid footer {
   font-size: 0.9rem;
 }
 
+body.us-grid footer p {
+  margin: 0 0 0.5rem;
+}
+
+body.us-grid footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 0.5rem;
+}
+
 body.us-grid footer a,
 body.us-grid.privacy-page main a {
   color: #9ecbff;
 }
 
 body.us-grid footer a {
-  margin-left: 0.75rem;
+  margin: 0;
 }
 
 body.us-grid.privacy-page main {
