@@ -48,10 +48,10 @@ class UsTabs {
       <section id="history" aria-labelledby="history-heading">
         <h2 id="history-heading" class="visually-hidden">US electricity data by time period</h2>
         <div role="tablist" aria-label="Select a time period">
-          <button type="button" id="tab-day" role="tab" aria-controls="tab-panel-day" aria-selected="true" data-period="past-day" tabindex="0"><span>Past </span>day</button>
-          <button type="button" id="tab-week" role="tab" aria-controls="tab-panel-week" aria-selected="false" data-period="past-week" tabindex="-1"><span>Past </span>week</button>
-          <button type="button" id="tab-year" role="tab" aria-controls="tab-panel-year" aria-selected="false" data-period="past-year" tabindex="-1"><span>Past </span>year</button>
-          <button type="button" id="tab-all" role="tab" aria-controls="tab-panel-all" aria-selected="false" data-period="all-time" tabindex="-1">All<span> time</span></button>
+          <button type="button" id="tab-day" role="tab" aria-label="Past day" aria-controls="tab-panel-day" aria-selected="true" data-period="past-day" tabindex="0"><span>Past </span>day</button>
+          <button type="button" id="tab-week" role="tab" aria-label="Past week" aria-controls="tab-panel-week" aria-selected="false" data-period="past-week" tabindex="-1"><span>Past </span>week</button>
+          <button type="button" id="tab-year" role="tab" aria-label="Past year" aria-controls="tab-panel-year" aria-selected="false" data-period="past-year" tabindex="-1"><span>Past </span>year</button>
+          <button type="button" id="tab-all" role="tab" aria-label="All time" aria-controls="tab-panel-all" aria-selected="false" data-period="all-time" tabindex="-1">All<span> time</span></button>
         </div>
         <p class="history-lede">
           Compare US demand, generation and net cross-border flow across each period. Past year and all time use daily EIA-930 operations from 2019 alongside monthly EIA-923 generation from 2001; their exact coverage differs and is shown with the data.
@@ -104,22 +104,15 @@ class UsTabs {
     $typeRows = self::getTypeRows($generationMap);
     $showOperations = $operationSource !== '';
     $operationHistory = self::getOperationHistory($state, $operationSource);
-    $demandHistory = self::fieldSeries($operationHistory, 'demand');
-    $flowHistory = self::fieldSeries($operationHistory, 'net_imports');
     $balanceHistory = self::completeSeries(
       $operationHistory,
       ['demand', 'generation', 'net_imports']
     );
-    $demandSeries = self::periodSeries(
-      $demandHistory,
-      $seconds
-    );
-    $flowSeries = self::periodSeries($flowHistory, $seconds);
     $balanceSeries = self::periodSeries($balanceHistory, $seconds);
     $hasDemandCoverage = $showOperations
-      && self::hasPeriodCoverage($demandSeries, $seconds, $operationInterval);
+      && self::hasPeriodCoverage($balanceSeries, $seconds, $operationInterval);
     $hasFlowCoverage = $showOperations
-      && self::hasPeriodCoverage($flowSeries, $seconds, $operationInterval);
+      && self::hasPeriodCoverage($balanceSeries, $seconds, $operationInterval);
     $hasBalanceCoverage = $showOperations
       && self::hasPeriodCoverage($balanceSeries, $seconds, $operationInterval);
     $equation = $hasBalanceCoverage
@@ -130,11 +123,11 @@ class UsTabs {
       $averageSeconds
     );
     $demandGraphSeries = self::averageOperationSeries(
-      $demandSeries,
+      $balanceSeries,
       $operationAverageSeconds
     );
     $flowGraphSeries = self::averageOperationSeries(
-      $flowSeries,
+      $balanceSeries,
       $operationAverageSeconds
     );
 ?>
@@ -223,7 +216,7 @@ class UsTabs {
       1,
       true
     );
-    self::outputFlowCoverage($flowSeries, $operationInterval);
+    self::outputFlowCoverage($balanceSeries, $operationInterval);
   } else {
     UsGraph::outputUnavailable(
       $showOperations

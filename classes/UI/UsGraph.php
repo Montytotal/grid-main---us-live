@@ -269,14 +269,16 @@ class UsGraph {
     echo '<div>';
 
     for ($label = $maximum; $label >= $minimum; $label -= $step) {
-      echo '<div>';
+      $zeroClass = $label === 0 ? ' class="axis-zero-label"' : '';
+
+      echo '<div' . $zeroClass . '>';
       if ($label < 0) {
         echo '&minus;';
       }
       echo $prefix;
       echo number_format(abs($label));
       echo $suffix;
-      echo '</div><div></div>';
+      echo '</div><div' . ($label === 0 ? ' class="axis-zero-line"' : '') . '></div>';
     }
 
     echo '</div>';

@@ -70,7 +70,8 @@ class EiaHistoricalOperations
 
                 case 'TI':
                     $byDay[$period]['interchange'] = $averageGw;
-                    $byDay[$period]['net_imports'] = -$averageGw;
+                    $byDay[$period]['net_imports'] =
+                        UsNetFlow::importsPositive($averageGw);
                     break;
             }
         }

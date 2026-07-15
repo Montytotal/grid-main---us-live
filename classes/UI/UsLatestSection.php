@@ -43,22 +43,22 @@ class UsLatestSection {
         </section>
 
         <section id="fossils">
-          <h2><?= self::formatGenerationPercentage(self::getRowPower($typeRows, 'fossils'), $generation) ?>% fossil fuels</h2>
+          <h2><?= self::formatGenerationPercentage(self::getRowPower($typeRows, 'fossils'), $generation) ?>% Fossil Fuels</h2>
 <?php self::outputRows(self::getRowsByClasses($sourceRows, ['coal', 'gas', 'oil']), $generation, 'Fossil fuel generation'); ?>
         </section>
 
         <section id="renewables">
-          <h2><?= self::formatGenerationPercentage(self::getRowPower($typeRows, 'renewables'), $generation) ?>% renewables</h2>
+          <h2><?= self::formatGenerationPercentage(self::getRowPower($typeRows, 'renewables'), $generation) ?>% Renewables</h2>
 <?php self::outputRows(self::getRowsByClasses($sourceRows, ['solar', 'wind', 'hydro']), $generation, 'Renewable electricity generation'); ?>
         </section>
 
         <section id="others">
-          <h2><?= self::formatGenerationPercentage(self::getRowPower($typeRows, 'others'), $generation) ?>% other sources</h2>
+          <h2><?= self::formatGenerationPercentage(self::getRowPower($typeRows, 'others'), $generation) ?>% Other Sources</h2>
 <?php self::outputRows(self::getRowsByClasses($sourceRows, ['nuclear', 'biomass', 'others']), $generation, 'Other electricity generation sources'); ?>
         </section>
 
         <section id="transfers">
-          <h2>Net cross-border flow by country</h2>
+          <h2>US48 net flow and country reports</h2>
 <?php
     $transferData = self::getTransferData($state);
 
@@ -320,19 +320,22 @@ class UsLatestSection {
       ];
     }
 
-    if (isset($snapshot['total'])) {
+    if (isset($snapshot['reconciliation_difference'])) {
       $rows[] = [
         'class' => 'transfers',
-        'label' => 'Reported net country subtotal',
-        'power' => (float)$snapshot['total'],
+        'label' => ($snapshot['both_countries'] ?? false)
+          ? 'Reporting / reconciliation difference'
+          : 'Unallocated / reporting difference',
+        'power' => (float)$snapshot['reconciliation_difference'],
       ];
     }
 
     if (isset($snapshot['national_net_imports'])) {
       $rows[] = [
         'class' => 'transfers',
-        'label' => 'US48 net total, same hour',
+        'label' => 'US48 reported net flow',
         'power' => (float)$snapshot['national_net_imports'],
+        'is_total' => true,
       ];
     }
 
@@ -345,6 +348,7 @@ class UsLatestSection {
       'timestamp' => (int)($snapshot['timestamp'] ?? 0),
       'both_countries' => (bool)($snapshot['both_countries'] ?? false),
       'national_same_hour' => isset($snapshot['national_net_imports']),
+      'aligned_with_balance' => (bool)($snapshot['aligned_with_balance'] ?? false),
       'headline_timestamp' => (int)($headline['timestamp'] ?? 0),
     ];
   }
@@ -352,20 +356,24 @@ class UsLatestSection {
   private static function outputTransferRows(array $rows): void {
 ?>
           <table class="sources transfer-table">
-            <caption class="visually-hidden">Latest reported US cross-border electricity transfers</caption>
+            <caption class="visually-hidden">Timestamp-aligned US48 net flow and reported country components</caption>
 <?php
 
     foreach ($rows as $row) {
       $power = (float)$row['power'];
 
-      echo '            <tr><td class="';
+      echo '            <tr';
+      echo !empty($row['is_total']) ? ' class="transfer-total"' : '';
+      echo '><td class="';
       echo htmlspecialchars($row['class'], ENT_QUOTES, 'UTF-8');
       echo '"></td><th scope="row">';
       echo htmlspecialchars($row['label'], ENT_QUOTES, 'UTF-8');
       echo '</th><td>';
       echo Value::formatPower(abs($power));
       echo '</td><td>';
-      echo $power >= 0 ? 'import' : 'export';
+      echo abs($power) < 0.00001
+        ? 'no net flow'
+        : ($power > 0 ? 'import' : 'export');
       echo "</td></tr>\n";
     }
 
@@ -383,20 +391,22 @@ class UsLatestSection {
 
     $bothCountries = (bool)($transferData['both_countries'] ?? false);
     $nationalSameHour = (bool)($transferData['national_same_hour'] ?? false);
+    $alignedWithBalance = (bool)($transferData['aligned_with_balance'] ?? false);
     $headlineTimestamp = (int)($transferData['headline_timestamp'] ?? 0);
 ?>
           <p class="transfer-reporting-time">
             Latest hour with <?= $bothCountries ? 'both country entries' : 'available country data' ?>:
             <?= UsStatus::time($timestamp) ?>.
-            The reported net country subtotal adds the direct-interchange rows for Canada and Mexico available for that hour<?= $bothCountries ? '' : '; one country entry is missing' ?>.
-<?php if ($nationalSameHour) { ?>
-            The US48 row is EIA&rsquo;s separately reported total net interchange for the same hour, providing a timestamp-aligned comparison.
+            Canada and Mexico are EIA&rsquo;s directly reported interchange rows<?= $bothCountries ? '' : '; one country entry is unavailable' ?>.
+<?php if ($nationalSameHour && $alignedWithBalance) { ?>
+            The US48 row is EIA&rsquo;s authoritative total net interchange for this same hour and is also used in the headline. The reporting / reconciliation row is the exact difference needed to reconcile the shown country reports to that total; it is not an estimate for another country.
+<?php } else { ?>
+            No complete demand, generation and US48-total balance is available for this country-reporting hour, so these rows are not forced to match the headline or treated as a national total.
 <?php } ?>
-            The two reports can still differ because EIA collects them on different schedules and they can have different checks, revisions and missing submissions.
           </p>
 <?php if ($headlineTimestamp > 0) { ?>
           <p class="transfer-reporting-time">
-            The headline uses <?= $headlineTimestamp === $timestamp ? 'that same' : 'a newer' ?> US48 reporting hour, <?= UsStatus::time($headlineTimestamp) ?>. It reads EIA total net interchange directly; it is not calculated by subtracting generation from demand.
+            The headline uses <?= $headlineTimestamp === $timestamp ? 'that same aligned' : 'the latest complete national' ?> reporting hour, <?= UsStatus::time($headlineTimestamp) ?>. It reads EIA total net interchange directly; it is not calculated from demand and generation. EIA normally receives total interchange about one day after operation and checked direct-pair interchange about two days after operation, so the feeds can differ after revisions, checks or missing submissions.
           </p>
 <?php } ?>
 <?php

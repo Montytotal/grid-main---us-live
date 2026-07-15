@@ -110,12 +110,17 @@ class UsUI {
   <body class="us-grid">
     <header aria-label="Site">
       <nav>
-        <a href="<?= htmlspecialchars($assetPath, ENT_QUOTES, 'UTF-8') ?>" aria-label="US Power Data home">
-          <svg viewBox="0 0 160 160" role="img" aria-labelledby="us-grid-logo-title">
-            <title id="us-grid-logo-title">US Power Data</title>
-            <path d="M80 8 22 42v76l58 34 58-34V42zM40 52l40-24 40 24v56l-40 24-40-24z"/>
-            <path d="M54 86h52v16H54zm0-28h52v16H54z"/>
-          </svg>
+        <a
+          class="us-brand"
+          href="<?= htmlspecialchars($assetPath, ENT_QUOTES, 'UTF-8') ?>"
+          aria-label="US Power Data home"
+        >
+          <img
+            src="<?= htmlspecialchars($assetPath, ENT_QUOTES, 'UTF-8') ?>uspowerdata-logo.png?<?= filemtime(__DIR__ . '/../../public/uspowerdata-logo.png') ?>"
+            width="1774"
+            height="887"
+            alt=""
+          >
         </a>
         <div>
           <a href="#latest">Live</a>
@@ -175,7 +180,7 @@ class UsUI {
 
     <dialog>
       <h2>Chart details</h2>
-      <form method="dialog"><button><svg viewBox="0 0 30 30"><path d="M6,6 24,24"/><path d="M6,24 24,6"/></svg></button></form>
+      <form method="dialog"><button aria-label="Close chart details"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M6,6 24,24"/><path d="M6,24 24,6"/></svg></button></form>
       <div></div>
     </dialog>
   </body>
