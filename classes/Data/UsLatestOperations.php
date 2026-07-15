@@ -202,11 +202,16 @@ class UsLatestOperations
                 'time' => (string)$point['time'],
                 'timestamp' => (int)$point['timestamp'],
                 'values' => $values,
-                'complete' => count($values) === count($fields),
+                'both_countries' => count($values) === count($fields),
             ];
 
-            if ($snapshot['complete']) {
+            if ($snapshot['both_countries']) {
                 $snapshot['total'] = array_sum($values);
+            }
+
+            if (isset($point['net_imports'])) {
+                $snapshot['national_net_imports'] =
+                    (float)$point['net_imports'];
             }
 
             return $snapshot;
