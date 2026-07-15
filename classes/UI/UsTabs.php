@@ -5,11 +5,16 @@ namespace KateMorley\Grid\UI;
 use KateMorley\Grid\State\UsState;
 
 class UsTabs {
+  /**
+   * Panel id, tab id, title, range seconds, time-axis step, time format,
+   * generation averaging seconds, generation range, operations source,
+   * operations interval and operations averaging seconds.
+   */
   private const PERIODS = [
-    ['tab-panel-day', 'tab-day', 'Past day', 86400, 6, 'g:ia', 0, 'live', true],
-    ['tab-panel-week', 'tab-week', 'Past week', 604800, 24, 'D', 21600, 'live', true],
-    ['tab-panel-year', 'tab-year', 'Past year', 31536000, 168, 'j M', 86400, 'year', false],
-    ['tab-panel-all', 'tab-all', 'All time', null, 168, 'Y', 86400, 'all', false],
+    ['tab-panel-day', 'tab-day', 'Past day', 86400, 6, 'g:ia', 0, 'live', 'hourly', 3600, 0],
+    ['tab-panel-week', 'tab-week', 'Past week', 604800, 24, 'D', 21600, 'live', 'hourly', 3600, 21600],
+    ['tab-panel-year', 'tab-year', 'Past year', 31536000, 168, 'j M', 86400, 'year', 'daily', 86400, 604800],
+    ['tab-panel-all', 'tab-all', 'All time', null, 168, 'Y', 86400, 'all', 'daily', 86400, 2592000],
   ];
 
   private const SOURCE_META = [
@@ -49,7 +54,7 @@ class UsTabs {
           <button type="button" id="tab-all" role="tab" aria-controls="tab-panel-all" aria-selected="false" data-period="all-time" tabindex="-1">All<span> time</span></button>
         </div>
         <p class="history-lede">
-          Compare recent US demand, generation and net cross-border flow over the past day or week. Past year and all time use the longer-running generation series; full-range demand and interchange history has not yet been loaded on this site.
+          Compare US demand, generation and net cross-border flow across each period. Past year and all time use daily EIA-930 operations from 2019 alongside monthly EIA-923 generation from 2001; their exact coverage differs and is shown with the data.
         </p>
 <?php
 
@@ -62,12 +67,13 @@ class UsTabs {
         $period[2],
         $state,
         $period[3],
-        $series,
         self::summarySeries($series, $historicalHistory, $period[7]),
         $period[4],
         $period[5],
         $period[6],
-        $period[8]
+        $period[8],
+        $period[9],
+        $period[10]
       );
     }
 
@@ -82,22 +88,22 @@ class UsTabs {
     string  $title,
     UsState $state,
     ?int    $seconds,
-    array   $series,
     array   $summarySeries,
     int     $timeStep,
     string  $timeFormat,
     int     $averageSeconds,
-    bool    $showOperations
+    string  $operationSource,
+    int     $operationInterval,
+    int     $operationAverageSeconds
   ): void {
-    $generationSeries = $showOperations
-      ? ($summarySeries ?: $series)
-      : $summarySeries;
+    $generationSeries = $summarySeries;
     $generationMap = self::averageGeneration($generationSeries);
     $generation = array_sum($generationMap);
     $hasGeneration = $generationSeries && $generation > 0;
     $sourceRows = self::getSourceRows($generationMap);
     $typeRows = self::getTypeRows($generationMap);
-    $operationHistory = self::getOperationHistory($state);
+    $showOperations = $operationSource !== '';
+    $operationHistory = self::getOperationHistory($state, $operationSource);
     $demandHistory = self::fieldSeries($operationHistory, 'demand');
     $flowHistory = self::fieldSeries($operationHistory, 'net_imports');
     $balanceHistory = self::completeSeries(
@@ -111,11 +117,11 @@ class UsTabs {
     $flowSeries = self::periodSeries($flowHistory, $seconds);
     $balanceSeries = self::periodSeries($balanceHistory, $seconds);
     $hasDemandCoverage = $showOperations
-      && self::hasPeriodCoverage($demandSeries, $seconds);
+      && self::hasPeriodCoverage($demandSeries, $seconds, $operationInterval);
     $hasFlowCoverage = $showOperations
-      && self::hasPeriodCoverage($flowSeries, $seconds);
+      && self::hasPeriodCoverage($flowSeries, $seconds, $operationInterval);
     $hasBalanceCoverage = $showOperations
-      && self::hasPeriodCoverage($balanceSeries, $seconds);
+      && self::hasPeriodCoverage($balanceSeries, $seconds, $operationInterval);
     $equation = $hasBalanceCoverage
       ? self::averageBalanceSummary($balanceSeries)
       : [];
@@ -125,11 +131,11 @@ class UsTabs {
     );
     $demandGraphSeries = self::averageOperationSeries(
       $demandSeries,
-      $averageSeconds
+      $operationAverageSeconds
     );
     $flowGraphSeries = self::averageOperationSeries(
       $flowSeries,
-      $averageSeconds
+      $operationAverageSeconds
     );
 ?>
         <div id="<?= $id ?>" role="tabpanel" aria-labelledby="<?= $labelledBy ?>" tabindex="0">
@@ -138,6 +144,11 @@ class UsTabs {
           </div>
           <div>
 <?php UsEquation::output($state, $equation); ?>
+<?php
+  if ($hasBalanceCoverage && $operationSource === 'daily') {
+    self::outputOperationCoverage($balanceSeries, $operationInterval);
+  }
+?>
           </div>
           <div>
 <?php
@@ -181,7 +192,9 @@ class UsTabs {
     );
   } else {
     UsGraph::outputUnavailable(
-      'Full-range US demand history is not loaded for this period'
+      $showOperations
+        ? 'EIA-930 demand history is temporarily incomplete for this period.'
+        : 'US demand history is not available for this period.'
     );
   }
 ?>
@@ -210,12 +223,12 @@ class UsTabs {
       1,
       true
     );
-    self::outputFlowCoverage($flowSeries);
+    self::outputFlowCoverage($flowSeries, $operationInterval);
   } else {
     UsGraph::outputUnavailable(
       $showOperations
-        ? 'Recent cross-border flow is temporarily incomplete for this period.'
-        : 'Cross-border history is not yet loaded for this range. Select Past day or Past week for recent flows.'
+        ? 'EIA-930 cross-border flow is temporarily incomplete for this period.'
+        : 'Cross-border history is not available for this range.'
     );
   }
 ?>
@@ -259,8 +272,13 @@ class UsTabs {
     ]];
   }
 
-  private static function getOperationHistory(UsState $state): array {
-    $history = $state->latest['operations']['history'] ?? [];
+  private static function getOperationHistory(
+    UsState $state,
+    string  $source
+  ): array {
+    $history = $source === 'daily'
+      ? ($state->latest['historical_operations']['history'] ?? [])
+      : ($state->latest['operations']['history'] ?? []);
 
     if (!is_array($history)) {
       return [];
@@ -307,32 +325,45 @@ class UsTabs {
 
   private static function hasPeriodCoverage(
     array $series,
-    ?int  $seconds
+    ?int  $seconds,
+    int   $interval
   ): bool {
-    if ($seconds === null || count($series) < 2) {
+    if (count($series) < 2 || $interval <= 0) {
       return false;
     }
 
-    $timestamps = array_map(
+    $timestamps = array_values(array_unique(array_map(
       static fn ($point) => (int)$point['timestamp'],
       $series
-    );
+    )));
 
     sort($timestamps);
+    $span = max($timestamps) - min($timestamps);
 
-    if (max($timestamps) - min($timestamps) < max(0, $seconds - 7200)) {
+    if (
+      $seconds !== null
+      && $span < max(0, $seconds - (2 * $interval))
+    ) {
       return false;
     }
 
-    $minimumSamples = max(2, (int)floor(($seconds / 3600) * 0.75));
+    if ($seconds === null && $span < 31536000) {
+      return false;
+    }
+
+    $coverageSpan = $seconds ?? $span;
+    $expectedSamples = max(2, (int)floor($coverageSpan / $interval) + 1);
+    $minimumSamples = max(2, (int)floor($expectedSamples * 0.75));
 
     if (count($timestamps) < $minimumSamples) {
       return false;
     }
 
-    for ($index = 1; $index < count($timestamps); $index ++) {
-      if ($timestamps[$index] - $timestamps[$index - 1] > 14400) {
-        return false;
+    if ($interval < 86400) {
+      for ($index = 1; $index < count($timestamps); $index ++) {
+        if ($timestamps[$index] - $timestamps[$index - 1] > 4 * $interval) {
+          return false;
+        }
       }
     }
 
@@ -369,7 +400,26 @@ class UsTabs {
     );
   }
 
-  private static function outputFlowCoverage(array $series): void {
+  private static function outputOperationCoverage(
+    array $series,
+    int   $interval
+  ): void {
+    $coverage = self::coverage($series, $interval);
+
+    if (!$coverage) {
+      return;
+    }
+?>
+            <p class="operation-coverage">
+              EIA-930 operational averages use <?= number_format($coverage['reported']) ?> of <?= number_format($coverage['expected']) ?> calendar days (<?= number_format($coverage['percentage'], 1) ?>%) from <?= gmdate('j M Y', $coverage['first']) ?>&ndash;<?= gmdate('j M Y', $coverage['last']) ?>. Missing days are omitted.
+            </p>
+<?php
+  }
+
+  private static function outputFlowCoverage(
+    array $series,
+    int   $interval
+  ): void {
     if (!$series) {
       return;
     }
@@ -378,10 +428,40 @@ class UsTabs {
     $last = (int)$series[count($series) - 1]['timestamp'];
 ?>
             <p class="transfer-coverage">
+<?php if ($interval >= 86400) { ?>
+              Daily EIA-930 coverage: <?= gmdate('j M Y', $first) ?>&ndash;<?= gmdate('j M Y', $last) ?>.
+              Above zero shows net imports; below zero shows net exports. Missing reporting days are omitted.
+<?php } else { ?>
               Coverage: <?= gmdate('j M Y, g:ia', $first) ?>&ndash;<?= gmdate('j M Y, g:ia', $last) ?> UTC.
               Above zero shows net imports; below zero shows net exports. Missing reporting hours are omitted.
+<?php } ?>
             </p>
 <?php
+  }
+
+  private static function coverage(array $series, int $interval): array {
+    if (!$series || $interval <= 0) {
+      return [];
+    }
+
+    $timestamps = array_values(array_unique(array_map(
+      static fn ($point) => (int)$point['timestamp'],
+      $series
+    )));
+    sort($timestamps);
+
+    $first = min($timestamps);
+    $last = max($timestamps);
+    $expected = max(1, (int)floor(($last - $first) / $interval) + 1);
+    $reported = count($timestamps);
+
+    return [
+      'first' => $first,
+      'last' => $last,
+      'expected' => $expected,
+      'reported' => $reported,
+      'percentage' => min(100, 100 * $reported / $expected),
+    ];
   }
 
   private static function getHistoricalHistory(UsState $state): array {
@@ -516,7 +596,7 @@ class UsTabs {
 
       if (!isset($buckets[$bucket])) {
         $buckets[$bucket] = [
-          'timestamp' => $bucket,
+          'timestamp' => $timestamp,
           'sums' => [],
           'counts' => [],
         ];
@@ -539,8 +619,8 @@ class UsTabs {
 
     $averages = [];
 
-    foreach ($buckets as $timestamp => $bucket) {
-      $point = ['timestamp' => (int)$timestamp];
+    foreach ($buckets as $bucket) {
+      $point = ['timestamp' => (int)$bucket['timestamp']];
 
       foreach ($bucket['sums'] as $field => $sum) {
         $point[$field] = $sum / max(1, (int)$bucket['counts'][$field]);

@@ -1058,12 +1058,17 @@ body.us-grid .us-equation dd {
   font-size: clamp(32px, 3vw, 52px);
 }
 
+body.us-grid #status section:last-child .us-equation dd {
+  font-size: clamp(34px, 3.2vw, 54px);
+}
+
 body.us-grid .us-equation[data-equals]::before {
   content: attr(data-equals);
 }
 
 body.us-grid #transfers .transfer-reporting-time,
-body.us-grid .transfer-coverage {
+body.us-grid .transfer-coverage,
+body.us-grid .operation-coverage {
   margin: 10px 0 0;
   color: #bbb;
   font-size: 14px;
@@ -1183,7 +1188,7 @@ body.us-grid [data-operator]::after {
   }
 
   body.us-grid #status section:last-child .us-equation dd {
-    font-size: clamp(27px, 2.5vw, 36px);
+    font-size: clamp(30px, 2.7vw, 39px);
   }
 
   body.us-grid #status section:last-child .us-equation::before,
@@ -1201,6 +1206,16 @@ body.us-grid [data-operator]::after {
   body.us-grid #status section:last-child .us-equation::after {
     grid-area: 2 / 4 / 3 / 5;
   }
+}
+
+body.us-grid #status section:last-child .us-equation {
+  align-items: baseline;
+}
+
+body.us-grid #status section:last-child .us-equation::before,
+body.us-grid #status section:last-child .us-equation::after {
+  grid-row: 2;
+  align-self: baseline;
 }
 
 body.us-grid main h2 {
@@ -1454,7 +1469,7 @@ body.us-grid.privacy-page .privacy-updated {
   }
 
   body.us-grid #status section:last-child .us-equation dd {
-    font-size: clamp(16px, 5.2vw, 20px);
+    font-size: clamp(18px, 5.6vw, 22px);
   }
 
   body.us-grid #status section:last-child .us-equation::before,
