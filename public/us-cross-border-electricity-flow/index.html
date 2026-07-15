@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>US Cross-Border Electricity Flow Data | USPowerData</title>
+    <meta name="description" content="Understand USPowerData net electricity imports and exports, the EIA total-interchange sign, Canada and Mexico reports, reconciliation and timing limits.">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="canonical" href="https://uspowerdata.com/us-cross-border-electricity-flow/">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="USPowerData"><meta property="og:title" content="US Cross-Border Electricity Flow Data"><meta property="og:description" content="How to interpret EIA US48 net interchange, imports, exports and country-report reconciliation on USPowerData."><meta property="og:url" content="https://uspowerdata.com/us-cross-border-electricity-flow/">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Proza+Libre:wght@300;400&amp;display=swap"><link rel="stylesheet" href="../grid.css" type="text/css"><link rel="icon" href="../favicon.png" type="image/png">
+  </head>
+  <body class="us-grid privacy-page">
+    <header aria-label="Site"><nav><a class="us-brand" href="../" aria-label="USPowerData home"><img src="../uspowerdata-logo.png" width="1774" height="887" alt="USPowerData"></a><div><a href="../#transfers">Latest flow</a><a href="../#history">Flow history</a></div></nav></header>
+    <main>
+      <h1>US Cross-Border Electricity Flow Data</h1>
+      <p class="privacy-updated">Reviewed: 15 July 2026</p>
+      <p>USPowerData presents EIA net interchange as a national Lower 48 flow measure and, when available, shows separately reported direct interchange with Canada and Mexico. These are related reports with different collection paths, not interchangeable totals.</p>
+
+      <section>
+        <h2>Flow measures at a glance</h2>
+        <div class="table-scroll">
+          <table class="data-summary-table">
+            <thead><tr><th scope="col">Displayed measure</th><th scope="col">Source</th><th scope="col">Sign shown here</th><th scope="col">Use</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">US48 net cross-border flow</th><td>EIA total net interchange</td><td>Positive imports; negative exports</td><td>Headline and historical series</td></tr>
+              <tr><th scope="row">Canada report</th><td>EIA direct interchange</td><td>Positive imports; negative exports</td><td>Country context when reported</td></tr>
+              <tr><th scope="row">Mexico report</th><td>EIA direct interchange</td><td>Positive imports; negative exports</td><td>Country context when reported</td></tr>
+              <tr><th scope="row">Reporting / reconciliation difference</th><td>National total minus displayed country rows</td><td>Signed arithmetic difference</td><td>Explains why separate feeds may not sum</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>The authoritative national measure</h2>
+        <p>The headline and historical net-flow graph use EIA’s reported US48 total-net-interchange field. USPowerData does not derive this value by subtracting net generation from demand and does not replace it with a sum of country rows. Keeping the source field authoritative avoids presenting an accounting residual as if it were measured interchange.</p>
+        <p>See the current <a href="../#transfers">US48 net flow and country reports</a> or the net-flow graph in the <a href="../#history">historical period views</a>.</p>
+      </section>
+
+      <section>
+        <h2>Imports-positive sign convention</h2>
+        <p>In the EIA source convention, positive total interchange means a net outflow from US48 and negative interchange means a net inflow. USPowerData multiplies the field by minus one:</p>
+        <ul>
+          <li>a positive displayed value means net imports into US48;</li>
+          <li>a negative displayed value means net exports from US48;</li>
+          <li>zero means no net flow at the reporting precision.</li>
+        </ul>
+        <p>This conversion is applied consistently to recent hourly and historical daily national data.</p>
+      </section>
+
+      <section>
+        <h2>How the graph uses zero</h2>
+        <p>The net-flow chart uses one shared horizontal zero baseline. Values above it are imports and values below it are exports. The series is not stacked: stacking would move the visual baseline and could make separate observations appear additive. Hover or focus details identify the displayed interval and signed value.</p>
+      </section>
+
+      <section>
+        <h2>Canada and Mexico reports</h2>
+        <p>The country rows come from EIA direct-interchange reports involving Canada and Mexico. Only country observations actually returned for the selected hour are displayed; a missing country is not inserted as zero. These rows provide useful border context, but their sum is not substituted for EIA’s separately reported US48 total.</p>
+        <p>Net interchange is an accounting measure across connected systems. The national value does not identify a contract path, source plant, destination state, balancing authority or the physical route taken by electricity.</p>
+      </section>
+
+      <section>
+        <h2>Reporting and reconciliation difference</h2>
+        <p>When the country card has a complete national balance for the same hour, it shows a reporting/reconciliation difference. This is calculated as the US48 national net-flow value minus the sum of the displayed country reports. Country rows plus that difference reconcile exactly to the national total.</p>
+        <p>The difference is not a fabricated third-country flow and is not assigned to Canada or Mexico. It makes separate-feed disagreement visible. Missing submissions, anomaly handling, interchange checkout and revisions can all contribute.</p>
+      </section>
+
+      <section>
+        <h2>Timing and headline alignment</h2>
+        <p>EIA normally collects national total interchange about one day after the operating day. Checked direct balancing-authority-pair interchange normally arrives about two days after operation. USPowerData therefore prefers the newest complete demand, generation and national-flow hour that also has country data for the current comparison.</p>
+        <p>If no such common hour is available, the headline falls back to the newest complete national balance while the country rows retain their own timestamp. The site does not move an older country subtotal into a newer national headline.</p>
+      </section>
+
+      <section>
+        <h2>Hourly and daily history</h2>
+        <p>Past-day and past-week net-flow views use complete hourly EIA-930 balance observations. Past-year and all-time flow views use complete daily EIA-930 US48 records beginning in 2019. Daily megawatt-hours are converted to average gigawatts using a 24-hour fixed-offset reporting day. Missing periods are omitted rather than estimated.</p>
+      </section>
+
+      <section>
+        <h2>Sources and limitations</h2>
+        <p>The sources are the EIA-930 <a href="https://www.eia.gov/electricity/gridmonitor/">Hourly Electric Grid Monitor</a> and the EIA electricity <a href="https://www.eia.gov/opendata/browser/electricity/rto">region and interchange data routes</a>. Values can be preliminary or revised, and US48 scope does not represent every US electric system.</p>
+        <p>Use the <a href="../methodology/">full data methodology</a> for transformations, and read the separate guides to <a href="../us-electricity-demand/">demand</a> and <a href="../us-electricity-generation/">generation</a>. Official operator and EIA sources remain necessary for operational or market decisions.</p>
+      </section>
+    </main>
+    <footer><div><p>&copy; 2026 USPowerData. Independent website using third-party energy data.</p><nav aria-label="Footer"><a href="../">Data dashboard</a><a href="../about/">About</a><a href="../methodology/">Methodology</a><a href="../contact/">Contact</a><a href="../terms/">Terms</a><a href="../privacy/">Privacy &amp; cookies</a></nav></div></footer>
+  </body>
+</html>

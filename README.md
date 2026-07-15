@@ -1,6 +1,8 @@
-# National Grid: Live
+# USPowerData
 
-This repository contains the source code for [National Grid: Live](https://grid.iamkate.com/).
+This repository publishes [USPowerData](https://uspowerdata.com/), an independent website for exploring U.S. Lower 48 electricity generation, reported demand, fuel mix and net cross-border flow using U.S. Energy Information Administration data.
+
+The public dashboard includes delayed hourly EIA-930 operating data, daily EIA-930 history from 2019 and monthly EIA-923 generation history from 2001. It is a best-effort public information project, not live grid telemetry or an official EIA service. See the website's [methodology](https://uspowerdata.com/methodology/) for sources, transformations and limitations.
 
 ## Development
 
@@ -30,7 +32,9 @@ docker compose down
 
 ## Production
 
-The production environment does not use Docker, instead running directly on the server. PHP 8.3 and a recent version MariaDB or MySQL are required.
+The current public site is deployed to GitHub Pages by the repository's GitHub Actions workflow. The workflow uses Docker privately during the build, generates static files, uploads only the `public` directory and refreshes the data on its schedule. Local Docker or VS Code sessions are not required for the live site to remain available.
+
+The server instructions below describe an alternative self-hosted deployment. PHP 8.3 and a recent version of MariaDB or MySQL are required for that option.
 
 For a full no-Docker public deployment checklist, see [DEPLOYMENT.md](DEPLOYMENT.md).
 

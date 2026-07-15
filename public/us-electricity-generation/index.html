@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>US Electricity Generation Data Explained | USPowerData</title>
+    <meta name="description" content="Understand the US electricity generation mix on USPowerData, including EIA sources, fuel categories, units, time ranges and chart limitations.">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="canonical" href="https://uspowerdata.com/us-electricity-generation/">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="USPowerData"><meta property="og:title" content="US Electricity Generation Data Explained"><meta property="og:description" content="A guide to EIA generation data, fuel groups, averages and time coverage on USPowerData."><meta property="og:url" content="https://uspowerdata.com/us-electricity-generation/">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Proza+Libre:wght@300;400&amp;display=swap"><link rel="stylesheet" href="../grid.css" type="text/css"><link rel="icon" href="../favicon.png" type="image/png">
+  </head>
+  <body class="us-grid privacy-page">
+    <header aria-label="Site"><nav><a class="us-brand" href="../" aria-label="USPowerData home"><img src="../uspowerdata-logo.png" width="1774" height="887" alt="USPowerData"></a><div><a href="../#generation">Latest generation</a><a href="../#history">History</a></div></nav></header>
+    <main>
+      <h1>US Electricity Generation Data Explained</h1>
+      <p class="privacy-updated">Reviewed: 15 July 2026</p>
+      <p>The generation sections of USPowerData show how much electricity generation is attributed to broad energy-source groups in the available EIA data. They are designed for comparing the mix and its direction of change, not for identifying individual plants or operators.</p>
+
+      <section>
+        <h2>Generation views at a glance</h2>
+        <div class="table-scroll">
+          <table class="data-summary-table">
+            <thead><tr><th scope="col">View</th><th scope="col">Resolution</th><th scope="col">Source</th><th scope="col">What it supports</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Latest</th><td>One reported hour</td><td>EIA hourly fuel mix</td><td>Current displayed source shares</td></tr>
+              <tr><th scope="row">Past day</th><td>Hourly</td><td>EIA hourly fuel mix</td><td>Short-range source changes</td></tr>
+              <tr><th scope="row">Past week</th><td>Hourly, summarized for display</td><td>EIA hourly fuel mix</td><td>Recent source patterns</td></tr>
+              <tr><th scope="row">Past year</th><td>Monthly</td><td>EIA-923</td><td>Latest 12 published months</td></tr>
+              <tr><th scope="row">All time</th><td>Monthly</td><td>EIA-923</td><td>Available history beginning in 2001</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>What the latest generation mix shows</h2>
+        <p>The <a href="../#generation">latest generation pie</a> uses the newest usable hourly fuel-mix observation. Each outer segment is a displayed source such as gas, coal, wind, solar, hydroelectric or nuclear. Inner segments combine sources into fossil fuels, renewables and other sources. Percentages are shares of the displayed positive generation total for that snapshot.</p>
+        <p>Hovering or focusing an interactive segment reveals its source, power and share for that period. The table beside the pie provides the same categories without requiring pointer interaction.</p>
+      </section>
+
+      <section>
+        <h2>Recent and historical sources</h2>
+        <p>Recent hourly generation views use EIA fuel-mix data, preferring the US48 respondent rows available in the source. The past day and past week summarize those hourly observations. The past year and all-time generation sections instead use monthly <a href="https://www.eia.gov/electricity/data/eia923/">EIA-923 electricity generation data</a> for the United States.</p>
+        <p>Because EIA-923 is monthly and published on a slower schedule, its latest month does not necessarily match the date of the EIA-930 demand and net-flow charts displayed in the same period panel. Their coverage labels should be read separately.</p>
+      </section>
+
+      <section>
+        <h2>Fuel categories</h2>
+        <p>USPowerData displays coal, gas, oil, solar, wind, hydroelectric, nuclear, biomass and Other. In monthly history, conventional hydroelectric and pumped-storage generation are combined as hydroelectric. Geothermal and the EIA Other group are placed in Other. A source row appears only when its displayed contribution is positive.</p>
+        <p>The broad type groups are presentation categories: fossil fuels combine coal, gas and oil; renewables combine solar, wind and hydroelectric; other sources combine nuclear, biomass and Other. They should not be read as a policy or lifecycle-impact rating.</p>
+      </section>
+
+      <section>
+        <h2>Power, energy and averaging</h2>
+        <p>Recent observations are power measurements and are converted from megawatts to gigawatts. Monthly EIA-923 values are energy totals in thousand megawatt-hours. USPowerData divides monthly energy by the hours in the month to display average gigawatts. When months are combined, the generation mix is weighted by the hours represented.</p>
+        <p>This conversion makes hourly and monthly charts share a readable power unit, but it does not give the monthly series hourly detail. A monthly average cannot show within-day peaks or short events.</p>
+      </section>
+
+      <section>
+        <h2>How to read the time views</h2>
+        <ul>
+          <li><strong>Past day:</strong> recent hourly fuel-mix observations within the available day window.</li>
+          <li><strong>Past week:</strong> recent observations summarized into broader chart intervals.</li>
+          <li><strong>Past year:</strong> the latest 12 available monthly EIA-923 observations.</li>
+          <li><strong>All time:</strong> available monthly EIA-923 history beginning in 2001.</li>
+        </ul>
+        <p>Use the <a href="../#history">historical controls</a> to switch periods. A tooltip describes the selected chart interval; it does not imply that a monthly average was measured every hour.</p>
+      </section>
+
+      <section>
+        <h2>Limitations</h2>
+        <p>Reported generation can omit distributed resources, including some rooftop solar, or resources a reporting authority does not directly monitor. Preliminary rows and fuel classifications can be revised. Negative source values, which can occur in source accounting, are set to zero for display; the chart therefore is not a complete settlement-quality energy balance.</p>
+        <p>The generation view does not provide plant output, state totals, utility ownership, capacity, emissions, costs or wholesale prices. Refer to official EIA datasets suited to those questions rather than inferring them from a fuel-mix share.</p>
+      </section>
+
+      <section>
+        <h2>Sources and related guides</h2>
+        <p>Sources: <a href="https://www.eia.gov/electricity/gridmonitor/">EIA Hourly Electric Grid Monitor</a> for recent operating context and <a href="https://www.eia.gov/electricity/data/eia923/">EIA-923</a> for monthly generation history. Read the full <a href="../methodology/">USPowerData methodology</a>, then compare generation with the separately documented <a href="../us-electricity-demand/">demand</a> and <a href="../us-cross-border-electricity-flow/">net-flow</a> series.</p>
+      </section>
+    </main>
+    <footer><div><p>&copy; 2026 USPowerData. Independent website using third-party energy data.</p><nav aria-label="Footer"><a href="../">Data dashboard</a><a href="../about/">About</a><a href="../methodology/">Methodology</a><a href="../contact/">Contact</a><a href="../terms/">Terms</a><a href="../privacy/">Privacy &amp; cookies</a></nav></div></footer>
+  </body>
+</html>
