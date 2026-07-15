@@ -104,7 +104,7 @@ class EiaInterchangeData {
     return [
       'time' => (string)$row['period'],
       'neighbour' => $neighbour,
-      'value' => -(float)$row['value']
+      'value' => UsNetFlow::importsPositive((float)$row['value'])
     ];
   }
 }

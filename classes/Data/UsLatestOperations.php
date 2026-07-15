@@ -96,7 +96,9 @@ class UsLatestOperations
                 // EIA reports positive total interchange as an outflow from
                 // US48. The public UI uses the opposite convention so that
                 // positive values mean net imports.
-                $point['net_imports'] = -(float)$point['interchange'];
+                $point['net_imports'] = UsNetFlow::importsPositive(
+                    (float)$point['interchange']
+                );
             }
         }
         unset($point);
@@ -113,17 +115,38 @@ class UsLatestOperations
                 || isset($point['canada'])
                 || isset($point['mexico'])
         ));
-        $latestBalance = self::latestCompletePoint(
+        $newestBalance = self::latestCompletePoint(
             $history,
             ['demand', 'generation', 'interchange', 'net_imports']
         );
-        $latestCountry = self::latestCountrySnapshot($history);
+        $latestAlignedBalance = self::latestCompletePointWithCountry(
+            $history,
+            ['demand', 'generation', 'interchange', 'net_imports'],
+            true
+        );
+
+        if (!$latestAlignedBalance) {
+            $latestAlignedBalance = self::latestCompletePointWithCountry(
+                $history,
+                ['demand', 'generation', 'interchange', 'net_imports'],
+                false
+            );
+        }
+
+        // When direct country data is available for a complete national
+        // balance hour, use that one timestamp everywhere in the current
+        // view. Otherwise retain the newest complete US48 balance.
+        $latestBalance = $latestAlignedBalance ?: $newestBalance;
+        $latestCountry = $latestAlignedBalance
+            ? self::countrySnapshotFromPoint($latestAlignedBalance, true)
+            : self::latestCountrySnapshot($history);
 
         return [
             'history' => $history,
             'by_time' => $byTime,
             'latest' => [
                 'balance' => $latestBalance,
+                'newest_balance' => $newestBalance,
                 'demand' => self::latestField($history, 'demand'),
                 'generation' => self::latestField($history, 'generation'),
                 'net_imports' => self::latestField($history, 'net_imports'),
@@ -150,6 +173,33 @@ class UsLatestOperations
                 if (!isset($point[$field])) {
                     continue 2;
                 }
+            }
+
+            return $point;
+        }
+
+        return [];
+    }
+
+    private static function latestCompletePointWithCountry(
+        array $history,
+        array $requiredFields,
+        bool  $requireBothCountries
+    ): array {
+        for ($index = count($history) - 1; $index >= 0; $index --) {
+            $point = $history[$index];
+
+            foreach ($requiredFields as $field) {
+                if (!isset($point[$field])) {
+                    continue 2;
+                }
+            }
+
+            $hasCanada = isset($point['canada']);
+            $hasMexico = isset($point['mexico']);
+
+            if ($requireBothCountries ? !($hasCanada && $hasMexico) : !($hasCanada || $hasMexico)) {
+                continue;
             }
 
             return $point;
@@ -188,36 +238,42 @@ class UsLatestOperations
                 continue;
             }
 
-            $values = [];
-
-            foreach ($fields as $field) {
-                if (!isset($point[$field])) {
-                    continue;
-                }
-
-                $values[$field] = (float)$point[$field];
-            }
-
-            $snapshot = [
-                'time' => (string)$point['time'],
-                'timestamp' => (int)$point['timestamp'],
-                'values' => $values,
-                'both_countries' => count($values) === count($fields),
-            ];
-
-            if ($snapshot['both_countries']) {
-                $snapshot['total'] = array_sum($values);
-            }
-
-            if (isset($point['net_imports'])) {
-                $snapshot['national_net_imports'] =
-                    (float)$point['net_imports'];
-            }
-
-            return $snapshot;
+            return self::countrySnapshotFromPoint($point, false);
         }
 
         return [];
+    }
+
+    private static function countrySnapshotFromPoint(
+        array $point,
+        bool  $alignedWithBalance
+    ): array {
+        $values = [];
+
+        foreach (['canada', 'mexico'] as $field) {
+            if (isset($point[$field])) {
+                $values[$field] = (float)$point[$field];
+            }
+        }
+
+        $reportedSubtotal = array_sum($values);
+        $snapshot = [
+            'time' => (string)($point['time'] ?? ''),
+            'timestamp' => (int)($point['timestamp'] ?? 0),
+            'values' => $values,
+            'both_countries' => count($values) === 2,
+            'reported_country_subtotal' => $reportedSubtotal,
+            'aligned_with_balance' => $alignedWithBalance,
+        ];
+
+        if ($alignedWithBalance && isset($point['net_imports'])) {
+            $national = (float)$point['net_imports'];
+            $snapshot['national_net_imports'] = $national;
+            $snapshot['reconciliation_difference'] =
+                $national - $reportedSubtotal;
+        }
+
+        return $snapshot;
     }
 
     private static function latestField(array $history, string $field): ?array
