@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>US Electricity Demand Data Explained | USPowerData</title>
+    <meta name="description" content="Learn how USPowerData presents EIA-930 Lower 48 electricity demand, aligns it with generation and net flow, and handles units and missing data.">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="canonical" href="https://uspowerdata.com/us-electricity-demand/">
+    <meta property="og:type" content="article"><meta property="og:site_name" content="USPowerData"><meta property="og:title" content="US Electricity Demand Data Explained"><meta property="og:description" content="A practical guide to the EIA-930 US48 demand series shown by USPowerData."><meta property="og:url" content="https://uspowerdata.com/us-electricity-demand/">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Proza+Libre:wght@300;400&amp;display=swap"><link rel="stylesheet" href="../grid.css" type="text/css"><link rel="icon" href="../favicon.png" type="image/png">
+  </head>
+  <body class="us-grid privacy-page">
+    <header aria-label="Site"><nav><a class="us-brand" href="../" aria-label="USPowerData home"><img src="../uspowerdata-logo.png" width="1774" height="887" alt="USPowerData"></a><div><a href="../#latest">Latest balance</a><a href="../#history">Demand history</a></div></nav></header>
+    <main>
+      <h1>US Electricity Demand Data Explained</h1>
+      <p class="privacy-updated">Reviewed: 15 July 2026</p>
+      <p>USPowerData uses the EIA-930 US48 demand series to show the reported electricity requirement of the Lower 48 system at national reporting scale. It is a system-data measure, not an estimate of a particular customer’s use or bill.</p>
+
+      <section>
+        <h2>Demand views at a glance</h2>
+        <div class="table-scroll">
+          <table class="data-summary-table">
+            <thead><tr><th scope="col">View</th><th scope="col">Source resolution</th><th scope="col">Displayed unit</th><th scope="col">Coverage rule</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Latest</th><td>Hourly EIA-930 US48</td><td>GW</td><td>Newest complete national balance hour</td></tr>
+              <tr><th scope="row">Past day</th><td>Hourly EIA-930 US48</td><td>GW</td><td>Complete aligned observations only</td></tr>
+              <tr><th scope="row">Past week</th><td>Hourly EIA-930 US48</td><td>GW</td><td>Complete aligned observations only</td></tr>
+              <tr><th scope="row">Past year</th><td>Daily EIA-930 US48</td><td>Average GW</td><td>Present reporting days only</td></tr>
+              <tr><th scope="row">All time</th><td>Daily EIA-930 US48</td><td>Average GW</td><td>Available daily history from 2019</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>What “demand” means on the dashboard</h2>
+        <p>The displayed value is EIA’s reported US48 demand observation for the selected timestamp or the average of complete observations in a selected period. It does not represent generating capacity, retail sales, a forecast, a state total or a utility service area. Recent observations are delayed source reports rather than second-by-second telemetry.</p>
+        <p>Open the <a href="../#latest">latest national balance</a> for the current displayed observation, or use the <a href="../#history">period controls</a> for demand charts.</p>
+      </section>
+
+      <section>
+        <h2>The balance relationship</h2>
+        <p>EIA’s convention normally relates demand to net generation minus total interchange. EIA total interchange is positive when power flows out of US48. USPowerData reverses that interchange sign, so the dashboard’s readable relationship is:</p>
+        <p><strong>Demand approximately equals net generation plus net imports.</strong></p>
+        <p>“Approximately” is intentional. Source reports may be preliminary, revised, missing or processed separately. USPowerData displays the reported fields and does not overwrite demand with a value calculated from generation.</p>
+      </section>
+
+      <section>
+        <h2>Aligned observations</h2>
+        <p>A timestamp enters the displayed balance only when demand, net generation and US48 total interchange are all present for that same timestamp. Demand graphs, net-flow graphs and their period equation use the same complete timestamp set. This avoids comparing a demand average from one set of hours with a net-flow average from a different set.</p>
+        <p>If an isolated demand observation lacks the other balance fields, it is not used in the aligned period presentation. Missing values are not assumed to be zero.</p>
+      </section>
+
+      <section>
+        <h2>Hourly and daily views</h2>
+        <p>Past-day and past-week views use hourly EIA-930 data. Past-year and all-time operational views use the EIA-930 daily US48 route beginning in 2019. The daily source reports energy in megawatt-hours; USPowerData divides by 24 hours and by 1,000 to display average gigawatts.</p>
+        <p>The fixed-offset Arizona reporting-day option is used for the daily query so each bucket represents 24 hours. It sets the aggregation boundary only; it does not make the values specific to Arizona.</p>
+      </section>
+
+      <section>
+        <h2>Reading the demand graph</h2>
+        <p>The horizontal position represents the reporting time and the vertical position represents average power in gigawatts. Hover or keyboard chart details identify a particular interval and value. Broader week or long-range intervals may be averages, so a tooltip value is not necessarily an instantaneous peak.</p>
+        <p>Coverage checks require enough complete observations before a chart is shown. Daily long-range views disclose present reporting days, and missing days are omitted rather than interpolated.</p>
+      </section>
+
+      <section>
+        <h2>Scope and limitations</h2>
+        <ul>
+          <li>The US48 series covers the Lower 48 reporting scope, not Alaska, Hawaii or every US electric system.</li>
+          <li>Distributed and unmonitored resources can make system accounting incomplete.</li>
+          <li>Reported demand is not a retail-load profile, customer meter reading or demand forecast.</li>
+          <li>Revisions and respondent changes can alter previously displayed values.</li>
+          <li>The site does not break demand down by state, operator, sector or customer class.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Sources and related reading</h2>
+        <p>The source is EIA-930, documented through the <a href="https://www.eia.gov/electricity/gridmonitor/">EIA Hourly Electric Grid Monitor</a> and <a href="https://www.eia.gov/opendata/browser/electricity/rto">EIA electricity operating-data routes</a>. See the <a href="../methodology/">full methodology</a>, the <a href="../us-electricity-generation/">generation guide</a> and the <a href="../us-cross-border-electricity-flow/">cross-border flow guide</a> before comparing measures.</p>
+      </section>
+    </main>
+    <footer><div><p>&copy; 2026 USPowerData. Independent website using third-party energy data.</p><nav aria-label="Footer"><a href="../">Data dashboard</a><a href="../about/">About</a><a href="../methodology/">Methodology</a><a href="../contact/">Contact</a><a href="../terms/">Terms</a><a href="../privacy/">Privacy &amp; cookies</a></nav></div></footer>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>US Electricity Data Methodology | USPowerData</title>
+    <meta name="description" content="Read how USPowerData selects, aligns, converts and presents EIA-930 and EIA-923 electricity generation, demand and cross-border flow data.">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="canonical" href="https://uspowerdata.com/methodology/">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="USPowerData">
+    <meta property="og:title" content="US Electricity Data Methodology">
+    <meta property="og:description" content="How USPowerData processes EIA electricity data, including alignment, units, fuel groups and missing observations.">
+    <meta property="og:url" content="https://uspowerdata.com/methodology/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Proza+Libre:wght@300;400&amp;display=swap">
+    <link rel="stylesheet" href="../grid.css" type="text/css">
+    <link rel="icon" href="../favicon.png" type="image/png">
+  </head>
+  <body class="us-grid privacy-page">
+    <header aria-label="Site"><nav><a class="us-brand" href="../" aria-label="USPowerData home"><img src="../uspowerdata-logo.png" width="1774" height="887" alt="USPowerData"></a><div><a href="../#latest">Latest data</a><a href="../#history">History</a></div></nav></header>
+    <main>
+      <h1>US Electricity Data Methodology</h1>
+      <p class="privacy-updated">Reviewed: 15 July 2026</p>
+      <p>This page documents how USPowerData turns the EIA series currently used by the dashboard into comparable charts and summaries. It describes the implemented scope, not a general model of every US electricity dataset.</p>
+
+      <section>
+        <h2>Dataset summary</h2>
+        <div class="table-scroll">
+          <table class="data-summary-table">
+            <thead><tr><th scope="col">Dashboard series</th><th scope="col">Primary source</th><th scope="col">Frequency</th><th scope="col">Available coverage used here</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Recent national operations</th><td>EIA-930 US48</td><td>Hourly</td><td>Past day and past week</td></tr>
+              <tr><th scope="row">Long-range national operations</th><td>EIA-930 US48</td><td>Daily</td><td>Past year and available history from 2019</td></tr>
+              <tr><th scope="row">Recent generation mix</th><td>EIA hourly fuel mix</td><td>Hourly</td><td>Latest, past day and past week</td></tr>
+              <tr><th scope="row">Long-range generation mix</th><td>EIA-923</td><td>Monthly</td><td>Past 12 published months and available history from 2001</td></tr>
+              <tr><th scope="row">Country interchange</th><td>EIA direct interchange</td><td>Hourly</td><td>Latest usable Canada and Mexico reports</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Source inventory</h2>
+        <ul>
+          <li><strong>Recent operations:</strong> hourly EIA-930 US48 demand, net generation and total net interchange.</li>
+          <li><strong>Recent fuel mix:</strong> hourly EIA fuel-mix rows, with US48 rows preferred when available.</li>
+          <li><strong>Historical operations:</strong> daily EIA-930 US48 demand, net generation and total interchange beginning in 2019.</li>
+          <li><strong>Historical generation:</strong> monthly EIA-923 US generation by fuel group beginning with the available 2001 series.</li>
+          <li><strong>Country reports:</strong> hourly EIA direct-interchange rows involving Canada and Mexico.</li>
+        </ul>
+        <p>Primary references are the <a href="https://www.eia.gov/electricity/gridmonitor/">EIA Hourly Electric Grid Monitor</a>, the <a href="https://www.eia.gov/opendata/browser/electricity/rto">EIA-930 Open Data routes</a> and the <a href="https://www.eia.gov/electricity/data/eia923/">EIA-923 data page</a>.</p>
+      </section>
+
+      <section>
+        <h2>Timestamp alignment</h2>
+        <p>Demand, net generation and national net flow are included in a balance only when all three fields exist for the same timestamp. The day and week equation and graphs are based on that same complete hourly set. The year and all-time operational equation and graphs similarly use complete daily records. This prevents a demand average from one set of hours being compared with a flow average from another.</p>
+        <p>For the current country card, USPowerData uses a complete national balance hour that also contains reported country rows when one is available. If it is not available, the headline falls back to the newest complete national balance and the country rows keep their own reporting time.</p>
+      </section>
+
+      <section>
+        <h2>Units and averages</h2>
+        <p>Hourly EIA power values reported in megawatts are divided by 1,000 and displayed in gigawatts. Daily EIA-930 energy values reported in megawatt-hours are divided by 24 hours and then by 1,000 to produce average gigawatts. The historical daily query uses an Arizona reporting day, a fixed-offset boundary that avoids daylight-saving days of unequal length.</p>
+        <p>Monthly EIA-923 generation is reported in thousand megawatt-hours. USPowerData divides each month’s energy by the number of hours in that calendar month to calculate average gigawatts. Multi-month generation summaries are weighted by the number of hours represented.</p>
+      </section>
+
+      <section>
+        <h2>Generation categories</h2>
+        <p>The dashboard displays coal, gas, oil, solar, wind, hydroelectric, nuclear, biomass and other generation. For monthly EIA-923 history, conventional hydroelectric and pumped-storage generation are grouped as hydroelectric; geothermal and EIA’s other group are placed in Other. Fuel groups are selected to be mutually exclusive in the implemented monthly source query.</p>
+        <p>Negative generation values are set to zero for display. This keeps the fuel-share pie from representing negative wedges, but it also means the displayed fuel total should not be treated as a complete accounting identity. Learn more in the <a href="../us-electricity-generation/">generation-data guide</a>.</p>
+      </section>
+
+      <section>
+        <h2>Demand and national balance</h2>
+        <p>The site displays EIA’s reported US48 demand and net-generation values. Under EIA’s source convention, demand is normally net generation minus total interchange. After USPowerData reverses the interchange sign, the readable relationship is demand approximately equals generation plus net imports. Approximate equality is used because preliminary and separately processed reports may not reconcile perfectly.</p>
+        <p>The headline national flow is never reconstructed as demand minus generation. It remains the transformed EIA total-net-interchange field. The <a href="../us-electricity-demand/">demand guide</a> explains how to read this balance.</p>
+      </section>
+
+      <section>
+        <h2>Cross-border sign and reconciliation</h2>
+        <p>EIA total interchange is positive for net outflow from US48 and negative for net inflow. USPowerData multiplies it by minus one so values above zero are net imports and values below zero are net exports. The flow graph uses one shared zero baseline and does not stack independent totals.</p>
+        <p>Canada and Mexico rows come from a separate direct-interchange feed. When shown beside a same-hour national total, a reporting/reconciliation difference equals the national value minus the sum of the available country rows. It is an arithmetic bridge between reports, not an estimate of another country. See the <a href="../us-cross-border-electricity-flow/">cross-border methodology guide</a>.</p>
+      </section>
+
+      <section>
+        <h2>Coverage, missing data and revisions</h2>
+        <p>Period views require substantial coverage before a graph or average is presented. Missing records are omitted, not filled with zero or interpolated. The daily operations display reports how many calendar days are present. EIA may revise observations, respondent coverage or classifications, so values can change between site builds.</p>
+        <p>The year and all-time generation sections and operational sections deliberately use different EIA programs and may cover different dates. Their labels should be read independently. USPowerData does not currently estimate missing price, emissions, storage, state, operator or plant data.</p>
+      </section>
+
+      <section>
+        <h2>Limitations and appropriate use</h2>
+        <p>EIA-930 US48 data do not cover every US electric system and may omit distributed or unmonitored resources. EIA-923 is published on a slower schedule than EIA-930. The dashboard is educational and analytical, not operational telemetry. Review <a href="../about/">About USPowerData</a> and the <a href="../terms/">terms of use</a> before relying on the presentation.</p>
+      </section>
+    </main>
+    <footer><div><p>&copy; 2026 USPowerData. Independent website using third-party energy data.</p><nav aria-label="Footer"><a href="../">Data dashboard</a><a href="../about/">About</a><a href="../methodology/">Methodology</a><a href="../contact/">Contact</a><a href="../terms/">Terms</a><a href="../privacy/">Privacy &amp; cookies</a></nav></div></footer>
+  </body>
+</html>

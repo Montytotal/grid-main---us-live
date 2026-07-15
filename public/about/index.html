@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>About USPowerData | Independent US Electricity Data</title>
+    <meta name="description" content="Learn what USPowerData covers, where its US electricity data comes from, how to interpret the dashboard, and what its important limitations are.">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="canonical" href="https://uspowerdata.com/about/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="USPowerData">
+    <meta property="og:title" content="About USPowerData">
+    <meta property="og:description" content="Purpose, coverage, sources and limitations of the independent USPowerData electricity dashboard.">
+    <meta property="og:url" content="https://uspowerdata.com/about/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Proza+Libre:wght@300;400&amp;display=swap">
+    <link rel="stylesheet" href="../grid.css" type="text/css">
+    <link rel="icon" href="../favicon.png" type="image/png">
+  </head>
+  <body class="us-grid privacy-page">
+    <header aria-label="Site">
+      <nav>
+        <a class="us-brand" href="../" aria-label="USPowerData home">
+          <img src="../uspowerdata-logo.png" width="1774" height="887" alt="USPowerData">
+        </a>
+        <div><a href="../#latest">Latest data</a><a href="../#history">History</a></div>
+      </nav>
+    </header>
+    <main>
+      <h1>About USPowerData</h1>
+      <p class="privacy-updated">Reviewed: 15 July 2026</p>
+      <p>USPowerData is an independent public-information project that turns selected US Energy Information Administration datasets into a compact view of electricity generation, reported demand and net cross-border flow.</p>
+
+      <section>
+        <h2>What the project is for</h2>
+        <p>The dashboard is designed to help readers compare broad US electricity-system trends without first learning the structure of several EIA data feeds. It presents the latest available observations, short-range hourly views and longer-range summaries in one place. The accompanying explanations make the time coverage, units and sign conventions visible instead of treating every chart as interchangeable.</p>
+        <p>Start with the <a href="../#latest">latest generation and national balance</a>, or compare the available periods in the <a href="../#history">historical dashboard</a>.</p>
+      </section>
+
+      <section>
+        <h2>What the dashboard covers</h2>
+        <p>Recent operating views use EIA-930 Lower 48 observations for demand, net generation and total net interchange. Recent fuel-mix observations are grouped into coal, gas, oil, solar, wind, hydroelectric, nuclear, biomass and other generation. Longer-range generation views use monthly EIA-923 US generation data, while longer-range demand and net-flow views use daily EIA-930 data.</p>
+        <p>The result is a national or Lower 48 overview, depending on the source series. It is not a state, utility, balancing-authority, power-plant or household dashboard. See the <a href="../methodology/">data methodology</a> for the exact distinction between the series.</p>
+      </section>
+
+      <section>
+        <h2>What “latest” means here</h2>
+        <p>“Latest” means the newest usable observation returned by the relevant EIA feed, not live telemetry. National operating observations usually have a reporting delay, and checked direct-interchange reports for Canada and Mexico normally arrive later. Each displayed timestamp refers to the data itself, not merely to the time the webpage was generated.</p>
+        <p>USPowerData prefers complete, timestamp-aligned demand, generation and national-flow records when displaying an electricity balance. Missing observations are omitted rather than silently estimated as zero.</p>
+      </section>
+
+      <section>
+        <h2>How to interpret the figures</h2>
+        <p>Generation pies show shares of the generation displayed for that period. The national balance uses reported demand, reported net generation and EIA total net interchange for common timestamps. USPowerData reverses EIA’s total-interchange sign for readability: positive net flow means imports into the Lower 48 and negative net flow means exports.</p>
+        <p>The <a href="../us-electricity-generation/">generation guide</a>, <a href="../us-electricity-demand/">demand guide</a> and <a href="../us-cross-border-electricity-flow/">cross-border flow guide</a> explain each measure in more detail.</p>
+      </section>
+
+      <section>
+        <h2>Sources and editorial approach</h2>
+        <p>The underlying sources are the EIA’s <a href="https://www.eia.gov/electricity/gridmonitor/">Hourly Electric Grid Monitor and EIA-930 data</a> and <a href="https://www.eia.gov/electricity/data/eia923/">EIA-923 generation data</a>. Labels and explanatory text are written for this site; reported values remain subject to EIA collection, validation and revision.</p>
+        <p>USPowerData does not calculate the headline national flow by subtracting generation from demand. It uses EIA’s reported US48 total-net-interchange series and keeps country reports distinct from that national total.</p>
+      </section>
+
+      <section>
+        <h2>Important limitations</h2>
+        <ul>
+          <li>The EIA-930 operating scope is the Lower 48, not every US electric system.</li>
+          <li>Distributed resources or resources not monitored by a reporting authority can be incomplete.</li>
+          <li>Preliminary values, missing submissions and later revisions can change a chart.</li>
+          <li>Historical generation and historical operations can cover different dates and reporting frequencies.</li>
+          <li>The site does not currently publish a verified national price, carbon-intensity or storage series.</li>
+        </ul>
+        <p>Use official EIA and grid-operator information for operational, market, safety-critical or regulatory decisions.</p>
+      </section>
+
+      <section>
+        <h2>Independence and corrections</h2>
+        <p>USPowerData is not affiliated with, endorsed by or officially connected with the EIA or a grid operator. If a label, explanation or transformation appears wrong, use the <a href="../contact/">contact and corrections page</a> to report the affected page, timestamp and source.</p>
+      </section>
+    </main>
+    <footer><div><p>&copy; 2026 USPowerData. Independent website using third-party energy data.</p><nav aria-label="Footer"><a href="../">Data dashboard</a><a href="../about/">About</a><a href="../methodology/">Methodology</a><a href="../contact/">Contact</a><a href="../terms/">Terms</a><a href="../privacy/">Privacy &amp; cookies</a></nav></div></footer>
+  </body>
+</html>

@@ -63,10 +63,41 @@ jobs:
           test -s public/index.html
           test -s public/us/index.html
           test -s public/ads.txt
+          test -s public/sitemap.xml
+          for page in \
+            about methodology contact terms privacy \
+            us-electricity-generation us-electricity-demand \
+            us-cross-border-electricity-flow
+          do
+            test -s "public/$page/index.html"
+          done
           grep -Fq 'ca-pub-9859724881253160' public/index.html
           grep -Fxq 'google.com, pub-9859724881253160, DIRECT, f08c47fec0942fa0' public/ads.txt
           grep -Fq 'User-agent: Google-Display-Ads-Bot' public/robots.txt
           grep -Fq 'User-agent: Mediapartners-Google' public/robots.txt
+          grep -Fxq 'Sitemap: https://uspowerdata.com/sitemap.xml' public/robots.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          from xml.etree import ElementTree
+
+          sitemap = Path('public/sitemap.xml')
+          root = ElementTree.parse(sitemap).getroot()
+          namespace = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls = {node.text for node in root.findall('sm:url/sm:loc', namespace)}
+          expected = {
+              'https://uspowerdata.com/',
+              'https://uspowerdata.com/about/',
+              'https://uspowerdata.com/methodology/',
+              'https://uspowerdata.com/contact/',
+              'https://uspowerdata.com/terms/',
+              'https://uspowerdata.com/privacy/',
+              'https://uspowerdata.com/us-electricity-generation/',
+              'https://uspowerdata.com/us-electricity-demand/',
+              'https://uspowerdata.com/us-cross-border-electricity-flow/',
+          }
+          if urls != expected:
+              raise SystemExit(f'Sitemap URLs differ: {sorted(urls ^ expected)}')
+          PY
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -80,7 +111,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Verify public AdSense endpoints
+      - name: Verify public site endpoints
         run: |
           for url in \
             http://uspowerdata.com/ \
@@ -109,6 +140,36 @@ jobs:
             https://uspowerdata.com/robots.txt -o /tmp/uspowerdata-robots.txt
           grep -Fq 'User-agent: *' /tmp/uspowerdata-robots.txt
           grep -Fq 'Allow: /' /tmp/uspowerdata-robots.txt
+          grep -Fxq 'Sitemap: https://uspowerdata.com/sitemap.xml' /tmp/uspowerdata-robots.txt
+
+          for page in \
+            about methodology contact terms privacy \
+            us-electricity-generation us-electricity-demand \
+            us-cross-border-electricity-flow
+          do
+            curl --fail --silent --show-error --location \
+              --retry 6 --retry-delay 10 --retry-all-errors \
+              --connect-timeout 10 --max-time 30 \
+              --user-agent 'Googlebot' \
+              "https://uspowerdata.com/$page/" -o /dev/null
+          done
+
+          sitemap_ready=false
+          for attempt in $(seq 1 12)
+          do
+            curl --fail --silent --show-error --location \
+              --connect-timeout 10 --max-time 30 \
+              --user-agent 'Googlebot' \
+              https://uspowerdata.com/sitemap.xml -o /tmp/uspowerdata-sitemap.xml
+            if grep -Fq '<loc>https://uspowerdata.com/</loc>' /tmp/uspowerdata-sitemap.xml \
+              && grep -Fq '<loc>https://uspowerdata.com/us-electricity-generation/</loc>' /tmp/uspowerdata-sitemap.xml
+            then
+              sitemap_ready=true
+              break
+            fi
+            sleep 10
+          done
+          test "$sitemap_ready" = true
 
           curl --fail --silent --show-error --location \
             --retry 6 --retry-delay 10 --retry-all-errors \
