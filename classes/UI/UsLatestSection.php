@@ -38,9 +38,7 @@ class UsLatestSection {
           </div>
           <div class="generation-notes">
             <p>Percentages are shares of displayed generation.</p>
-            <p>
-              The &ldquo;Other sources&rdquo; group combines nuclear, biomass and the &ldquo;Other&rdquo; bucket. That bucket contains EIA-reported Other, geothermal and any unmapped fuel types.
-            </p>
+<?php self::outputOtherSourcesNote($sourceRows); ?>
           </div>
         </section>
 
@@ -60,16 +58,13 @@ class UsLatestSection {
         </section>
 
         <section id="transfers">
-          <h2>Cross-border flow by country</h2>
+          <h2>Net cross-border flow by country</h2>
 <?php
     $transferData = self::getTransferData($state);
 
     if ($transferData['rows']) {
       self::outputTransferRows($transferData['rows']);
-      self::outputTransferTime(
-        (int)$transferData['timestamp'],
-        (bool)$transferData['complete']
-      );
+      self::outputTransferContext($transferData);
     } else {
       self::outputUnavailableRows([[
         'class' => 'transfers',
@@ -191,6 +186,51 @@ class UsLatestSection {
     ));
   }
 
+  private static function outputOtherSourcesNote(array $sourceRows): void {
+    $rows = self::getRowsByClasses(
+      $sourceRows,
+      ['nuclear', 'biomass', 'others']
+    );
+
+    if (!$rows) {
+      return;
+    }
+
+    $labels = array_values(array_map(
+      static fn ($row) => (string)($row['label'] ?? ''),
+      $rows
+    ));
+    $labels = array_values(array_filter($labels));
+
+    if (!$labels) {
+      return;
+    }
+
+    $list = self::formatList($labels);
+    $hasOtherRow = (bool)array_filter(
+      $rows,
+      static fn ($row) => ($row['class'] ?? '') === 'others'
+    );
+?>
+            <p>
+              For this snapshot, &ldquo;Other sources&rdquo; <?= count($labels) > 1 ? 'combines' : 'contains' ?> <?= htmlspecialchars($list, ENT_QUOTES, 'UTF-8') ?>. A source appears as a separate row only when it has a positive reported value.
+<?php if ($hasOtherRow) { ?>
+              The &ldquo;Other&rdquo; row contains EIA-reported Other, geothermal and any unmapped fuel types.
+<?php } ?>
+            </p>
+<?php
+  }
+
+  private static function formatList(array $labels): string {
+    if (count($labels) < 2) {
+      return (string)($labels[0] ?? '');
+    }
+
+    $last = array_pop($labels);
+
+    return implode(', ', $labels) . ' and ' . $last;
+  }
+
   private static function getRowPower(array $rows, string $class): float {
     foreach ($rows as $row) {
       if (($row['class'] ?? '') === $class) {
@@ -283,15 +323,29 @@ class UsLatestSection {
     if (isset($snapshot['total'])) {
       $rows[] = [
         'class' => 'transfers',
-        'label' => 'Canada + Mexico',
+        'label' => 'Reported net country subtotal',
         'power' => (float)$snapshot['total'],
       ];
     }
 
+    if (isset($snapshot['national_net_imports'])) {
+      $rows[] = [
+        'class' => 'transfers',
+        'label' => 'US48 net total, same hour',
+        'power' => (float)$snapshot['national_net_imports'],
+      ];
+    }
+
+    $headline = is_array($state->view['equation'] ?? null)
+      ? $state->view['equation']
+      : [];
+
     return [
       'rows' => $rows,
       'timestamp' => (int)($snapshot['timestamp'] ?? 0),
-      'complete' => (bool)($snapshot['complete'] ?? false),
+      'both_countries' => (bool)($snapshot['both_countries'] ?? false),
+      'national_same_hour' => isset($snapshot['national_net_imports']),
+      'headline_timestamp' => (int)($headline['timestamp'] ?? 0),
     ];
   }
 
@@ -320,21 +374,31 @@ class UsLatestSection {
 <?php
   }
 
-  private static function outputTransferTime(
-    int  $timestamp,
-    bool $complete
-  ): void {
+  private static function outputTransferContext(array $transferData): void {
+    $timestamp = (int)($transferData['timestamp'] ?? 0);
+
     if ($timestamp <= 0) {
       return;
     }
+
+    $bothCountries = (bool)($transferData['both_countries'] ?? false);
+    $nationalSameHour = (bool)($transferData['national_same_hour'] ?? false);
+    $headlineTimestamp = (int)($transferData['headline_timestamp'] ?? 0);
 ?>
           <p class="transfer-reporting-time">
-            <?= $complete ? 'Latest complete' : 'Latest available partial' ?> country report:
+            Latest hour with <?= $bothCountries ? 'both country entries' : 'available country data' ?>:
             <?= UsStatus::time($timestamp) ?>.
-            <?= $complete
-              ? 'Country data normally arrive later than the overall flow.'
-              : 'One country has not yet reported for this hour.' ?>
+            The reported net country subtotal adds the direct-interchange rows for Canada and Mexico available for that hour<?= $bothCountries ? '' : '; one country entry is missing' ?>.
+<?php if ($nationalSameHour) { ?>
+            The US48 row is EIA&rsquo;s separately reported total net interchange for the same hour, providing a timestamp-aligned comparison.
+<?php } ?>
+            The two reports can still differ because EIA collects them on different schedules and they can have different checks, revisions and missing submissions.
           </p>
+<?php if ($headlineTimestamp > 0) { ?>
+          <p class="transfer-reporting-time">
+            The headline uses <?= $headlineTimestamp === $timestamp ? 'that same' : 'a newer' ?> US48 reporting hour, <?= UsStatus::time($headlineTimestamp) ?>. It reads EIA total net interchange directly; it is not calculated by subtracting generation from demand.
+          </p>
+<?php } ?>
 <?php
   }
 
